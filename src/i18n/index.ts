@@ -185,7 +185,19 @@ const resources = {
       "faq_forecast_q": "Quelle est la précision des prévisions météo ?",
       "faq_forecast_a": "Nos prévisions utilisent les données d'Open-Meteo et sont mises à jour quatre fois par jour pour une précision maximale.",
       "faq_stream_q": "Le streaming live est-il disponible 24h/24 et 7j/7 ?",
-      "faq_stream_a": "Oui, nos caméras live fonctionnent en continu. Les fenêtres de maintenance occasionnelles sont annoncées à l'avance."
+      "faq_stream_a": "Oui, nos caméras live fonctionnent en continu. Les fenêtres de maintenance occasionnelles sont annoncées à l'avance.",
+      
+      // Surf Spot Detail Page
+      "current_conditions": "Conditions Actuelles",
+      "spot_information": "Informations du Spot",
+      "skill_level": "Niveau de Compétence",
+      "wave_type": "Type de Vague", 
+      "crowd_level": "Niveau d'Affluence",
+      "best_seasons": "Meilleures Saisons",
+      "sunrise": "Lever du Soleil",
+      "sunset": "Coucher du Soleil",
+      "unable_to_load_weather": "Impossible de charger les données météo",
+      "camera_installation_planned": "Installation de caméra prévue"
     }
   },
   en: {
@@ -293,6 +305,18 @@ const resources = {
       "start_watching": "Start Watching",
       "support_us": "Support Us",
       "watch_live_cameras": "Watch Live Cameras",
+      
+      // Surf Spot Detail Page  
+      "current_conditions": "Current Conditions",
+      "spot_information": "Spot Information",
+      "skill_level": "Skill Level",
+      "wave_type": "Wave Type",
+      "crowd_level": "Crowd Level", 
+      "best_seasons": "Best Seasons",
+      "sunrise": "Sunrise",
+      "sunset": "Sunset",
+      "unable_to_load_weather": "Unable to load weather data",
+      "camera_installation_planned": "Camera installation planned"
     }
   },
   ar: {

@@ -145,7 +145,7 @@ const SurfSpotDetail = () => {
                         <div className="text-center">
                           <Camera className="w-16 h-16 mx-auto mb-4 opacity-50" />
                           <p className="text-xl mb-2">{t('coming_soon')}</p>
-                          <p className="text-sm opacity-75">Camera installation planned</p>
+                          <p className="text-sm opacity-75">{t('camera_installation_planned')}</p>
                         </div>
                       </div>
                     )}
@@ -186,7 +186,7 @@ const SurfSpotDetail = () => {
               {/* Current Conditions */}
               <Card className="shadow-wave">
                 <CardHeader>
-                  <CardTitle>Current Conditions</CardTitle>
+                  <CardTitle>{t('current_conditions')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {loading ? (
@@ -230,7 +230,7 @@ const SurfSpotDetail = () => {
                       </div>
                     </>
                   ) : (
-                    <p className="text-muted-foreground">Unable to load weather data</p>
+                    <p className="text-muted-foreground">{t('unable_to_load_weather')}</p>
                   )}
                 </CardContent>
               </Card>
@@ -247,11 +247,11 @@ const SurfSpotDetail = () => {
                   {weatherData && (
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Sunrise:</span>
+                        <span className="text-muted-foreground">{t('sunrise')}:</span>
                         <span className="font-semibold">{weatherData.sunrise}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Sunset:</span>
+                        <span className="text-muted-foreground">{t('sunset')}:</span>
                         <span className="font-semibold">{weatherData.sunset}</span>
                       </div>
                     </div>
@@ -262,25 +262,25 @@ const SurfSpotDetail = () => {
               {/* Spot Info */}
               <Card className="shadow-wave">
                 <CardHeader>
-                  <CardTitle>Spot Information</CardTitle>
+                  <CardTitle>{t('spot_information')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Skill Level:</span>
+                    <span className="text-muted-foreground">{t('skill_level')}:</span>
                     <Badge variant="outline" className="capitalize">
                       {spot.skillLevel}
                     </Badge>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Wave Type:</span>
+                    <span className="text-muted-foreground">{t('wave_type')}:</span>
                     <Badge variant="outline">{spot.waveType}</Badge>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Crowd Level:</span>
+                    <span className="text-muted-foreground">{t('crowd_level')}:</span>
                     <Badge variant="outline">{spot.crowdLevel}</Badge>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Best Seasons:</span>
+                    <span className="text-muted-foreground">{t('best_seasons')}:</span>
                     <div className="flex flex-wrap gap-1">
                       {spot.bestSeasons.map((season, index) => (
                         <Badge key={index} variant="outline" className="text-xs">
