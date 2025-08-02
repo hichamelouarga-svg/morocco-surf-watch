@@ -52,8 +52,8 @@ export class SurfConditionsService {
       
       const [lat, lon] = spot.coordinates;
       
-      // Use open-meteo.com free API (no API key required)
-      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=auto`;
+      // Use open-meteo.com free API (simpler current weather endpoint)
+      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,wind_direction_10m&timezone=auto&forecast_days=1`;
       console.log(`Fetching weather data from: ${apiUrl}`);
       
       const weatherResponse = await fetch(apiUrl, {
