@@ -118,7 +118,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'assilah',
     name: 'Assilah',
     nameKey: 'assilah',
-    coordinates: [35.4669, -6.0341],
+    coordinates: [35.475152, -6.031830],
     hasLiveStream: false,
     city: 'Assilah',
     region: 'Tanger-Tétouan-Al Hoceïma',
