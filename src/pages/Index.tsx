@@ -22,23 +22,35 @@ const Index = () => {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover z-0"
+          onLoadStart={() => console.log('Video loading started')}
+          onCanPlay={() => console.log('Video can play')}
           onError={(e) => {
-            console.log('Video failed to load, using fallback background');
+            console.log('Video failed to load, showing fallback background');
+            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+            if (fallback) fallback.style.display = 'block';
             e.currentTarget.style.display = 'none';
           }}
         >
           <source
-            src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+            src="https://cdn.pixabay.com/vimeo/450020750/waves-108644.mp4?width=1920&hash=5dc07b94a2b8fb4f0a32b7b03f2b58b7d3f8c9cc"
             type="video/mp4"
           />
-          {/* Fallback for browsers that don't support video */}
+          <source
+            src="https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="https://sample-videos.com/zip/10/mp4/480/mp4-480-1045-1045-7610.mp4"
+            type="video/mp4"
+          />
         </video>
         
-        {/* Fallback Background Image */}
+        {/* Fallback Background Image - hidden by default */}
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1502933691298-84fc14542831?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')"
+            backgroundImage: "url('https://images.unsplash.com/photo-1502933691298-84fc14542831?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
+            display: 'none'
           }}
         ></div>
         
