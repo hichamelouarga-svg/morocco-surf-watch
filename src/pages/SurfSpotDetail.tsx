@@ -88,16 +88,37 @@ const SurfSpotDetail = () => {
     );
   }
 
+  // Special background video for Safi
+  const isSpecialSpot = spot?.id === 'safi';
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {isSpecialSpot && (
+        <>
+          {/* Background Video for Safi */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="fixed inset-0 w-full h-full object-cover z-0"
+            style={{ zIndex: -1 }}
+          >
+            <source src="/videos/surf-background.mp4" type="video/mp4" />
+          </video>
+          {/* Overlay for readability */}
+          <div className="fixed inset-0 bg-black/30 z-0" style={{ zIndex: -1 }}></div>
+        </>
+      )}
+      
       <Navigation />
       
-      <div className="pt-24 pb-16">
+      <div className="pt-24 pb-16 relative z-10">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground">
+              <h1 className={`font-display text-4xl md:text-5xl font-bold ${isSpecialSpot ? 'text-white' : 'text-foreground'}`}>
                 {t(spot.nameKey)}
               </h1>
               {spot.hasLiveStream && (
@@ -107,7 +128,7 @@ const SurfSpotDetail = () => {
                 </Badge>
               )}
             </div>
-            <p className="text-lg text-muted-foreground">
+            <p className={`text-lg ${isSpecialSpot ? 'text-white/90' : 'text-muted-foreground'}`}>
               {spot.city}, {spot.region} • {spot.description}
             </p>
           </div>
@@ -123,9 +144,9 @@ const SurfSpotDetail = () => {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Live Stream */}
             <div className="lg:col-span-2">
-              <Card className="shadow-ocean overflow-hidden mb-8">
+              <Card className={`shadow-ocean overflow-hidden mb-8 ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
+                  <CardTitle className={`flex items-center ${isSpecialSpot ? 'text-white' : ''}`}>
                     <Camera className="w-5 h-5 mr-2" />
                     {spot.hasLiveStream ? t('live_now') : t('coming_soon')}
                   </CardTitle>
@@ -145,7 +166,19 @@ const SurfSpotDetail = () => {
                         <div className="text-center">
                           <Camera className="w-16 h-16 mx-auto mb-4 opacity-50" />
                           <p className="text-xl mb-2">{t('coming_soon')}</p>
-                          <p className="text-sm opacity-75">{t('camera_installation_planned')}</p>
+                          <p className="text-sm opacity-75">
+                            {isSpecialSpot && spot.id === 'safi' 
+                              ? 'Caméra live bientôt disponible pour Safi - Restez connectés!'
+                              : t('camera_installation_planned')
+                            }
+                          </p>
+                          {isSpecialSpot && (
+                            <div className="mt-4">
+                              <Badge className="bg-coral text-white px-4 py-2">
+                                🎥 Coming Soon to Safi
+                              </Badge>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -154,9 +187,9 @@ const SurfSpotDetail = () => {
               </Card>
 
               {/* 7-Day Forecast */}
-              <Card className="shadow-wave">
+              <Card className={`shadow-wave ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
+                  <CardTitle className={`flex items-center ${isSpecialSpot ? 'text-white' : ''}`}>
                     <Waves className="w-5 h-5 mr-2" />
                     {t('forecast_7_days')}
                   </CardTitle>
@@ -164,14 +197,14 @@ const SurfSpotDetail = () => {
                 <CardContent>
                   <div className="grid grid-cols-7 gap-2">
                     {Array.from({ length: 7 }, (_, i) => (
-                      <div key={i} className="text-center p-3 bg-muted rounded-lg">
-                        <div className="text-xs text-muted-foreground mb-1">
+                      <div key={i} className={`text-center p-3 rounded-lg ${isSpecialSpot ? 'bg-white/20 backdrop-blur-sm' : 'bg-muted'}`}>
+                        <div className={`text-xs mb-1 ${isSpecialSpot ? 'text-white/80' : 'text-muted-foreground'}`}>
                           {new Date(Date.now() + i * 24 * 60 * 60 * 1000).toLocaleDateString('en', { weekday: 'short' })}
                         </div>
-                        <div className="text-sm font-semibold mb-1">
+                        <div className={`text-sm font-semibold mb-1 ${isSpecialSpot ? 'text-white' : ''}`}>
                           {(1.2 + Math.random() * 1.8).toFixed(1)}m
                         </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className={`text-xs ${isSpecialSpot ? 'text-white/70' : 'text-muted-foreground'}`}>
                           {Math.round(10 + Math.random() * 20)}km/h
                         </div>
                       </div>
@@ -184,15 +217,15 @@ const SurfSpotDetail = () => {
             {/* Weather Data */}
             <div className="space-y-6">
               {/* Current Conditions */}
-              <Card className="shadow-wave">
+              <Card className={`shadow-wave ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
                 <CardHeader>
-                  <CardTitle>{t('current_conditions')}</CardTitle>
+                  <CardTitle className={isSpecialSpot ? 'text-white' : ''}>{t('current_conditions')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {loading ? (
                     <div className="animate-pulse space-y-4">
                       {Array.from({ length: 4 }, (_, i) => (
-                        <div key={i} className="h-12 bg-muted rounded"></div>
+                        <div key={i} className={`h-12 rounded ${isSpecialSpot ? 'bg-white/20' : 'bg-muted'}`}></div>
                       ))}
                     </div>
                   ) : weatherData ? (
