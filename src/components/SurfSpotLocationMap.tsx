@@ -21,8 +21,8 @@ const SurfSpotLocationMap: React.FC<SurfSpotLocationMapProps> = ({
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // For now, use a placeholder token - user needs to add their Mapbox token to Supabase secrets
-    mapboxgl.accessToken = process.env.MAPBOX_PUBLIC_TOKEN || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    // Use the provided Mapbox public token
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic3VyZmF1bWFyb2MiLCJhIjoiY21kcWlid2llMDZibjJtcHp6NWx1Ynd3ZCJ9.kCWTEjWjMTkRWNJAqhNlVg';
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
