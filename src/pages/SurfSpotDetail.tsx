@@ -91,7 +91,7 @@ const SurfSpotDetail = () => {
   }
 
   // Special background video for specific spots
-  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach';
+  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach' || spot?.id === 'mohammedia';
   
   // YouTube video IDs for each spot
   const getVideoId = (spotId: string) => {
@@ -102,6 +102,8 @@ const SurfSpotDetail = () => {
         return 'iCPZ2x-Wxig';
       case 'rabat-beach':
         return 'QXM8CJ1AZFc';
+      case 'mohammedia':
+        return 'sdP1NbXieu0';
       default:
         return null;
     }
@@ -180,13 +182,15 @@ const SurfSpotDetail = () => {
                               ? 'Caméra live bientôt disponible pour Imesouane - Restez connectés!'
                               : isSpecialSpot && spot.id === 'rabat-beach'
                               ? 'Caméra live bientôt disponible pour Rabat Beach - Restez connectés!'
+                              : isSpecialSpot && spot.id === 'mohammedia'
+                              ? 'Caméra live bientôt disponible pour Mohammedia - Restez connectés!'
                               : t('camera_installation_planned')
                             }
                           </p>
                           {isSpecialSpot && (
                             <div className="mt-4">
                               <Badge className="bg-coral text-white px-4 py-2">
-                                🎥 Coming Soon to {spot.id === 'safi' ? 'Safi' : spot.id === 'imesouane' ? 'Imesouane' : 'Rabat Beach'}
+                                🎥 Coming Soon to {spot.id === 'safi' ? 'Safi' : spot.id === 'imesouane' ? 'Imesouane' : spot.id === 'rabat-beach' ? 'Rabat Beach' : 'Mohammedia'}
                               </Badge>
                             </div>
                           )}
