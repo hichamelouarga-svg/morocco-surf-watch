@@ -86,15 +86,15 @@ export class SurfConditionsService {
         rating,
         ratingValue,
         surfHeight: {
-          min: Math.max(1, Math.floor(waveHeight * 3.28084 * 0.8)), // Convert m to ft
-          max: Math.ceil(waveHeight * 3.28084 * 1.2),
+          min: Math.max(0.3, Math.round(waveHeight * 0.8 * 10) / 10), // Keep in meters
+          max: Math.round(waveHeight * 1.2 * 10) / 10,
           description: waveHeight < 1 ? 'Cheville à genou' : 
                       waveHeight < 2 ? 'Cuisse à ventre' :
                       waveHeight < 3 ? 'Ventre à poitrine' : 'Poitrine à tête'
         },
         swell: [
           {
-            height: Number((waveHeight * 3.28084).toFixed(1)),
+            height: Number(waveHeight.toFixed(1)), // Keep in meters
             period: current.wave_period || 8,
             direction: this.getWindDirection(current.wave_direction || 270),
             angle: current.wave_direction || 270
@@ -113,9 +113,9 @@ export class SurfConditionsService {
           data: tideData.data
         },
         temperature: {
-          air: Math.round((weatherData.current_units.temperature_2m === '°F' ? weatherData.current.temperature_2m : weatherData.current.temperature_2m * 9/5 + 32) || 68),
-          water: Math.round(((weatherData.current.temperature_2m || 20) * 9/5 + 32) - 5), // Estimate water temp
-          wetsuit: (weatherData.current.temperature_2m || 20) < 18 ? '3mm wetsuit' : '2mm wetsuit'
+          air: Math.round(weatherData.current.temperature_2m || 20), // Keep in Celsius
+          water: Math.round((weatherData.current.temperature_2m || 20) - 3), // Estimate water temp in Celsius
+          wetsuit: (weatherData.current.temperature_2m || 20) < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
         },
         forecast: 'OPEN-METEO',
         lastUpdated: new Date().toLocaleString('en-US', {
@@ -177,15 +177,15 @@ export class SurfConditionsService {
   
   private static generateMockTideData() {
     const now = new Date();
-    const baseHeight = 2 + Math.random() * 2; // Random base between 2-4ft
+    const baseHeight = 0.6 + Math.random() * 0.6; // Random base between 0.6-1.2m
     
     return {
-      current: Number((baseHeight + Math.sin(now.getHours() / 6 * Math.PI) * 1.5).toFixed(1)),
+      current: Number((baseHeight + Math.sin(now.getHours() / 6 * Math.PI) * 0.5).toFixed(1)),
       trend: (now.getHours() % 12) < 6 ? 'rising' as const : 'falling' as const,
-      nextChange: `${(now.getHours() + 2) % 12 || 12}:${String(now.getMinutes()).padStart(2, '0')}${now.getHours() + 2 >= 12 ? 'pm' : 'am'} ${(baseHeight + 1.5).toFixed(1)}ft`,
+      nextChange: `${(now.getHours() + 2) % 12 || 12}:${String(now.getMinutes()).padStart(2, '0')}${now.getHours() + 2 >= 12 ? 'pm' : 'am'} ${(baseHeight + 0.5).toFixed(1)}m`,
       data: Array.from({ length: 8 }, (_, i) => ({
         time: `${(now.getHours() + i) % 12 || 12}${(now.getHours() + i) >= 12 ? 'pm' : 'am'}`,
-        height: Number((baseHeight + Math.sin((now.getHours() + i) / 6 * Math.PI) * 1.5).toFixed(1))
+        height: Number((baseHeight + Math.sin((now.getHours() + i) / 6 * Math.PI) * 0.5).toFixed(1))
       }))
     };
   }

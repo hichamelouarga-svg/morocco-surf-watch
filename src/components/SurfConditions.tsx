@@ -127,7 +127,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions })
           <div className="space-y-2">
             <div className="text-sm text-muted-foreground">HAUTEUR SURF</div>
             <div className="text-2xl font-bold text-foreground">
-              {conditions.surfHeight.min}-{conditions.surfHeight.max}ft
+              {conditions.surfHeight.min}-{conditions.surfHeight.max}m
             </div>
             <div className="text-xs text-muted-foreground">
               {conditions.surfHeight.description}
@@ -143,7 +143,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions })
             {conditions.swell.map((swell, index) => (
               <div key={index} className="text-sm">
                 <div className="font-semibold">
-                  {swell.height}ft {swell.period}s {swell.direction} {swell.angle}°
+                  {swell.height}m {swell.period}s {swell.direction} {swell.angle}°
                 </div>
               </div>
             ))}
@@ -171,7 +171,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions })
           <div className="space-y-2">
             <div className="text-sm text-muted-foreground">MARÉE</div>
             <div className="text-lg font-bold flex items-center">
-              {conditions.tide.current}ft
+              {conditions.tide.current}m
               <span className="ml-1">
                 {conditions.tide.trend === 'rising' ? '▲' : '▼'}
               </span>
@@ -205,8 +205,8 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions })
           <div className="space-y-2">
             <div className="text-sm text-muted-foreground">TEMPÉRATURE</div>
             <div className="flex items-center space-x-2">
-              <span className="text-lg font-bold">☀️ {conditions.temperature.air}°f</span>
-              <span className="text-lg font-bold">🌊 {conditions.temperature.water}°f</span>
+              <span className="text-lg font-bold">☀️ {conditions.temperature.air}°C</span>
+              <span className="text-lg font-bold">🌊 {conditions.temperature.water}°C</span>
             </div>
             <div className="text-xs text-muted-foreground">
               {conditions.temperature.wetsuit}
