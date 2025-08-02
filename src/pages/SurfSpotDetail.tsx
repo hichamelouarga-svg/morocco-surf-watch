@@ -38,8 +38,10 @@ const SurfSpotDetail = () => {
       if (!spot) return;
       
       try {
-        // Fetch real surf conditions
-        const realConditions = await SurfConditionsService.fetchConditionsBySpot(spot.id);
+        console.log('📍 SurfSpotDetail: Starting to fetch conditions for:', spot.id);
+        // Force fresh fetch - skip any cache
+        const realConditions = await SurfConditionsService.fetchRealTimeConditions(spot.id);
+        console.log('📊 SurfSpotDetail: Got conditions:', realConditions);
         if (realConditions) {
           setSurfConditions(realConditions);
         }

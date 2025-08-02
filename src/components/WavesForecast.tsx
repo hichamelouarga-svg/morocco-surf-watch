@@ -22,7 +22,6 @@ interface WavesForecastProps {
 // Function to fetch real forecast data from OpenWeatherMap
 const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
   console.log(`🌊 FORECAST: Starting fetch for ${spotId}`);
-  alert(`DEBUG: Fetching forecast for ${spotId}`);
   try {
     // Get spot coordinates
     const spotCoords = getSpotCoordinates(spotId);
