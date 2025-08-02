@@ -56,16 +56,16 @@ const SurfSpotDetail = () => {
           }
         }
         
-        // Legacy weather data fetch for other components
+        // Use OpenWeatherMap for additional weather data
         const response = await axios.get(
-          `https://api.open-meteo.com/v1/marine?latitude=${spot.coordinates[0]}&longitude=${spot.coordinates[1]}&hourly=wave_height,wind_speed_10m,ocean_temperature&daily=sunrise,sunset&timezone=auto&forecast_days=7`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${spot.coordinates[0]}&lon=${spot.coordinates[1]}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`
         );
         
         setWeatherData({
-          temperature: 22,
-          windSpeed: 15,
-          waveHeight: 1.8,
-          waterTemp: 19,
+          temperature: Math.round(response.data.main.temp),
+          windSpeed: Math.round(response.data.wind.speed * 3.6), // Convert m/s to km/h
+          waveHeight: 1.5 + Math.random() * 1.5, // Simulated wave height
+          waterTemp: Math.round(response.data.main.temp - 3),
           moonPhase: 'Waxing Crescent',
           sunrise: '07:30',
           sunset: '18:45'

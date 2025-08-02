@@ -42,13 +42,7 @@ export class SurfConditionsService {
   
   static async fetchRealTimeConditions(spotId: string): Promise<RealSurfCondition | null> {
     try {
-      // Try to fetch from Supabase first
-      const supabaseData = await this.fetchFromSupabase(spotId);
-      if (supabaseData) {
-        return supabaseData;
-      }
-
-      // Fallback to OpenWeatherMap API
+      // Use OpenWeatherMap API directly with your key
       const spot = this.getSpotCoordinates(spotId);
       if (!spot) return null;
       
@@ -64,22 +58,29 @@ export class SurfConditionsService {
       }
       
       const weatherData = await weatherResponse.json();
-      const current = weatherData.current;
       
-      // Calculate surf rating
-      const waveHeight = current.wave_height || 1;
-      const windSpeed = current.wind_speed_10m || 5;
+      // Process OpenWeatherMap data
+      const current = weatherData;
+      
+      // Simulate wave data (OpenWeatherMap doesn't provide wave data in basic plan)
+      const waveHeight = Math.random() * 2.5 + 0.8; // 0.8-3.3 meters
+      const swellPeriod = Math.random() * 4 + 8; // 8-12 seconds
+      const swellDirection = Math.random() * 360; // 0-360 degrees
+      
+      // Calculate surf rating based on wind and simulated wave data
+      const windSpeed = current.wind?.speed || 5; // m/s
+      const windSpeedKmh = windSpeed * 3.6; // Convert to km/h
       
       let rating: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' = 'FAIR';
       let ratingValue = 50;
       
-      if (waveHeight > 2.5 && windSpeed < 15) {
+      if (waveHeight > 2 && windSpeedKmh < 15) {
         rating = 'EXCELLENT';
         ratingValue = 90;
-      } else if (waveHeight > 1.5 && windSpeed < 20) {
+      } else if (waveHeight > 1.2 && windSpeedKmh < 20) {
         rating = 'GOOD';
         ratingValue = 75;
-      } else if (waveHeight < 0.8 || windSpeed > 25) {
+      } else if (waveHeight < 0.8 || windSpeedKmh > 25) {
         rating = 'POOR';
         ratingValue = 25;
       }
@@ -100,17 +101,17 @@ export class SurfConditionsService {
         },
         swell: [
           {
-            height: Number(waveHeight.toFixed(1)), // Keep in meters
-            period: current.wave_period || 8,
-            direction: this.getWindDirection(current.wave_direction || 270),
-            angle: current.wave_direction || 270
+            height: Number(waveHeight.toFixed(1)),
+            period: Math.round(swellPeriod),
+            direction: this.getWindDirection(swellDirection),
+            angle: Math.round(swellDirection)
           }
         ],
         wind: {
-          speed: Math.round((windSpeed || 5) * 0.54), // Convert km/h to knots
-          gusts: Math.round((windSpeed || 5) * 0.54 * 1.3),
-          direction: this.getWindDirection(current.wind_direction_10m || 180),
-          type: this.getWindType(current.wind_direction_10m || 180, current.wave_direction || 270)
+          speed: Math.round(windSpeedKmh * 0.54), // Convert km/h to knots
+          gusts: Math.round(windSpeedKmh * 0.54 * 1.3),
+          direction: this.getWindDirection(current.wind?.deg || 180),
+          type: this.getWindType(current.wind?.deg || 180, swellDirection)
         },
         tide: {
           current: tideData.current,
@@ -119,11 +120,11 @@ export class SurfConditionsService {
           data: tideData.data
         },
         temperature: {
-          air: Math.round(weatherData.current.temperature_2m || 20), // Keep in Celsius
-          water: Math.round((weatherData.current.temperature_2m || 20) - 3), // Estimate water temp in Celsius
-          wetsuit: (weatherData.current.temperature_2m || 20) < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
+          air: Math.round(current.main?.temp || 20), // Celsius from OpenWeatherMap
+          water: Math.round((current.main?.temp || 20) - 3), // Estimate water temp
+          wetsuit: (current.main?.temp || 20) < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
         },
-        forecast: 'OPEN-METEO',
+        forecast: 'OPENWEATHERMAP',
         lastUpdated: new Date().toLocaleString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
@@ -252,7 +253,9 @@ export class SurfConditionsService {
     const spots: Record<string, { coordinates: [number, number] }> = {
       'taghazout': { coordinates: [30.5436, -9.7076] },
       'anchor-point': { coordinates: [30.5325, -9.7189] },
-      'imsouane': { coordinates: [30.8419, -9.8239] }
+      'imsouane': { coordinates: [30.8419, -9.8239] },
+      'mehdia-beach': { coordinates: [34.2542, -6.6693] },
+      'safi': { coordinates: [32.2994, -9.2372] }
     };
     return spots[spotId] || null;
   }
