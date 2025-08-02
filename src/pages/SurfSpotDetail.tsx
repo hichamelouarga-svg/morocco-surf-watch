@@ -56,9 +56,10 @@ const SurfSpotDetail = () => {
           }
         }
         
-        // Use OpenWeatherMap for additional weather data
+        // Use OpenWeatherMap for additional weather data with cache-busting
+        const timestamp = Date.now();
         const response = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${spot.coordinates[0]}&lon=${spot.coordinates[1]}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${spot.coordinates[0]}&lon=${spot.coordinates[1]}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric&_=${timestamp}`
         );
         
         setWeatherData({

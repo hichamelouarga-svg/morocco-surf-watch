@@ -134,7 +134,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, t
               {conditions.surfHeight.description}
             </div>
             <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
-              📊 LOTUS Prévision
+              📊 {conditions.forecast} Prévision
             </div>
           </div>
 
@@ -149,7 +149,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, t
               </div>
             ))}
             <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
-              📊 LOTUS Prévision
+              📊 {conditions.forecast} Prévision
             </div>
           </div>
 
@@ -164,7 +164,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, t
             </div>
             <WindCompass direction={conditions.wind.direction} angle={0} />
             <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
-              📊 Modèle Prévision
+              📊 {conditions.forecast} Prévision
             </div>
           </div>
 

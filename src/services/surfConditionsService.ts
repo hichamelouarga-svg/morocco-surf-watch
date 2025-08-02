@@ -52,11 +52,17 @@ export class SurfConditionsService {
       
       const [lat, lon] = spot.coordinates;
       
-      // Use OpenWeatherMap API with your key
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`;
+      // Use OpenWeatherMap API with your key and cache-busting
+      const timestamp = Date.now();
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric&_=${timestamp}`;
       console.log(`Fetching weather data from: ${apiUrl}`);
       
-      const weatherResponse = await fetch(apiUrl);
+      const weatherResponse = await fetch(apiUrl, {
+        cache: 'no-cache',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
       
       if (!weatherResponse.ok) {
         console.error(`Weather API error: ${weatherResponse.status} ${weatherResponse.statusText}`);
