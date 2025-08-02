@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { surfSpots } from '@/data/surfSpots';
 import SurfConditions from '@/components/SurfConditions';
+import { SurfConditionsService, RealSurfCondition } from '@/services/surfConditionsService';
 import { surfConditionsData } from '@/data/surfConditionsData';
 import { Camera, Waves, Wind, Thermometer, Moon, Sun, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -24,21 +25,39 @@ const SurfSpotDetail = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [surfConditions, setSurfConditions] = useState<RealSurfCondition | null>(null);
   const [loading, setLoading] = useState(true);
   
   const spot = surfSpots.find(s => s.id === id);
 
   useEffect(() => {
-    const fetchWeatherData = async () => {
+    const fetchData = async () => {
       if (!spot) return;
       
       try {
-        // Open-Meteo API call
+        // Fetch real surf conditions
+        const realConditions = await SurfConditionsService.fetchConditionsBySpot(spot.id);
+        if (realConditions) {
+          setSurfConditions(realConditions);
+        }
+        
+        // Check if data is stale and refresh if needed
+        const isStale = await SurfConditionsService.isDataStale(6); // 6 hours
+        if (isStale) {
+          console.log('Data is stale, refreshing...');
+          await SurfConditionsService.refreshConditions();
+          // Fetch again after refresh
+          const refreshedConditions = await SurfConditionsService.fetchConditionsBySpot(spot.id);
+          if (refreshedConditions) {
+            setSurfConditions(refreshedConditions);
+          }
+        }
+        
+        // Legacy weather data fetch for other components
         const response = await axios.get(
           `https://api.open-meteo.com/v1/marine?latitude=${spot.coordinates[0]}&longitude=${spot.coordinates[1]}&hourly=wave_height,wind_speed_10m,ocean_temperature&daily=sunrise,sunset&timezone=auto&forecast_days=7`
         );
         
-        // Mock data for now - you would process the actual API response
         setWeatherData({
           temperature: 22,
           windSpeed: 15,
@@ -49,13 +68,13 @@ const SurfSpotDetail = () => {
           sunset: '18:45'
         });
       } catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchWeatherData();
+    fetchData();
   }, [spot]);
 
   if (!spot) {
@@ -97,7 +116,7 @@ const SurfSpotDetail = () => {
           <div className="mb-8">
             <SurfConditions 
               spotName={spot.name} 
-              conditions={surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']} 
+              conditions={surfConditions || surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']} 
             />
           </div>
 
