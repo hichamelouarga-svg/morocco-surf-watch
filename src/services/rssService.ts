@@ -45,7 +45,7 @@ export class RSSService {
         }
       });
       
-      return rssItems.slice(0, 3); // Return only the 3 most recent articles
+      return rssItems.slice(0, 2); // Return only the 2 most recent articles
     } catch (error) {
       console.error('Error fetching RSS feed:', error);
       return [];
