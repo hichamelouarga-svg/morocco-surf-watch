@@ -104,7 +104,7 @@ const SurfSpotDetail = () => {
             className="fixed inset-0 w-full h-full object-cover z-0"
             style={{ zIndex: -1 }}
           >
-            <source src="/videos/surf-background.mp4" type="video/mp4" />
+            <source src="/videos/safi-surf-background.mp4" type="video/mp4" />
           </video>
           {/* Overlay for readability */}
           <div className="fixed inset-0 bg-black/30 z-0" style={{ zIndex: -1 }}></div>
