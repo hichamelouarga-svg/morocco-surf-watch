@@ -31,18 +31,7 @@ const Index = () => {
             e.currentTarget.style.display = 'none';
           }}
         >
-          <source
-            src="https://cdn.pixabay.com/vimeo/450020750/waves-108644.mp4?width=1920&hash=5dc07b94a2b8fb4f0a32b7b03f2b58b7d3f8c9cc"
-            type="video/mp4"
-          />
-          <source
-            src="https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4"
-            type="video/mp4"
-          />
-          <source
-            src="https://sample-videos.com/zip/10/mp4/480/mp4-480-1045-1045-7610.mp4"
-            type="video/mp4"
-          />
+          <source src="/videos/surf-background.mp4" type="video/mp4" />
         </video>
         
         {/* Fallback Background Image - hidden by default */}
