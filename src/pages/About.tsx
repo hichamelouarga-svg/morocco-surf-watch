@@ -13,51 +13,51 @@ const About = () => {
   const teamMembers = [
     {
       name: 'Ahmed Benali',
-      role: 'Founder & CEO',
-      description: 'Professional surfer and tech entrepreneur passionate about Morocco\'s surf culture.',
+      role: t('founder_role'),
+      description: t('founder_desc'),
       icon: <Waves className="w-6 h-6" />
     },
     {
       name: 'Sarah Johnson',
-      role: 'Head of Technology',
-      description: 'Expert in live streaming technology and weather data integration.',
+      role: t('tech_head_role'),
+      description: t('tech_head_desc'),
       icon: <Camera className="w-6 h-6" />
     },
     {
       name: 'Omar Fassi',
-      role: 'Surf Forecaster',
-      description: 'Marine meteorologist with 15+ years of experience in Atlantic weather patterns.',
+      role: t('forecaster_role'),
+      description: t('forecaster_desc'),
       icon: <Globe className="w-6 h-6" />
     }
   ];
 
   const milestones = [
-    { year: '2024', event: 'Surf au Maroc launched with first live camera at Mehdia Beach' },
-    { year: '2024', event: 'Multi-language support added (French, English, Arabic)' },
-    { year: '2024', event: 'Partnership with Open-Meteo for accurate weather data' },
-    { year: '2024', event: 'Growing network of surf spots across Morocco' }
+    { year: '2024', event: t('milestone_1') },
+    { year: '2024', event: t('milestone_2') },
+    { year: '2024', event: t('milestone_3') },
+    { year: '2024', event: t('milestone_4') }
   ];
 
   const values = [
     {
       icon: <Eye className="w-8 h-8" />,
-      title: 'Transparency',
-      description: 'Real-time, accurate surf conditions and weather data you can trust'
+      title: t('transparency'),
+      description: t('transparency_desc')
     },
     {
       icon: <Heart className="w-8 h-8" />,
-      title: 'Community',
-      description: 'Supporting Morocco\'s surf community and promoting local culture'
+      title: t('community'),
+      description: t('community_desc')
     },
     {
       icon: <Target className="w-8 h-8" />,
-      title: 'Innovation',
-      description: 'Cutting-edge technology to enhance your surf experience'
+      title: t('innovation'),
+      description: t('innovation_desc')
     },
     {
       icon: <Award className="w-8 h-8" />,
-      title: 'Excellence',
-      description: 'Committed to providing the best surf forecasting platform'
+      title: t('excellence'),
+      description: t('excellence_desc')
     }
   ];
 
@@ -81,18 +81,17 @@ const About = () => {
                     {t('about')} Surf au Maroc
                   </h1>
                   <p className="text-xl text-white/90 mb-8">
-                    Connecting surfers with Morocco's incredible coastline through technology, 
-                    real-time data, and a passion for the ocean.
+                    {t('about_story_p1')}
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <Badge className="bg-white text-primary text-lg px-4 py-2">
-                      13 Surf Spots
+                      13 {t('surf_spots')}
                     </Badge>
                     <Badge className="bg-coral text-white text-lg px-4 py-2">
-                      Live Cameras
+                      {t('live_cameras')}
                     </Badge>
                     <Badge className="bg-sunset text-white text-lg px-4 py-2">
-                      3 Languages
+                      3 {t('languages_count').replace(':', '')}
                     </Badge>
                   </div>
                 </div>
@@ -105,24 +104,16 @@ const About = () => {
             <div className="lg:col-span-2 space-y-12">
               {/* Our Story */}
               <section>
-                <h2 className="font-display text-3xl font-bold text-foreground mb-6">Our Story</h2>
+                <h2 className="font-display text-3xl font-bold text-foreground mb-6">{t('our_story')}</h2>
                 <div className="prose prose-lg max-w-none text-muted-foreground">
                   <p className="mb-4">
-                    Surf au Maroc was born from a simple idea: to make Morocco's incredible surf culture 
-                    more accessible to surfers around the world. With its 3,500 kilometers of Atlantic 
-                    coastline, Morocco offers some of the most consistent and diverse surf conditions 
-                    in the world.
+                    {t('about_story_p1')}
                   </p>
                   <p className="mb-4">
-                    Our platform combines cutting-edge technology with local expertise to provide 
-                    real-time surf conditions, weather forecasts, and live camera feeds from Morocco's 
-                    premier surf destinations. From the powerful waves of Taghazout to the gentle breaks 
-                    of Mehdia Beach, we're here to help you find the perfect wave.
+                    {t('about_story_p2')}
                   </p>
                   <p>
-                    More than just a forecasting service, Surf au Maroc is a celebration of Morocco's 
-                    rich coastal heritage and the growing international surf community that calls 
-                    these waters home.
+                    {t('about_story_p3')}
                   </p>
                 </div>
               </section>
@@ -134,14 +125,12 @@ const About = () => {
                     <CardHeader>
                       <CardTitle className="font-display text-2xl flex items-center">
                         <Target className="w-6 h-6 mr-2 text-primary" />
-                        Our Mission
+                        {t('our_mission')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-muted-foreground">
-                        To provide the most accurate, accessible, and comprehensive surf forecasting 
-                        platform for Morocco, supporting both local and international surf communities 
-                        while promoting sustainable coastal tourism.
+                        {t('mission_text')}
                       </p>
                     </CardContent>
                   </Card>
@@ -150,14 +139,12 @@ const About = () => {
                     <CardHeader>
                       <CardTitle className="font-display text-2xl flex items-center">
                         <Eye className="w-6 h-6 mr-2 text-secondary" />
-                        Our Vision
+                        {t('our_vision')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-muted-foreground">
-                        To become the definitive resource for surf conditions in Morocco and North 
-                        Africa, fostering a global community of surfers while preserving and 
-                        celebrating Morocco's unique coastal culture.
+                        {t('vision_text')}
                       </p>
                     </CardContent>
                   </Card>
@@ -166,7 +153,7 @@ const About = () => {
 
               {/* Our Values */}
               <section>
-                <h2 className="font-display text-3xl font-bold text-foreground mb-8">Our Values</h2>
+                <h2 className="font-display text-3xl font-bold text-foreground mb-8">{t('our_values')}</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   {values.map((value, index) => (
                     <Card key={index} className="shadow-wave">
@@ -188,7 +175,7 @@ const About = () => {
 
               {/* Timeline */}
               <section>
-                <h2 className="font-display text-3xl font-bold text-foreground mb-8">Our Journey</h2>
+                <h2 className="font-display text-3xl font-bold text-foreground mb-8">{t('our_journey')}</h2>
                 <div className="space-y-6">
                   {milestones.map((milestone, index) => (
                     <div key={index} className="flex items-start space-x-4">
@@ -213,7 +200,7 @@ const About = () => {
                 <CardHeader>
                   <CardTitle className="font-display text-2xl flex items-center">
                     <Users className="w-6 h-6 mr-2" />
-                    Our Team
+                    {t('our_team')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -237,24 +224,24 @@ const About = () => {
               {/* Stats */}
               <Card className="shadow-wave">
                 <CardHeader>
-                  <CardTitle className="font-display text-xl">Platform Stats</CardTitle>
+                  <CardTitle className="font-display text-xl">{t('platform_stats')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Surf Spots:</span>
+                    <span className="text-muted-foreground">{t('surf_spots_count')}</span>
                     <span className="font-bold">13</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Live Cameras:</span>
-                    <span className="font-bold">1 (Growing)</span>
+                    <span className="text-muted-foreground">{t('live_cameras_count')}</span>
+                    <span className="font-bold">{t('growing')}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Languages:</span>
+                    <span className="text-muted-foreground">{t('languages_count')}</span>
                     <span className="font-bold">3</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Data Updates:</span>
-                    <span className="font-bold">4x Daily</span>
+                    <span className="text-muted-foreground">{t('data_updates')}</span>
+                    <span className="font-bold">{t('data_updates_freq')}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -263,10 +250,10 @@ const About = () => {
               <Card className="bg-gradient-ocean text-white shadow-ocean">
                 <CardContent className="p-6 text-center">
                   <h3 className="font-display text-xl font-bold mb-4">
-                    Join Our Mission
+                    {t('join_mission')}
                   </h3>
                   <p className="text-white/90 mb-6">
-                    Partner with us to expand Morocco's surf monitoring network
+                    {t('join_mission_desc')}
                   </p>
                   <Button 
                     asChild 
@@ -274,7 +261,7 @@ const About = () => {
                     className="bg-white text-primary hover:bg-white/90 border-white"
                   >
                     <Link to="/contact">
-                      Get in Touch
+                      {t('get_in_touch')}
                     </Link>
                   </Button>
                 </CardContent>

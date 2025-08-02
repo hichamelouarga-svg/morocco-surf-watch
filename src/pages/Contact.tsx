@@ -30,12 +30,12 @@ const Contact = () => {
   };
 
   const inquiryTypes = [
-    { value: 'sponsorship', label: 'Sponsorship Inquiry' },
-    { value: 'camera', label: 'Camera Hosting' },
-    { value: 'technical', label: 'Technical Support' },
-    { value: 'partnership', label: 'Partnership' },
-    { value: 'media', label: 'Media Inquiry' },
-    { value: 'other', label: 'Other' }
+    { value: 'sponsorship', label: t('sponsorship_inquiry') },
+    { value: 'camera', label: t('camera_hosting') },
+    { value: 'technical', label: t('technical_support') },
+    { value: 'partnership', label: t('partnership') },
+    { value: 'media', label: t('media_inquiry') },
+    { value: 'other', label: t('other') }
   ];
 
   return (
@@ -49,7 +49,7 @@ const Contact = () => {
               {t('contact')}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Get in touch with our team for partnerships, technical support, or any questions about Surf au Maroc
+              {t('contact_subtitle')}
             </p>
           </div>
 
@@ -58,13 +58,13 @@ const Contact = () => {
             <div className="lg:col-span-2">
               <Card className="shadow-ocean">
                 <CardHeader>
-                  <CardTitle className="font-display text-2xl">Send us a message</CardTitle>
+                  <CardTitle className="font-display text-2xl">{t('send_message')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="name">Full Name *</Label>
+                        <Label htmlFor="name">{t('full_name')} *</Label>
                         <Input
                           id="name"
                           value={formData.name}
@@ -74,7 +74,7 @@ const Contact = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="email">Email Address *</Label>
+                        <Label htmlFor="email">{t('email_address')} *</Label>
                         <Input
                           id="email"
                           type="email"
@@ -87,10 +87,10 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="inquiry-type">Inquiry Type</Label>
+                      <Label htmlFor="inquiry-type">{t('inquiry_type')}</Label>
                       <Select onValueChange={(value) => handleInputChange('inquiryType', value)}>
                         <SelectTrigger className="mt-2">
-                          <SelectValue placeholder="Select inquiry type" />
+                          <SelectValue placeholder={t('select_inquiry_type')} />
                         </SelectTrigger>
                         <SelectContent>
                           {inquiryTypes.map((type) => (
@@ -103,7 +103,7 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="subject">Subject *</Label>
+                      <Label htmlFor="subject">{t('subject')} *</Label>
                       <Input
                         id="subject"
                         value={formData.subject}
@@ -114,7 +114,7 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="message">Message *</Label>
+                      <Label htmlFor="message">{t('message')} *</Label>
                       <Textarea
                         id="message"
                         value={formData.message}
@@ -126,7 +126,7 @@ const Contact = () => {
 
                     <Button type="submit" className="w-full bg-primary hover:bg-primary-dark">
                       <Send className="w-4 h-4 mr-2" />
-                      Send Message
+                      {t('send_message_btn')}
                     </Button>
                   </form>
                 </CardContent>
@@ -138,13 +138,13 @@ const Contact = () => {
               {/* Contact Details */}
               <Card className="shadow-wave">
                 <CardHeader>
-                  <CardTitle className="font-display text-xl">Contact Information</CardTitle>
+                  <CardTitle className="font-display text-xl">{t('contact_information')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center">
                     <Mail className="w-5 h-5 mr-3 text-primary" />
                     <div>
-                      <p className="font-medium">Email</p>
+                      <p className="font-medium">{t('email')}</p>
                       <p className="text-sm text-muted-foreground">contact@surfaumaroc.com</p>
                     </div>
                   </div>
@@ -152,7 +152,7 @@ const Contact = () => {
                   <div className="flex items-center">
                     <Phone className="w-5 h-5 mr-3 text-primary" />
                     <div>
-                      <p className="font-medium">Phone</p>
+                      <p className="font-medium">{t('phone')}</p>
                       <p className="text-sm text-muted-foreground">+212 XXX-XXXX</p>
                     </div>
                   </div>
@@ -160,8 +160,8 @@ const Contact = () => {
                   <div className="flex items-center">
                     <MapPin className="w-5 h-5 mr-3 text-primary" />
                     <div>
-                      <p className="font-medium">Location</p>
-                      <p className="text-sm text-muted-foreground">Morocco</p>
+                      <p className="font-medium">{t('location')}</p>
+                      <p className="text-sm text-muted-foreground">Maroc</p>
                     </div>
                   </div>
                 </CardContent>
@@ -170,22 +170,22 @@ const Contact = () => {
               {/* Quick Actions */}
               <Card className="shadow-wave">
                 <CardHeader>
-                  <CardTitle className="font-display text-xl">Quick Actions</CardTitle>
+                  <CardTitle className="font-display text-xl">{t('quick_actions')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button variant="outline" className="w-full justify-start">
                     <Camera className="w-4 h-4 mr-2" />
-                    Camera Installation
+                    {t('camera_installation')}
                   </Button>
                   
                   <Button variant="outline" className="w-full justify-start">
                     <Heart className="w-4 h-4 mr-2" />
-                    Sponsorship Packages
+                    {t('sponsorship_packages')}
                   </Button>
                   
                   <Button variant="outline" className="w-full justify-start">
                     <Globe className="w-4 h-4 mr-2" />
-                    Partnership Opportunities
+                    {t('partnership_opportunities')}
                   </Button>
                 </CardContent>
               </Card>
@@ -194,15 +194,15 @@ const Contact = () => {
               <Card className="bg-gradient-ocean text-white shadow-ocean">
                 <CardContent className="p-6 text-center">
                   <h3 className="font-display text-xl font-bold mb-2">
-                    Fast Response
+                    {t('fast_response')}
                   </h3>
                   <p className="text-white/90 mb-4">
-                    We typically respond to all inquiries within 24 hours during business days.
+                    {t('response_time_desc')}
                   </p>
                   <div className="bg-white/10 rounded-lg p-3">
                     <p className="text-sm">
-                      <strong>Business Hours:</strong><br />
-                      Monday - Friday: 9:00 AM - 6:00 PM (GMT)
+                      <strong>{t('business_hours')}</strong><br />
+                      {t('business_hours_time')}
                     </p>
                   </div>
                 </CardContent>
@@ -213,42 +213,42 @@ const Contact = () => {
           {/* FAQ Section */}
           <div className="mt-16">
             <h2 className="font-display text-3xl font-bold text-center text-foreground mb-8">
-              Frequently Asked Questions
+              {t('faq')}
             </h2>
             
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="shadow-wave">
                 <CardContent className="p-6">
-                  <h3 className="font-bold mb-2">How can I sponsor a surf spot?</h3>
+                  <h3 className="font-bold mb-2">{t('faq_sponsor_q')}</h3>
                   <p className="text-muted-foreground text-sm">
-                    Visit our sponsorship page to view available packages, or contact us directly for custom sponsorship opportunities.
+                    {t('faq_sponsor_a')}
                   </p>
                 </CardContent>
               </Card>
               
               <Card className="shadow-wave">
                 <CardContent className="p-6">
-                  <h3 className="font-bold mb-2">Can I host a camera at my location?</h3>
+                  <h3 className="font-bold mb-2">{t('faq_camera_q')}</h3>
                   <p className="text-muted-foreground text-sm">
-                    Yes! We're always looking for new camera locations. Contact us to discuss technical requirements and partnership terms.
+                    {t('faq_camera_a')}
                   </p>
                 </CardContent>
               </Card>
               
               <Card className="shadow-wave">
                 <CardContent className="p-6">
-                  <h3 className="font-bold mb-2">How accurate are the weather forecasts?</h3>
+                  <h3 className="font-bold mb-2">{t('faq_forecast_q')}</h3>
                   <p className="text-muted-foreground text-sm">
-                    Our forecasts use data from Open-Meteo and are updated four times daily for maximum accuracy.
+                    {t('faq_forecast_a')}
                   </p>
                 </CardContent>
               </Card>
               
               <Card className="shadow-wave">
                 <CardContent className="p-6">
-                  <h3 className="font-bold mb-2">Is the live stream available 24/7?</h3>
+                  <h3 className="font-bold mb-2">{t('faq_stream_q')}</h3>
                   <p className="text-muted-foreground text-sm">
-                    Yes, our live cameras operate continuously. Occasional maintenance windows are announced in advance.
+                    {t('faq_stream_a')}
                   </p>
                 </CardContent>
               </Card>
