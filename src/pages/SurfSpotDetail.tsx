@@ -186,61 +186,8 @@ const SurfSpotDetail = () => {
 
             </div>
 
-            {/* Weather Data */}
+            {/* Right Sidebar */}
             <div className="space-y-6">
-              {/* Current Conditions */}
-              <Card className={`shadow-wave ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
-                <CardHeader>
-                  <CardTitle className={isSpecialSpot ? 'text-white' : ''}>{t('current_conditions')}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {loading ? (
-                    <div className="animate-pulse space-y-4">
-                      {Array.from({ length: 4 }, (_, i) => (
-                        <div key={i} className={`h-12 rounded ${isSpecialSpot ? 'bg-white/20' : 'bg-muted'}`}></div>
-                      ))}
-                    </div>
-                  ) : weatherData ? (
-                    <>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <Waves className="w-5 h-5 mr-2 text-primary" />
-                          <span>{t('wave_height')}</span>
-                        </div>
-                        <span className="font-semibold">{weatherData.waveHeight}m</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <Wind className="w-5 h-5 mr-2 text-secondary" />
-                          <span>{t('wind_speed')}</span>
-                        </div>
-                        <span className="font-semibold">{weatherData.windSpeed} km/h</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <Thermometer className="w-5 h-5 mr-2 text-coral" />
-                          <span>{t('water_temp')}</span>
-                        </div>
-                        <span className="font-semibold">{weatherData.waterTemp}°C</span>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <Moon className="w-5 h-5 mr-2 text-accent-dark" />
-                          <span>{t('moon_phase')}</span>
-                        </div>
-                        <span className="font-semibold">{weatherData.moonPhase}</span>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-muted-foreground">{t('unable_to_load_weather')}</p>
-                  )}
-                </CardContent>
-              </Card>
-
-
               {/* Spot Location Map - Small and on the right */}
               <Card className="shadow-wave">
                 <CardHeader>
