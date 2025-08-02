@@ -91,7 +91,7 @@ const SurfSpotDetail = () => {
   }
 
   // Special background video for specific spots
-  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach' || spot?.id === 'mohammedia' || spot?.id === 'mehdia' || spot?.id === 'dar-bouazza';
+  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach' || spot?.id === 'mohammedia' || spot?.id === 'mehdia' || spot?.id === 'dar-bouazza' || spot?.id === 'bouznika';
   
   // YouTube video IDs for each spot
   const getVideoId = (spotId: string) => {
@@ -108,6 +108,8 @@ const SurfSpotDetail = () => {
         return 'Mlgg9e6I8Co';
       case 'dar-bouazza':
         return '5lBVP-PIJvE';
+      case 'bouznika':
+        return 'qKHAi2RlH1Y';
       default:
         return null;
     }
@@ -192,13 +194,15 @@ const SurfSpotDetail = () => {
                               ? 'Caméra live bientôt disponible pour Mehdia - Restez connectés!'
                               : isSpecialSpot && spot.id === 'dar-bouazza'
                               ? 'Caméra live bientôt disponible pour Dar Bouazza - Restez connectés!'
+                              : isSpecialSpot && spot.id === 'bouznika'
+                              ? 'Caméra live bientôt disponible pour Bouznika - Restez connectés!'
                               : t('camera_installation_planned')
                             }
                           </p>
                           {isSpecialSpot && (
                             <div className="mt-4">
                               <Badge className="bg-coral text-white px-4 py-2">
-                                🎥 Coming Soon to {spot.id === 'safi' ? 'Safi' : spot.id === 'imesouane' ? 'Imesouane' : spot.id === 'rabat-beach' ? 'Rabat Beach' : spot.id === 'mohammedia' ? 'Mohammedia' : spot.id === 'mehdia' ? 'Mehdia' : 'Dar Bouazza'}
+                                🎥 Coming Soon to {spot.id === 'safi' ? 'Safi' : spot.id === 'imesouane' ? 'Imesouane' : spot.id === 'rabat-beach' ? 'Rabat Beach' : spot.id === 'mohammedia' ? 'Mohammedia' : spot.id === 'mehdia' ? 'Mehdia' : spot.id === 'dar-bouazza' ? 'Dar Bouazza' : 'Bouznika'}
                               </Badge>
                             </div>
                           )}
