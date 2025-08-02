@@ -104,7 +104,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'larache',
     name: 'Larache',
     nameKey: 'larache',
-    coordinates: [35.1929, -6.1556],
+    coordinates: [35.205304, -6.152181],
     hasLiveStream: false,
     city: 'Larache',
     region: 'Tanger-Tétouan-Al Hoceïma',
