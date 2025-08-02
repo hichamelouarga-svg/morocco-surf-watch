@@ -90,6 +90,8 @@ const SurfSpotDetail = () => {
 
   // Special background video for specific spots
   const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane';
+  
+  console.log('Current spot:', spot?.id, 'isSpecialSpot:', isSpecialSpot);
 
   return (
     <div className="min-h-screen bg-background relative">
