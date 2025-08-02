@@ -21,10 +21,12 @@ const Index = () => {
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover z-0"
           onLoadStart={() => console.log('Video loading started')}
           onCanPlay={() => console.log('Video can play')}
           onError={(e) => {
+            console.error('Home page video failed to load:', e.currentTarget.error);
             console.log('Video failed to load, showing fallback background');
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;
             if (fallback) fallback.style.display = 'block';
@@ -32,6 +34,7 @@ const Index = () => {
           }}
         >
           <source src="/videos/surf-background.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
         </video>
         
         {/* Fallback Background Image - hidden by default */}

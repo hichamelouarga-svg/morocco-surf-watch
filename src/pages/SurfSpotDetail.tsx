@@ -101,13 +101,22 @@ const SurfSpotDetail = () => {
             muted
             loop
             playsInline
+            preload="auto"
             className="fixed inset-0 w-full h-full object-cover z-0"
             style={{ zIndex: -1 }}
+            onLoadStart={() => console.log('Background video loading started for', spot?.id)}
+            onCanPlay={() => console.log('Background video can play for', spot?.id)}
+            onError={(e) => {
+              console.error('Background video failed to load for', spot?.id, e);
+              // Hide video on error
+              e.currentTarget.style.display = 'none';
+            }}
           >
             <source 
               src={spot?.id === 'safi' ? "/videos/safi-surf-background.mp4" : "/videos/imesouane-surf-background.mp4"} 
               type="video/mp4" 
             />
+            Your browser does not support the video tag.
           </video>
           {/* Overlay for readability */}
           <div className="fixed inset-0 bg-black/30 z-0" style={{ zIndex: -1 }}></div>
