@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Loader } from '@googlemaps/js-api-loader';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { surfSpots } from '@/data/surfSpots';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -11,68 +12,81 @@ import { Camera, MapPin, Waves } from 'lucide-react';
 export const SurfSpotMap = () => {
   const { t } = useTranslation();
   const mapRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [map, setMap] = useState<mapboxgl.Map | null>(null);
   const [selectedSpot, setSelectedSpot] = useState<typeof surfSpots[0] | null>(null);
 
   useEffect(() => {
     const initializeMap = async () => {
-      // Get API key from environment (Supabase secrets)
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      // Get Mapbox token from environment (Supabase secrets)
+      const mapboxToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
       
-      if (!apiKey) {
-        console.error('Google Maps API key not found. Please add VITE_GOOGLE_MAPS_API_KEY to your Supabase secrets.');
+      if (!mapboxToken) {
+        console.error('Mapbox public token not found. Please add VITE_MAPBOX_PUBLIC_TOKEN to your Supabase secrets.');
         return;
       }
 
-      const loader = new Loader({
-        apiKey,
-        version: 'weekly',
-      });
+      if (!mapRef.current) return;
 
       try {
-        const { Map } = await loader.importLibrary('maps');
-        const { AdvancedMarkerElement } = await loader.importLibrary('marker');
+        // Set Mapbox access token
+        mapboxgl.accessToken = mapboxToken;
 
-        if (!mapRef.current) return;
-
-        const map = new Map(mapRef.current, {
-          center: { lat: 33.0, lng: -7.0 }, // Center on Morocco
+        // Initialize map with ocean-themed styling
+        const map = new mapboxgl.Map({
+          container: mapRef.current,
+          style: 'mapbox://styles/mapbox/light-v11',
+          center: [-7.0, 33.0], // Center on Morocco [lng, lat]
           zoom: 6,
-          mapId: 'surf-spots-map',
-          styles: [
-            {
-              featureType: 'water',
-              elementType: 'geometry',
-              stylers: [{ color: '#a2f2ff' }]
-            },
-            {
-              featureType: 'landscape',
-              elementType: 'geometry',
-              stylers: [{ color: '#f5e6d3' }]
-            }
-          ]
+        });
+
+        // Add navigation controls
+        map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+        // Wait for map to load before adding markers
+        map.on('load', () => {
+          // Add markers for each surf spot
+          surfSpots.forEach((spot) => {
+            // Create marker element
+            const markerEl = document.createElement('div');
+            markerEl.className = 'surf-spot-marker';
+            markerEl.style.cssText = `
+              width: 30px;
+              height: 30px;
+              background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-variant)));
+              border: 2px solid white;
+              border-radius: 50%;
+              cursor: pointer;
+              box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: bold;
+              font-size: 12px;
+            `;
+            markerEl.innerHTML = spot.hasLiveStream ? '🌊' : '📍';
+
+            // Create marker and add to map
+            const marker = new mapboxgl.Marker(markerEl)
+              .setLngLat([spot.coordinates[1], spot.coordinates[0]]) // [lng, lat]
+              .addTo(map);
+
+            // Add click event
+            markerEl.addEventListener('click', () => {
+              setSelectedSpot(spot);
+              map.flyTo({
+                center: [spot.coordinates[1], spot.coordinates[0]],
+                zoom: 10,
+                duration: 1000
+              });
+            });
+          });
         });
 
         setMap(map);
 
-        // Add markers for each surf spot
-        surfSpots.forEach((spot) => {
-          const marker = new AdvancedMarkerElement({
-            map,
-            position: { lat: spot.coordinates[0], lng: spot.coordinates[1] },
-            title: t(spot.nameKey),
-          });
-
-          marker.addListener('click', () => {
-            setSelectedSpot(spot);
-            map.panTo({ lat: spot.coordinates[0], lng: spot.coordinates[1] });
-            map.setZoom(10);
-          });
-        });
-
       } catch (error) {
-        console.error('Error loading Google Maps:', error);
-        // Fallback: show a placeholder message
+        console.error('Error loading Mapbox:', error);
       }
     };
 
@@ -97,23 +111,25 @@ export const SurfSpotMap = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-ocean bg-muted">
               <div ref={mapRef} className="w-full h-[600px]" />
               
-              {/* Temporary message until Google Maps API key is added */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-ocean text-white">
-                <div className="text-center p-8">
-                  <MapPin className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <h3 className="font-display text-2xl font-bold mb-4">Interactive Map</h3>
-                  <p className="text-white/80 mb-4">
-                    Add your Google Maps API key to enable the interactive map
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
-                    {surfSpots.slice(0, 6).map(spot => (
-                      <div key={spot.id} className="bg-white/10 rounded px-2 py-1">
-                        {t(spot.nameKey)}
-                      </div>
-                    ))}
+              {/* Temporary message until Mapbox token is added */}
+              {!import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-ocean text-white">
+                  <div className="text-center p-8">
+                    <MapPin className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <h3 className="font-display text-2xl font-bold mb-4">Interactive Map</h3>
+                    <p className="text-white/80 mb-4">
+                      Add your Mapbox public token to enable the interactive map
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                      {surfSpots.slice(0, 6).map(spot => (
+                        <div key={spot.id} className="bg-white/10 rounded px-2 py-1">
+                          {t(spot.nameKey)}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
