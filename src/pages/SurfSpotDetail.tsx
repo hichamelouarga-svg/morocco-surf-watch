@@ -9,6 +9,7 @@ import { SurfConditionsService, RealSurfCondition } from '@/services/surfConditi
 import { surfConditionsData } from '@/data/surfConditionsData';
 import { Camera, Waves, Wind, Thermometer, Moon, Sun, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { YouTubeBackground } from '@/components/YouTubeBackground';
 import axios from 'axios';
 
 interface WeatherData {
@@ -91,38 +92,25 @@ const SurfSpotDetail = () => {
   // Special background video for specific spots
   const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane';
   
-  console.log('Current spot:', spot?.id, 'isSpecialSpot:', isSpecialSpot);
+  // YouTube video IDs for each spot
+  const getVideoId = (spotId: string) => {
+    switch (spotId) {
+      case 'safi':
+        return 'JkKBgJl9Y7c';
+      case 'imesouane':
+        return 'iCPZ2x-Wxig';
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background relative">
-      {isSpecialSpot && (
-        <>
-          {/* Background Video for special spots */}
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="fixed inset-0 w-full h-full object-cover z-0"
-            style={{ zIndex: -1 }}
-            onLoadStart={() => console.log('Background video loading started for', spot?.id)}
-            onCanPlay={() => console.log('Background video can play for', spot?.id)}
-            onError={(e) => {
-              console.error('Background video failed to load for', spot?.id, e);
-              // Hide video on error
-              e.currentTarget.style.display = 'none';
-            }}
-          >
-            <source 
-              src={spot?.id === 'safi' ? "/videos/safi-surf-background.mp4" : "/videos/imesouane-surf-background.mp4"} 
-              type="video/mp4" 
-            />
-            Your browser does not support the video tag.
-          </video>
-          {/* Overlay for readability */}
-          <div className="fixed inset-0 bg-black/30 z-0" style={{ zIndex: -1 }}></div>
-        </>
+      {isSpecialSpot && spot?.id && (
+        <YouTubeBackground 
+          videoId={getVideoId(spot.id) || ''} 
+          className="fixed inset-0 z-0" 
+        />
       )}
       
       <Navigation />

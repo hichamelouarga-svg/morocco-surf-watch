@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Camera, Waves, Users, TrendingUp } from 'lucide-react';
+import { YouTubeBackground } from '@/components/YouTubeBackground';
 
 const Index = () => {
   const { t } = useTranslation();
@@ -15,39 +16,11 @@ const Index = () => {
       
       {/* Video Background Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Video */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          onLoadStart={() => console.log('Video loading started')}
-          onCanPlay={() => console.log('Video can play')}
-          onError={(e) => {
-            console.error('Home page video failed to load:', e.currentTarget.error);
-            console.log('Video failed to load, showing fallback background');
-            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-            if (fallback) fallback.style.display = 'block';
-            e.currentTarget.style.display = 'none';
-          }}
-        >
-          <source src="/videos/surf-background.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        
-        {/* Fallback Background Image - hidden by default */}
-        <div 
-          className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1502933691298-84fc14542831?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
-            display: 'none'
-          }}
-        ></div>
-        
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/40 z-10"></div>
+        {/* YouTube Background Video */}
+        <YouTubeBackground 
+          videoId="Pq7jVrmRLWI" 
+          className="absolute inset-0 z-0" 
+        />
         
         {/* Hero Content */}
         <div className="relative z-20 text-center text-white px-4 animate-fade-in">
