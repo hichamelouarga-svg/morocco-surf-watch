@@ -183,5 +183,19 @@ export const surfSpots: SurfSpot[] = [
     skillLevel: 'intermediate',
     waveType: 'point break',
     crowdLevel: 'high'
+  },
+  {
+    id: 'sidi-ifni',
+    name: 'Sidi Ifni',
+    nameKey: 'sidi_ifni',
+    coordinates: [29.387104, -10.174070],
+    hasLiveStream: false,
+    city: 'Sidi Ifni',
+    region: 'Souss-Massa',
+    description: 'Coastal town with consistent waves and dramatic cliffs.',
+    bestSeasons: ['Autumn', 'Winter', 'Spring'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'low'
   }
 ];
