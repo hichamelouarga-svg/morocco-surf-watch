@@ -76,7 +76,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'bouznika',
     name: 'Bouznika',
     nameKey: 'bouznika',
-    coordinates: [33.7889, -7.1611],
+    coordinates: [33.825611, -7.150553],
     hasLiveStream: false,
     city: 'Bouznika',
     region: 'Casablanca-Settat',
