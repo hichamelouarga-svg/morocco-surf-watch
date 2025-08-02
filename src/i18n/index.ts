@@ -58,7 +58,12 @@ const resources = {
       // Live Streams
       "live_now": "En Direct",
       "coming_soon": "Bientôt Disponible",
-      "stream_unavailable": "Stream Indisponible"
+      "stream_unavailable": "Stream Indisponible",
+      
+      // 404 Page
+      "page_not_found": "Page non trouvée",
+      "page_not_found_message": "Oups ! La page que vous cherchez n'existe pas",
+      "return_home": "Retour à l'accueil"
     }
   },
   en: {
