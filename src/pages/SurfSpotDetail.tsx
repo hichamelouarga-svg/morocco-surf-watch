@@ -10,6 +10,7 @@ import { surfConditionsData } from '@/data/surfConditionsData';
 import { Camera, Waves, Wind, Thermometer, Moon, Sun, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { YouTubeBackground } from '@/components/YouTubeBackground';
+import SurfSpotLocationMap from '@/components/SurfSpotLocationMap';
 import axios from 'axios';
 
 interface WeatherData {
@@ -191,29 +192,22 @@ const SurfSpotDetail = () => {
                 </CardContent>
               </Card>
 
-              {/* 7-Day Forecast */}
+              {/* Surf Spot Location Map */}
               <Card className={`shadow-wave ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
                 <CardHeader>
                   <CardTitle className={`flex items-center ${isSpecialSpot ? 'text-white' : ''}`}>
                     <Waves className="w-5 h-5 mr-2" />
-                    {t('forecast_7_days')}
+                    Localisation du Spot
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-7 gap-2">
-                    {Array.from({ length: 7 }, (_, i) => (
-                      <div key={i} className={`text-center p-3 rounded-lg ${isSpecialSpot ? 'bg-white/20 backdrop-blur-sm' : 'bg-muted'}`}>
-                        <div className={`text-xs mb-1 ${isSpecialSpot ? 'text-white/80' : 'text-muted-foreground'}`}>
-                          {new Date(Date.now() + i * 24 * 60 * 60 * 1000).toLocaleDateString('en', { weekday: 'short' })}
-                        </div>
-                        <div className={`text-sm font-semibold mb-1 ${isSpecialSpot ? 'text-white' : ''}`}>
-                          {(1.2 + Math.random() * 1.8).toFixed(1)}m
-                        </div>
-                        <div className={`text-xs ${isSpecialSpot ? 'text-white/70' : 'text-muted-foreground'}`}>
-                          {Math.round(10 + Math.random() * 20)}km/h
-                        </div>
-                      </div>
-                    ))}
+                <CardContent className="p-0">
+                  <div className="h-80">
+                    <SurfSpotLocationMap
+                      latitude={spot.coordinates[0]}
+                      longitude={spot.coordinates[1]}
+                      spotName={spot.name}
+                      className="h-full"
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -273,29 +267,6 @@ const SurfSpotDetail = () => {
                 </CardContent>
               </Card>
 
-              {/* Daylight Hours */}
-              <Card className="shadow-wave">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Sun className="w-5 h-5 mr-2" />
-                    {t('daylight')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {weatherData && (
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{t('sunrise')}:</span>
-                        <span className="font-semibold">{weatherData.sunrise}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">{t('sunset')}:</span>
-                        <span className="font-semibold">{weatherData.sunset}</span>
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
 
               {/* Spot Info */}
               <Card className="shadow-wave">
