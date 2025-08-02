@@ -16,8 +16,16 @@ export const SurfSpotMap = () => {
 
   useEffect(() => {
     const initializeMap = async () => {
+      // Get API key from environment (Supabase secrets)
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      
+      if (!apiKey) {
+        console.error('Google Maps API key not found. Please add VITE_GOOGLE_MAPS_API_KEY to your Supabase secrets.');
+        return;
+      }
+
       const loader = new Loader({
-        apiKey: 'YOUR_GOOGLE_MAPS_API_KEY', // User needs to provide this
+        apiKey,
         version: 'weekly',
       });
 
