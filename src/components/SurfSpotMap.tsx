@@ -17,11 +17,11 @@ export const SurfSpotMap = () => {
 
   useEffect(() => {
     const initializeMap = async () => {
-      // Get Mapbox token from environment (Supabase secrets)
-      const mapboxToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
+      // Mapbox public token (safe to store in code)
+      const mapboxToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN || 'pk.eyJ1Ijoic3VyZmF1bWFyb2MiLCJhIjoiY21kcWlid2llMDZibjJtcHp6NWx1Ynd3ZCJ9.kCWTEjWjMTkRWNJAqhNlVg';
       
       if (!mapboxToken) {
-        console.error('Mapbox public token not found. Please add VITE_MAPBOX_PUBLIC_TOKEN to your Supabase secrets.');
+        console.error('Mapbox public token not found.');
         return;
       }
 
@@ -111,25 +111,7 @@ export const SurfSpotMap = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-ocean bg-muted">
               <div ref={mapRef} className="w-full h-[600px]" />
               
-              {/* Temporary message until Mapbox token is added */}
-              {!import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-ocean text-white">
-                  <div className="text-center p-8">
-                    <MapPin className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <h3 className="font-display text-2xl font-bold mb-4">Interactive Map</h3>
-                    <p className="text-white/80 mb-4">
-                      Add your Mapbox public token to enable the interactive map
-                    </p>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
-                      {surfSpots.slice(0, 6).map(spot => (
-                        <div key={spot.id} className="bg-white/10 rounded px-2 py-1">
-                          {t(spot.nameKey)}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+              {/* Map will now load automatically */}
             </div>
           </div>
 
