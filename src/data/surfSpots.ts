@@ -160,7 +160,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'imsouane',
     name: 'Imsouane',
     nameKey: 'imsouane',
-    coordinates: [30.8500, -9.7500],
+    coordinates: [30.839529, -9.819274],
     hasLiveStream: false,
     city: 'Imsouane',
     region: 'Souss-Massa',
