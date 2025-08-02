@@ -107,7 +107,7 @@ const getMockForecast = (): ForecastDay[] => {
 const getSpotCoordinates = (spotId: string): { coordinates: [number, number] } | null => {
   const spots: Record<string, { coordinates: [number, number] }> = {
     'mehdia-beach': { coordinates: [34.2570, -6.6810] },
-    'rabat-beach': { coordinates: [34.034961, -6.837362] },
+    'rabat-beach': { coordinates: [34.0252, -6.8361] }, // More accurate Rabat Beach coordinates
     'mohammedia': { coordinates: [33.722732, -7.348247] },
     'dar-bouazza': { coordinates: [33.530570, -7.832972] },
     'bouznika': { coordinates: [33.825611, -7.150553] },
