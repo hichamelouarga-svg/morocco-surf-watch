@@ -91,7 +91,7 @@ const SurfSpotDetail = () => {
   }
 
   // Special background video for specific spots
-  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach' || spot?.id === 'mohammedia' || spot?.id === 'mehdia' || spot?.id === 'dar-bouazza' || spot?.id === 'bouznika' || spot?.id === 'plage-des-nations' || spot?.id === 'larache' || spot?.id === 'assilah' || spot?.id === 'moulay-bouselham' || spot?.id === 'taghazout' || spot?.id === 'sidi-ifni';
+  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach' || spot?.id === 'mohammedia' || spot?.id === 'mehdia' || spot?.id === 'dar-bouazza' || spot?.id === 'bouznika' || spot?.id === 'plage-des-nations' || spot?.id === 'larache' || spot?.id === 'assilah' || spot?.id === 'moulay-bouselham' || spot?.id === 'taghazout' || spot?.id === 'sidi-ifni' || spot?.id === 'tarfaya';
   
   // YouTube video IDs for each spot
   const getVideoId = (spotId: string) => {
@@ -122,6 +122,8 @@ const SurfSpotDetail = () => {
         return 'Cids8-vSxls';
       case 'sidi-ifni':
         return '77eKPQya2xY';
+      case 'tarfaya':
+        return 'g1Oclb7Y58w';
       default:
         return null;
     }
