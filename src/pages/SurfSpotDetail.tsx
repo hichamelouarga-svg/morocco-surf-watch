@@ -136,27 +136,6 @@ const SurfSpotDetail = () => {
             </p>
           </div>
 
-          {/* Surf Spot Location Map */}
-          <div className="mb-8">
-            <Card className={`shadow-wave ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
-              <CardHeader>
-                <CardTitle className={`flex items-center ${isSpecialSpot ? 'text-white' : ''}`}>
-                  <Waves className="w-5 h-5 mr-2" />
-                  Localisation - {spot.name}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="h-96">
-                  <SurfSpotLocationMap
-                    latitude={spot.coordinates[0]}
-                    longitude={spot.coordinates[1]}
-                    spotName={spot.name}
-                    className="h-full"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Live Stream */}
@@ -261,6 +240,26 @@ const SurfSpotDetail = () => {
                 </CardContent>
               </Card>
 
+
+              {/* Spot Location Map - Small and on the right */}
+              <Card className="shadow-wave">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-sm">
+                    <Waves className="w-4 h-4 mr-2" />
+                    Localisation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="h-48">
+                    <SurfSpotLocationMap
+                      latitude={spot.coordinates[0]}
+                      longitude={spot.coordinates[1]}
+                      spotName={spot.name}
+                      className="h-full"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Spot Info */}
               <Card className="shadow-wave">
