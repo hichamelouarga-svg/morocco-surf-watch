@@ -136,6 +136,15 @@ const SurfSpotDetail = () => {
             </p>
           </div>
 
+          {/* Current Surf Conditions */}
+          <div className="mb-8">
+            <SurfConditions 
+              spotName={spot.name} 
+              conditions={surfConditions || surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']}
+              transparent={isSpecialSpot}
+            />
+          </div>
+
 
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Live Stream */}
