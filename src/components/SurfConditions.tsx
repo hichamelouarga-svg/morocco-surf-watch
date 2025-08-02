@@ -96,13 +96,13 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, t
   };
 
   return (
-    <Card className={`w-full shadow-wave ${transparent ? 'bg-white/50 backdrop-blur-sm border-white/20' : ''}`}>
+    <Card className={`w-full shadow-wave ${transparent ? 'bg-white/50 backdrop-blur-sm border-white/20 text-black' : ''}`}>
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="font-display text-xl">
+          <CardTitle className={`font-display text-xl ${transparent ? 'text-black' : ''}`}>
             Conditions actuelles - {spotName}
           </CardTitle>
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="outline" className={`text-xs ${transparent ? 'text-black border-black' : ''}`}>
             Dernière MAJ: {conditions.lastUpdated}
           </Badge>
         </div>
@@ -112,66 +112,66 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, t
         {/* Rating Section */}
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-sm text-muted-foreground mb-1">NOTE CONDITION</div>
+            <div className={`text-sm mb-1 ${transparent ? 'text-black' : 'text-muted-foreground'}`}>NOTE CONDITION</div>
             <div className={`text-lg font-bold ${getRatingColor(conditions.rating)}`}>
               {conditions.rating}
             </div>
             <Progress value={conditions.ratingValue} className="w-24 h-2 mt-1" />
           </div>
           <div className="text-right">
-            <div className="text-xs text-muted-foreground">📊 {conditions.forecast} Prévision</div>
+            <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>📊 {conditions.forecast} Prévision</div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
           {/* Surf Height */}
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">HAUTEUR SURF</div>
-            <div className="text-2xl font-bold text-foreground">
+            <div className={`text-sm ${transparent ? 'text-black' : 'text-muted-foreground'}`}>HAUTEUR SURF</div>
+            <div className={`text-2xl font-bold ${transparent ? 'text-black' : 'text-foreground'}`}>
               {conditions.surfHeight.min}-{conditions.surfHeight.max}m
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
               {conditions.surfHeight.description}
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
               📊 LOTUS Prévision
             </div>
           </div>
 
           {/* Swell */}
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">HOULE</div>
+            <div className={`text-sm ${transparent ? 'text-black' : 'text-muted-foreground'}`}>HOULE</div>
             {conditions.swell.map((swell, index) => (
               <div key={index} className="text-sm">
-                <div className="font-semibold">
+                <div className={`font-semibold ${transparent ? 'text-black' : ''}`}>
                   {swell.height}m {swell.period}s {swell.direction} {swell.angle}°
                 </div>
               </div>
             ))}
-            <div className="text-xs text-muted-foreground">
+            <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
               📊 LOTUS Prévision
             </div>
           </div>
 
           {/* Wind */}
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">VENT</div>
-            <div className="text-lg font-bold">
+            <div className={`text-sm ${transparent ? 'text-black' : 'text-muted-foreground'}`}>VENT</div>
+            <div className={`text-lg font-bold ${transparent ? 'text-black' : ''}`}>
               {conditions.wind.speed}kts {conditions.wind.direction}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className={`text-sm ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
               {conditions.wind.gusts}kts rafales, {conditions.wind.type}
             </div>
             <WindCompass direction={conditions.wind.direction} angle={0} />
-            <div className="text-xs text-muted-foreground">
+            <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
               📊 Modèle Prévision
             </div>
           </div>
 
           {/* Tide */}
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">MARÉE</div>
-            <div className="text-lg font-bold flex items-center">
+            <div className={`text-sm ${transparent ? 'text-black' : 'text-muted-foreground'}`}>MARÉE</div>
+            <div className={`text-lg font-bold flex items-center ${transparent ? 'text-black' : ''}`}>
               {conditions.tide.current}m
               <span className="ml-1">
                 {conditions.tide.trend === 'rising' ? '▲' : '▼'}
@@ -184,7 +184,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, t
                     dataKey="time" 
                     axisLine={false}
                     tickLine={false}
-                    tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                    tick={{ fontSize: 10, fill: transparent ? '#000000' : 'hsl(var(--muted-foreground))' }}
                   />
                   <YAxis hide />
                   <Line 
@@ -197,19 +197,19 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, t
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
               Prochaine: {conditions.tide.nextChange}
             </div>
           </div>
 
           {/* Temperature */}
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground">TEMPÉRATURE</div>
+            <div className={`text-sm ${transparent ? 'text-black' : 'text-muted-foreground'}`}>TEMPÉRATURE</div>
             <div className="flex items-center space-x-2">
-              <span className="text-lg font-bold">☀️ {conditions.temperature.air}°C</span>
-              <span className="text-lg font-bold">🌊 {conditions.temperature.water}°C</span>
+              <span className={`text-lg font-bold ${transparent ? 'text-black' : ''}`}>☀️ {conditions.temperature.air}°C</span>
+              <span className={`text-lg font-bold ${transparent ? 'text-black' : ''}`}>🌊 {conditions.temperature.water}°C</span>
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className={`text-xs ${transparent ? 'text-black' : 'text-muted-foreground'}`}>
               {conditions.temperature.wetsuit}
             </div>
             <Badge className="bg-yellow-500 text-yellow-900 text-xs">
