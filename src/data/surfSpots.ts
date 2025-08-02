@@ -1,0 +1,187 @@
+export interface SurfSpot {
+  id: string;
+  name: string;
+  nameKey: string;
+  coordinates: [number, number]; // [latitude, longitude]
+  hasLiveStream: boolean;
+  streamUrl?: string;
+  city: string;
+  region: string;
+  description: string;
+  bestSeasons: string[];
+  skillLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  waveType: 'beach break' | 'point break' | 'reef break';
+  crowdLevel: 'low' | 'medium' | 'high';
+}
+
+export const surfSpots: SurfSpot[] = [
+  {
+    id: 'mehdia-beach',
+    name: 'Mehdia Beach',
+    nameKey: 'mehdia_beach',
+    coordinates: [34.2570, -6.6810],
+    hasLiveStream: true,
+    streamUrl: 'https://player.castr.com/live_6c77f3a06bf711f0a9fddf5a54be1b73',
+    city: 'Kenitra',
+    region: 'Rabat-Salé-Kénitra',
+    description: 'A beautiful beach break perfect for beginners and intermediate surfers.',
+    bestSeasons: ['Autumn', 'Winter', 'Spring'],
+    skillLevel: 'beginner',
+    waveType: 'beach break',
+    crowdLevel: 'medium'
+  },
+  {
+    id: 'rabat-beach',
+    name: 'Rabat Beach',
+    nameKey: 'rabat_beach',
+    coordinates: [34.0209, -6.8326],
+    hasLiveStream: false,
+    city: 'Rabat',
+    region: 'Rabat-Salé-Kénitra',
+    description: 'Capital city beach with consistent waves and easy access.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'high'
+  },
+  {
+    id: 'mohammedia',
+    name: 'Mohammedia',
+    nameKey: 'mohammedia',
+    coordinates: [33.6862, -7.3927],
+    hasLiveStream: false,
+    city: 'Mohammedia',
+    region: 'Casablanca-Settat',
+    description: 'Popular surf spot near Casablanca with good waves.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'medium'
+  },
+  {
+    id: 'dar-bouazza',
+    name: 'Dar Bouazza',
+    nameKey: 'dar_bouazza',
+    coordinates: [33.5136, -7.7315],
+    hasLiveStream: false,
+    city: 'Casablanca',
+    region: 'Casablanca-Settat',
+    description: 'Casablanca area beach break with powerful waves.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'medium'
+  },
+  {
+    id: 'bouznika',
+    name: 'Bouznika',
+    nameKey: 'bouznika',
+    coordinates: [33.7889, -7.1611],
+    hasLiveStream: false,
+    city: 'Bouznika',
+    region: 'Casablanca-Settat',
+    description: 'Scenic coastal town with reliable surf conditions.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'beginner',
+    waveType: 'beach break',
+    crowdLevel: 'low'
+  },
+  {
+    id: 'plage-des-nations',
+    name: 'Plage des Nations',
+    nameKey: 'plage_des_nations',
+    coordinates: [33.9500, -6.8667],
+    hasLiveStream: false,
+    city: 'Salé',
+    region: 'Rabat-Salé-Kénitra',
+    description: 'Popular beach near Rabat with consistent waves.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'high'
+  },
+  {
+    id: 'larache',
+    name: 'Larache',
+    nameKey: 'larache',
+    coordinates: [35.1929, -6.1556],
+    hasLiveStream: false,
+    city: 'Larache',
+    region: 'Tanger-Tétouan-Al Hoceïma',
+    description: 'Northern Morocco surf spot with Atlantic swells.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'low'
+  },
+  {
+    id: 'assilah',
+    name: 'Assilah',
+    nameKey: 'assilah',
+    coordinates: [35.4669, -6.0341],
+    hasLiveStream: false,
+    city: 'Assilah',
+    region: 'Tanger-Tétouan-Al Hoceïma',
+    description: 'Historic coastal town with beautiful surf breaks.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'medium'
+  },
+  {
+    id: 'moulay-bouselham',
+    name: 'Moulay Bouselham',
+    nameKey: 'moulay_bouselham',
+    coordinates: [34.5333, -6.3000],
+    hasLiveStream: false,
+    city: 'Moulay Bouselham',
+    region: 'Rabat-Salé-Kénitra',
+    description: 'Lagoon area with unique surf conditions and wildlife.',
+    bestSeasons: ['Autumn', 'Winter'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'low'
+  },
+  {
+    id: 'safi',
+    name: 'Safi',
+    nameKey: 'safi',
+    coordinates: [32.2994, -9.2372],
+    hasLiveStream: false,
+    city: 'Safi',
+    region: 'Marrakech-Safi',
+    description: 'Southern coastal city with powerful waves.',
+    bestSeasons: ['Autumn', 'Winter', 'Spring'],
+    skillLevel: 'advanced',
+    waveType: 'point break',
+    crowdLevel: 'medium'
+  },
+  {
+    id: 'imsouane',
+    name: 'Imsouane',
+    nameKey: 'imsouane',
+    coordinates: [30.8500, -9.7500],
+    hasLiveStream: false,
+    city: 'Imsouane',
+    region: 'Souss-Massa',
+    description: 'Famous right-hand point break, paradise for longboarders.',
+    bestSeasons: ['Autumn', 'Winter', 'Spring'],
+    skillLevel: 'intermediate',
+    waveType: 'point break',
+    crowdLevel: 'high'
+  },
+  {
+    id: 'taghazout',
+    name: 'Taghazout',
+    nameKey: 'taghazout',
+    coordinates: [30.5394, -9.7067],
+    hasLiveStream: false,
+    city: 'Taghazout',
+    region: 'Souss-Massa',
+    description: 'World-famous surf village with multiple breaks.',
+    bestSeasons: ['Autumn', 'Winter', 'Spring'],
+    skillLevel: 'intermediate',
+    waveType: 'point break',
+    crowdLevel: 'high'
+  }
+];
