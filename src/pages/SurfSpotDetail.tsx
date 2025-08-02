@@ -205,25 +205,6 @@ const SurfSpotDetail = () => {
                 </CardContent>
               </Card>
 
-              {/* Surf Spot Location Map */}
-              <Card className={`shadow-wave ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
-                <CardHeader>
-                  <CardTitle className={`flex items-center ${isSpecialSpot ? 'text-white' : ''}`}>
-                    <Waves className="w-5 h-5 mr-2" />
-                    Localisation du Spot
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="h-80">
-                    <SurfSpotLocationMap
-                      latitude={spot.coordinates[0]}
-                      longitude={spot.coordinates[1]}
-                      spotName={spot.name}
-                      className="h-full"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
             {/* Weather Data */}
