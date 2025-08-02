@@ -11,21 +11,26 @@ import surfWaves from '@/assets/surf-waves.jpg';
 const News = () => {
   const { t } = useTranslation();
   const [rssArticles, setRssArticles] = useState<RSSItem[]>([]);
+  const [originalSurfArticles, setOriginalSurfArticles] = useState<RSSItem[]>([]);
   const [isLoadingRss, setIsLoadingRss] = useState(true);
 
   useEffect(() => {
-    const fetchRSSFeed = async () => {
+    const fetchRSSFeeds = async () => {
       try {
-        const articles = await RSSService.fetchRSSFeed('https://www.fedesurfmaroc.com/feed/');
-        setRssArticles(articles);
+        const [federationArticles, originalSurfArticles] = await Promise.all([
+          RSSService.fetchRSSFeed('https://www.fedesurfmaroc.com/feed/'),
+          RSSService.fetchRSSFeed('https://www.originalsurfmorocco.com/feed/')
+        ]);
+        setRssArticles(federationArticles);
+        setOriginalSurfArticles(originalSurfArticles);
       } catch (error) {
-        console.error('Failed to fetch RSS feed:', error);
+        console.error('Failed to fetch RSS feeds:', error);
       } finally {
         setIsLoadingRss(false);
       }
     };
 
-    fetchRSSFeed();
+    fetchRSSFeeds();
   }, []);
 
   const newsArticles = [
@@ -91,6 +96,65 @@ const News = () => {
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
                         <Badge variant="outline">Fédération</Badge>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {RSSService.formatDate(article.pubDate)}
+                        </div>
+                      </div>
+                      
+                      <CardTitle className="font-display text-xl leading-tight line-clamp-2">
+                        {article.title}
+                      </CardTitle>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      <p className="text-muted-foreground mb-4 line-clamp-3">
+                        {article.description}
+                      </p>
+                      
+                      <div className="flex items-center justify-between">
+                        {article.author && (
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            <User className="w-4 h-4 mr-1" />
+                            {article.author}
+                          </div>
+                        )}
+                        
+                        <a 
+                          href={article.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-primary hover:text-primary-dark transition-colors"
+                        >
+                          Lire l'article
+                          <ExternalLink className="w-4 h-4 ml-1" />
+                        </a>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Original Surf Morocco */}
+          {originalSurfArticles.length > 0 && (
+            <div className="mb-12">
+              <h2 className="font-display text-2xl font-bold text-foreground mb-6">
+                Original Surf Morocco
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                {originalSurfArticles.map((article, index) => (
+                  <Card key={index} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden">
+                    <div className="aspect-video overflow-hidden bg-gradient-ocean">
+                      <div className="w-full h-full flex items-center justify-center text-white font-semibold">
+                        Original Surf Morocco
+                      </div>
+                    </div>
+                    
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="outline">Original Surf</Badge>
                         <div className="flex items-center text-sm text-muted-foreground">
                           <Calendar className="w-4 h-4 mr-1" />
                           {RSSService.formatDate(article.pubDate)}
