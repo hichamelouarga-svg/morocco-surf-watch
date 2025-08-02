@@ -88,14 +88,14 @@ const SurfSpotDetail = () => {
     );
   }
 
-  // Special background video for Safi
-  const isSpecialSpot = spot?.id === 'safi';
+  // Special background video for specific spots
+  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane';
 
   return (
     <div className="min-h-screen bg-background relative">
       {isSpecialSpot && (
         <>
-          {/* Background Video for Safi */}
+          {/* Background Video for special spots */}
           <video
             autoPlay
             muted
@@ -104,7 +104,10 @@ const SurfSpotDetail = () => {
             className="fixed inset-0 w-full h-full object-cover z-0"
             style={{ zIndex: -1 }}
           >
-            <source src="/videos/safi-surf-background.mp4" type="video/mp4" />
+            <source 
+              src={spot?.id === 'safi' ? "/videos/safi-surf-background.mp4" : "/videos/imesouane-surf-background.mp4"} 
+              type="video/mp4" 
+            />
           </video>
           {/* Overlay for readability */}
           <div className="fixed inset-0 bg-black/30 z-0" style={{ zIndex: -1 }}></div>
@@ -169,13 +172,15 @@ const SurfSpotDetail = () => {
                           <p className="text-sm opacity-75">
                             {isSpecialSpot && spot.id === 'safi' 
                               ? 'Caméra live bientôt disponible pour Safi - Restez connectés!'
+                              : isSpecialSpot && spot.id === 'imesouane'
+                              ? 'Caméra live bientôt disponible pour Imesouane - Restez connectés!'
                               : t('camera_installation_planned')
                             }
                           </p>
                           {isSpecialSpot && (
                             <div className="mt-4">
                               <Badge className="bg-coral text-white px-4 py-2">
-                                🎥 Coming Soon to Safi
+                                🎥 Coming Soon to {spot.id === 'safi' ? 'Safi' : 'Imesouane'}
                               </Badge>
                             </div>
                           )}
