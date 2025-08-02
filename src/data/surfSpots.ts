@@ -211,5 +211,19 @@ export const surfSpots: SurfSpot[] = [
     skillLevel: 'intermediate',
     waveType: 'beach break',
     crowdLevel: 'low'
+  },
+  {
+    id: 'dakhla',
+    name: 'Dakhla',
+    nameKey: 'Dakhla',
+    coordinates: [23.767069, -15.925064],
+    hasLiveStream: false,
+    city: 'Dakhla',
+    region: 'Dakhla-Oued Ed-Dahab',
+    description: 'Southern Morocco\'s premier surf destination with world-class waves.',
+    bestSeasons: ['Autumn', 'Winter', 'Spring'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'low'
   }
 ];
