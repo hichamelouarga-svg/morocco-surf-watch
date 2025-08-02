@@ -38,7 +38,7 @@ const Index = () => {
               <div className="text-sm text-white/80">{t('surf_spots')}</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              <div className="text-3xl font-bold text-coral mb-1">4</div>
+              <div className="text-3xl font-bold text-coral mb-1">1</div>
               <div className="text-sm text-white/80">{t('live_cameras')}</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">

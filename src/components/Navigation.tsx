@@ -3,11 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { LanguageSelector } from './LanguageSelector';
-import { Menu, X, Waves } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { Menu, X, Waves, Sun, Moon } from 'lucide-react';
 
 export const Navigation = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -43,11 +45,32 @@ export const Navigation = () => {
                 {t(item.key)}
               </Link>
             ))}
+            
+            {/* Dark Mode Toggle */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="text-white hover:bg-white/20 p-2"
+            >
+              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </Button>
+            
             <LanguageSelector />
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Dark Mode Toggle for Mobile */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="text-white hover:bg-white/20 p-2"
+            >
+              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </Button>
+            
             <LanguageSelector />
             <Button
               variant="ghost"
