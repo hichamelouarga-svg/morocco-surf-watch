@@ -98,10 +98,10 @@ export const SurfSpotMap = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Interactive Surf Spots Map
+            {t('surf_spots')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Click on any marker to explore surf spots across Morocco
+            {t('click_marker_explore')}
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export const SurfSpotMap = () => {
                     {selectedSpot.hasLiveStream && (
                       <Badge className="bg-coral text-white">
                         <Camera className="w-3 h-3 mr-1" />
-                        Live
+                        {t('live_now')}
                       </Badge>
                     )}
                   </div>
@@ -144,7 +144,7 @@ export const SurfSpotMap = () => {
                   <Button asChild className="w-full bg-primary hover:bg-primary-dark">
                     <Link to={`/surf-spot/${selectedSpot.id}`}>
                       <Waves className="w-4 h-4 mr-2" />
-                      View Details
+                      Voir les Détails
                     </Link>
                   </Button>
                 </CardContent>
@@ -153,9 +153,9 @@ export const SurfSpotMap = () => {
               <Card className="shadow-wave">
                 <CardContent className="p-6 text-center">
                   <MapPin className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="font-display text-xl font-bold mb-2">Select a Surf Spot</h3>
+                  <h3 className="font-display text-xl font-bold mb-2">{t('select_surf_spot')}</h3>
                   <p className="text-muted-foreground">
-                    Click on any marker on the map to see details about that surf spot
+                    {t('click_marker_details')}
                   </p>
                 </CardContent>
               </Card>
@@ -164,20 +164,20 @@ export const SurfSpotMap = () => {
             {/* Quick Stats */}
             <Card className="shadow-wave">
               <CardContent className="p-6">
-                <h4 className="font-display text-lg font-bold mb-4">Quick Stats</h4>
+                <h4 className="font-display text-lg font-bold mb-4">{t('quick_stats')}</h4>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Total Spots:</span>
+                    <span className="text-muted-foreground">{t('total_spots')}</span>
                     <span className="font-semibold">{surfSpots.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Live Cameras:</span>
+                    <span className="text-muted-foreground">{t('live_cameras')}</span>
                     <span className="font-semibold">
                       {surfSpots.filter(s => s.hasLiveStream).length}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Coming Soon:</span>
+                    <span className="text-muted-foreground">{t('coming_soon_count')}</span>
                     <span className="font-semibold">
                       {surfSpots.filter(s => !s.hasLiveStream).length}
                     </span>

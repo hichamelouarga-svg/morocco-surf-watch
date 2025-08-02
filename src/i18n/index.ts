@@ -63,7 +63,16 @@ const resources = {
       // 404 Page
       "page_not_found": "Page non trouvée",
       "page_not_found_message": "Oups ! La page que vous cherchez n'existe pas",
-      "return_home": "Retour à l'accueil"
+      "return_home": "Retour à l'accueil",
+      
+      // Map Interface
+      "click_marker_explore": "Cliquez sur un marqueur pour explorer les spots de surf du Maroc",
+      "select_surf_spot": "Sélectionner un Spot de Surf",
+      "click_marker_details": "Cliquez sur un marqueur sur la carte pour voir les détails de ce spot de surf",
+      "quick_stats": "Statistiques Rapides",
+      "total_spots": "Total des Spots :",
+      "live_cameras": "Caméras Live :",
+      "coming_soon_count": "Bientôt Disponible :"
     }
   },
   en: {
