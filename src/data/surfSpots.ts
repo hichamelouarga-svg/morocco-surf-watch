@@ -34,7 +34,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'rabat-beach',
     name: 'Rabat Beach',
     nameKey: 'rabat_beach',
-    coordinates: [34.0209, -6.8326],
+    coordinates: [34.034961, -6.837362],
     hasLiveStream: false,
     city: 'Rabat',
     region: 'Rabat-Salé-Kénitra',
