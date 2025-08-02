@@ -146,7 +146,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'safi',
     name: 'Safi',
     nameKey: 'safi',
-    coordinates: [32.2994, -9.2372],
+    coordinates: [32.320099, -9.259436],
     hasLiveStream: false,
     city: 'Safi',
     region: 'Marrakech-Safi',
