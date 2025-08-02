@@ -136,13 +136,26 @@ const SurfSpotDetail = () => {
             </p>
           </div>
 
-          {/* Surf Conditions */}
+          {/* Surf Spot Location Map */}
           <div className="mb-8">
-            <SurfConditions 
-              spotName={spot.name} 
-              conditions={surfConditions || surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']}
-              transparent={isSpecialSpot}
-            />
+            <Card className={`shadow-wave ${isSpecialSpot ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
+              <CardHeader>
+                <CardTitle className={`flex items-center ${isSpecialSpot ? 'text-white' : ''}`}>
+                  <Waves className="w-5 h-5 mr-2" />
+                  Localisation - {spot.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="h-96">
+                  <SurfSpotLocationMap
+                    latitude={spot.coordinates[0]}
+                    longitude={spot.coordinates[1]}
+                    spotName={spot.name}
+                    className="h-full"
+                  />
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
