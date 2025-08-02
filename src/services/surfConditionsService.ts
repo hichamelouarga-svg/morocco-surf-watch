@@ -42,15 +42,21 @@ export class SurfConditionsService {
   
   static async fetchRealTimeConditions(spotId: string): Promise<RealSurfCondition | null> {
     try {
-      // Fetch from Stormglass API directly for now (until Supabase functions are set up)
+      // Try to fetch from Supabase first
+      const supabaseData = await this.fetchFromSupabase(spotId);
+      if (supabaseData) {
+        return supabaseData;
+      }
+
+      // Fallback to OpenWeatherMap API
       const spot = this.getSpotCoordinates(spotId);
       if (!spot) return null;
       
       const [lat, lon] = spot.coordinates;
       
-      // For demo, we'll use Open-Meteo API (free, no key required)
+      // Use OpenWeatherMap API with your key
       const weatherResponse = await fetch(
-        `https://api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height,wave_direction,wave_period,wind_speed_10m,wind_direction_10m&hourly=wave_height,wind_speed_10m&daily=sunrise,sunset&timezone=auto`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`
       );
       
       if (!weatherResponse.ok) {
@@ -143,8 +149,98 @@ export class SurfConditionsService {
   }
   
   static async refreshConditions(): Promise<void> {
-    console.log('Refreshing conditions...');
-    // In production, this would call the Supabase Edge Function
+    try {
+      const response = await fetch('/functions/v1/fetch-weather-data', {
+        method: 'POST'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to refresh conditions');
+      }
+      
+      console.log('Conditions refreshed successfully');
+    } catch (error) {
+      console.error('Error refreshing conditions:', error);
+    }
+  }
+
+  static async fetchFromSupabase(spotId: string): Promise<RealSurfCondition | null> {
+    try {
+      const response = await fetch(`/rest/v1/weather_conditions?spot_id=eq.${spotId}&select=*&order=timestamp.desc&limit=1`, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        return null;
+      }
+
+      const data = await response.json();
+      if (!data || data.length === 0) {
+        return null;
+      }
+
+      const weather = data[0];
+      
+      return {
+        spotId: weather.spot_id,
+        rating: this.calculateRating(weather.wave_height, weather.wind_speed) > 75 ? 'EXCELLENT' : 
+                this.calculateRating(weather.wave_height, weather.wind_speed) > 60 ? 'GOOD' : 
+                this.calculateRating(weather.wave_height, weather.wind_speed) > 40 ? 'FAIR' : 'POOR',
+        ratingValue: this.calculateRating(weather.wave_height, weather.wind_speed),
+        surfHeight: {
+          min: Math.max(0.3, weather.wave_height * 0.8),
+          max: weather.wave_height * 1.2,
+          description: weather.wave_height < 1 ? 'Cheville à genou' : 
+                      weather.wave_height < 2 ? 'Cuisse à ventre' :
+                      weather.wave_height < 3 ? 'Ventre à poitrine' : 'Poitrine à tête'
+        },
+        swell: [{
+          height: weather.wave_height,
+          period: weather.swell_period,
+          direction: this.getWindDirection(weather.swell_direction),
+          angle: weather.swell_direction
+        }],
+        wind: {
+          speed: Math.round(weather.wind_speed * 0.54), // Convert km/h to knots
+          gusts: Math.round(weather.wind_speed * 0.54 * 1.3),
+          direction: this.getWindDirection(weather.wind_direction),
+          type: this.getWindType(weather.wind_direction, weather.swell_direction)
+        },
+        tide: this.generateMockTideData(),
+        temperature: {
+          air: weather.temperature,
+          water: weather.temperature - 3,
+          wetsuit: weather.temperature < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
+        },
+        forecast: 'OPENWEATHERMAP',
+        lastUpdated: new Date(weather.timestamp).toLocaleString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZoneName: 'short'
+        })
+      };
+    } catch (error) {
+      console.error('Error fetching from Supabase:', error);
+      return null;
+    }
+  }
+
+  static calculateRating(waveHeight: number, windSpeed: number): number {
+    let rating = 50; // Base rating
+    
+    // Wave height scoring
+    if (waveHeight >= 1.5 && waveHeight <= 3) rating += 25;
+    if (waveHeight > 3) rating += 15;
+    if (waveHeight < 1) rating -= 20;
+    
+    // Wind scoring
+    if (windSpeed <= 15) rating += 20;
+    if (windSpeed > 25) rating -= 30;
+    if (windSpeed > 20) rating -= 15;
+    
+    return Math.max(10, Math.min(95, rating));
   }
   
   static async isDataStale(maxAgeHours = 6): Promise<boolean> {
