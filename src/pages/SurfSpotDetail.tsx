@@ -11,6 +11,7 @@ import { Camera, Waves, Wind, Thermometer, Moon, Sun, Clock } from 'lucide-react
 import { useEffect, useState } from 'react';
 import { YouTubeBackground } from '@/components/YouTubeBackground';
 import SurfSpotLocationMap from '@/components/SurfSpotLocationMap';
+import { WavesForecast } from '@/components/WavesForecast';
 import axios from 'axios';
 
 interface WeatherData {
@@ -167,6 +168,14 @@ const SurfSpotDetail = () => {
             <SurfConditions 
               spotName={spot.name} 
               conditions={surfConditions || surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']}
+              transparent={isSpecialSpot}
+            />
+          </div>
+
+          {/* 7-Day Waves Forecast */}
+          <div className="mb-8">
+            <WavesForecast 
+              spotId={spot.id}
               transparent={isSpecialSpot}
             />
           </div>
