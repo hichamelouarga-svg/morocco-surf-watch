@@ -174,7 +174,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'taghazout',
     name: 'Taghazout',
     nameKey: 'taghazout',
-    coordinates: [30.5394, -9.7067],
+    coordinates: [30.544901, -9.727011],
     hasLiveStream: false,
     city: 'Taghazout',
     region: 'Souss-Massa',
