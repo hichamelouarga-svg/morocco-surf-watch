@@ -4,6 +4,8 @@ import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { surfSpots } from '@/data/surfSpots';
+import SurfConditions from '@/components/SurfConditions';
+import { surfConditionsData } from '@/data/surfConditionsData';
 import { Camera, Waves, Wind, Thermometer, Moon, Sun, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -89,6 +91,14 @@ const SurfSpotDetail = () => {
             <p className="text-lg text-muted-foreground">
               {spot.city}, {spot.region} • {spot.description}
             </p>
+          </div>
+
+          {/* Surf Conditions */}
+          <div className="mb-8">
+            <SurfConditions 
+              spotName={spot.name} 
+              conditions={surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']} 
+            />
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
