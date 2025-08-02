@@ -132,7 +132,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'moulay-bouselham',
     name: 'Moulay Bouselham',
     nameKey: 'moulay_bouselham',
-    coordinates: [34.5333, -6.3000],
+    coordinates: [34.888412, -6.295382],
     hasLiveStream: false,
     city: 'Moulay Bouselham',
     region: 'Rabat-Salé-Kénitra',
