@@ -197,5 +197,19 @@ export const surfSpots: SurfSpot[] = [
     skillLevel: 'intermediate',
     waveType: 'beach break',
     crowdLevel: 'low'
+  },
+  {
+    id: 'tarfaya',
+    name: 'Tarfaya',
+    nameKey: 'Tarfaya',
+    coordinates: [27.947872, -12.928467],
+    hasLiveStream: false,
+    city: 'Tarfaya',
+    region: 'Laâyoune-Sakia El Hamra',
+    description: 'Remote surf spot in southern Morocco with pristine waves.',
+    bestSeasons: ['Autumn', 'Winter', 'Spring'],
+    skillLevel: 'intermediate',
+    waveType: 'beach break',
+    crowdLevel: 'low'
   }
 ];
