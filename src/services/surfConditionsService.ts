@@ -41,12 +41,14 @@ export class SurfConditionsService {
   private static BASE_URL = 'https://your-project-ref.supabase.co/functions/v1';
   
   static async fetchRealTimeConditions(spotId: string): Promise<RealSurfCondition | null> {
-    console.log(`Fetching real-time conditions for spot: ${spotId}`);
+    console.log(`🌊 START: Fetching real-time conditions for spot: ${spotId}`);
+    alert(`DEBUG: Fetching conditions for ${spotId}`); // Force visible alert
     try {
       // Use OpenWeatherMap API directly with your key
       const spot = this.getSpotCoordinates(spotId);
       if (!spot) {
-        console.error(`No coordinates found for spot: ${spotId}`);
+        console.error(`❌ No coordinates found for spot: ${spotId}`);
+        alert(`ERROR: No coordinates for ${spotId}`);
         return null;
       }
       
@@ -70,7 +72,8 @@ export class SurfConditionsService {
       }
       
       const weatherData = await weatherResponse.json();
-      console.log('Weather data received:', weatherData);
+      console.log('✅ Weather data received:', weatherData);
+      alert(`API SUCCESS: Got weather data for ${spotId}`);
       
       // Process OpenWeatherMap data
       const current = weatherData;
