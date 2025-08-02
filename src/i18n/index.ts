@@ -72,7 +72,8 @@ const resources = {
       "quick_stats": "Statistiques Rapides",
       "total_spots": "Total des Spots :",
       "live_cameras": "Caméras Live :",
-      "coming_soon_count": "Bientôt Disponible :",
+       "coming_soon_count": "Bientôt Disponible :",
+       "forecasts": "Prévisions",
       
       // News Page
       "news_subtitle": "Restez informé des dernières conditions de surf, prévisions et actualités du Maroc",
@@ -91,6 +92,21 @@ const resources = {
       "good_conditions_alert": "Alerte Bonnes Conditions !",
       "perfect_surf_conditions": "Conditions de surf parfaites détectées à Plage de Mehdia - vagues de 2.1m avec vent offshore",
       "excellent_surf_badge": "🏄‍♂️ Excellentes Conditions de Surf",
+      "interactive_surf_spots_map": "Carte Interactive des Spots de Surf",
+      "live_hd_cameras": "Caméras HD en Direct",
+      "live_cameras_description": "Regardez les conditions de surf en temps réel aux meilleurs spots de surf du Maroc avec des flux de caméras HD cristallins",
+      "accurate_forecasts": "Prévisions Précises",
+      "forecasts_description": "Obtenez des prévisions de surf précises sur 7 jours avec la hauteur des vagues, les conditions de vent et les informations de marée",
+      "local_community": "Communauté Locale", 
+      "community_description": "Connectez-vous avec la communauté de surf du Maroc et restez informé des événements et nouvelles locaux",
+      "ready_to_surf_morocco": "Prêt à Surfer au Maroc?",
+      "join_surfers_description": "Rejoignez des milliers de surfeurs utilisant déjà SurfMaroc pour trouver les vagues parfaites",
+      "watch_now": "Regarder Maintenant",
+      "view_forecasts": "Voir les Prévisions",
+      "join_community": "Rejoindre la Communauté", 
+      "start_watching": "Commencer à Regarder",
+      "support_us": "Nous Soutenir",
+      "watch_live_cameras": "Regarder les Caméras en Direct",
       
       // About Page
       "our_story": "Notre Histoire",
@@ -228,7 +244,55 @@ const resources = {
       // Live Streams
       "live_now": "Live Now",
       "coming_soon": "Coming Soon",
-      "stream_unavailable": "Stream Unavailable"
+      "stream_unavailable": "Stream Unavailable",
+      
+      // 404 Page
+      "page_not_found": "Page not found",
+      "page_not_found_message": "Oops! The page you're looking for doesn't exist",
+      "return_home": "Return Home",
+      
+      // Map Interface
+      "click_marker_explore": "Click on a marker to explore Morocco's surf spots",
+      "select_surf_spot": "Select a Surf Spot",
+      "click_marker_details": "Click on a marker on the map to see details for that surf spot",
+      "quick_stats": "Quick Stats",
+      "total_spots": "Total Spots:",
+      "live_cameras": "Live Cameras:",
+      "coming_soon_count": "Coming Soon:",
+      "forecasts": "Forecasts",
+      
+      // News Page
+      "news_subtitle": "Stay updated with the latest surf conditions, forecasts and news from Morocco",
+      "read_more": "Read More",
+      "conditions": "Conditions",
+      "technology": "Technology",
+      "forecast": "Forecast",
+      "perfect_waves_title": "Perfect Waves at Taghazout This Week",
+      "perfect_waves_excerpt": "Surfers flock to Morocco's surf capital as Atlantic swells deliver perfect conditions",
+      "new_camera_title": "New Live Camera Installation at Imsouane", 
+      "new_camera_excerpt": "Experience the famous right-hand break in real-time with our new HD camera",
+      "winter_forecast_title": "Winter Swell Forecast: What to Expect",
+      "winter_forecast_excerpt": "Our meteorologists analyze upcoming winter swell patterns for Morocco",
+      
+      // Featured Banner
+      "good_conditions_alert": "Good Conditions Alert!",
+      "perfect_surf_conditions": "Perfect surf conditions detected at Mehdia Beach - 2.1m waves with offshore wind",
+      "excellent_surf_badge": "🏄‍♂️ Excellent Surf Conditions",
+      "interactive_surf_spots_map": "Interactive Surf Spots Map",
+      "live_hd_cameras": "Live HD Cameras",
+      "live_cameras_description": "Watch real-time surf conditions at Morocco's best surf spots with crystal clear HD camera feeds",
+      "accurate_forecasts": "Accurate Forecasts", 
+      "forecasts_description": "Get precise 7-day surf forecasts with wave height, wind conditions, and tide information",
+      "local_community": "Local Community",
+      "community_description": "Connect with Morocco's surf community and stay updated with local events and news",
+      "ready_to_surf_morocco": "Ready to Surf Morocco?",
+      "join_surfers_description": "Join thousands of surfers already using SurfMaroc to find the perfect waves",
+      "watch_now": "Watch Now",
+      "view_forecasts": "View Forecasts", 
+      "join_community": "Join Community",
+      "start_watching": "Start Watching",
+      "support_us": "Support Us",
+      "watch_live_cameras": "Watch Live Cameras",
     }
   },
   ar: {
