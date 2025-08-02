@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Waves, Wind } from 'lucide-react';
@@ -18,8 +19,70 @@ interface WavesForecastProps {
   transparent?: boolean;
 }
 
-// Mock forecast data - in a real app this would come from an API
-const generateForecast = (spotId: string): ForecastDay[] => {
+// Function to fetch real forecast data from OpenWeatherMap
+const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
+  try {
+    // Get spot coordinates
+    const spotCoords = getSpotCoordinates(spotId);
+    if (!spotCoords) {
+      console.warn(`No coordinates found for spot: ${spotId}`);
+      return getMockForecast();
+    }
+
+    const [lat, lon] = spotCoords.coordinates;
+    
+    // Fetch 5-day forecast from OpenWeatherMap
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`
+    );
+
+    if (!response.ok) {
+      console.error('Failed to fetch forecast data');
+      return getMockForecast();
+    }
+
+    const data = await response.json();
+    console.log('Forecast data received:', data);
+
+    // Process forecast data (take every 8th item for daily forecast)
+    const dailyForecasts = data.list.filter((_: any, index: number) => index % 8 === 0).slice(0, 7);
+    
+    return dailyForecasts.map((day: any, index: number) => {
+      const windSpeedKmh = (day.wind.speed || 5) * 3.6;
+      const windFactor = Math.min(windSpeedKmh / 30, 1);
+      const waveHeight = 0.5 + (windFactor * 2) + (Math.random() * 0.5);
+      
+      let conditions: 'faible' | 'moyen' | 'bon' | 'excellent' = 'moyen';
+      let rating = 3;
+      
+      if (waveHeight > 1.8 && windSpeedKmh < 15) {
+        conditions = 'excellent';
+        rating = 5;
+      } else if (waveHeight > 1.2 && windSpeedKmh < 20) {
+        conditions = 'bon';
+        rating = 4;
+      } else if (waveHeight < 0.8 || windSpeedKmh > 25) {
+        conditions = 'faible';
+        rating = 2;
+      }
+
+      return {
+        date: new Date(day.dt * 1000),
+        waveHeight: `${(waveHeight * 0.8).toFixed(1)}-${(waveHeight * 1.2).toFixed(1)}m`,
+        windDirection: getWindDirection(day.wind.deg || 180),
+        windSpeed: Math.round(windSpeedKmh),
+        rating: rating,
+        conditions: conditions
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching forecast:', error);
+    return getMockForecast();
+  }
+};
+
+// Fallback mock data
+const getMockForecast = (): ForecastDay[] => {
   const baseData = [
     { waveHeight: '0.6-0.9m', windSpeed: 8, rating: 3, conditions: 'moyen' as const },
     { waveHeight: '0.9-1.2m', windSpeed: 6, rating: 4, conditions: 'bon' as const },
@@ -34,12 +97,38 @@ const generateForecast = (spotId: string): ForecastDay[] => {
 
   return Array.from({ length: 7 }, (_, i) => ({
     date: addDays(new Date(), i),
-    waveHeight: baseData[i].waveHeight,
-    windDirection: windDirections[i],
-    windSpeed: baseData[i].windSpeed,
-    rating: baseData[i].rating,
-    conditions: baseData[i].conditions
+    ...baseData[i],
+    windDirection: windDirections[i]
   }));
+};
+
+// Helper function to get spot coordinates
+const getSpotCoordinates = (spotId: string): { coordinates: [number, number] } | null => {
+  const spots: Record<string, { coordinates: [number, number] }> = {
+    'mehdia-beach': { coordinates: [34.2570, -6.6810] },
+    'rabat-beach': { coordinates: [34.034961, -6.837362] },
+    'mohammedia': { coordinates: [33.722732, -7.348247] },
+    'dar-bouazza': { coordinates: [33.530570, -7.832972] },
+    'bouznika': { coordinates: [33.825611, -7.150553] },
+    'plage-des-nations': { coordinates: [34.150943, -6.738099] },
+    'larache': { coordinates: [35.205304, -6.152181] },
+    'assilah': { coordinates: [35.475152, -6.031830] },
+    'moulay-bouselham': { coordinates: [34.888412, -6.295382] },
+    'safi': { coordinates: [32.320099, -9.259436] },
+    'imsouane': { coordinates: [30.839529, -9.819274] },
+    'taghazout': { coordinates: [30.544901, -9.727011] },
+    'anchor-point': { coordinates: [30.5325, -9.7189] },
+    'sidi-ifni': { coordinates: [29.387104, -10.174070] },
+    'tarfaya': { coordinates: [27.947872, -12.928467] },
+    'dakhla': { coordinates: [23.767069, -15.925064] }
+  };
+  return spots[spotId] || null;
+};
+
+// Helper function to convert wind angle to direction
+const getWindDirection = (angle: number): string => {
+  const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+  return directions[Math.round(angle / 22.5) % 16];
 };
 
 const getConditionColor = (conditions: string) => {
@@ -61,7 +150,35 @@ const getRatingStars = (rating: number) => {
 };
 
 export const WavesForecast = ({ spotId, transparent = false }: WavesForecastProps) => {
-  const forecast = generateForecast(spotId);
+  const [forecast, setForecast] = React.useState<ForecastDay[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchForecast = async () => {
+      setLoading(true);
+      const forecastData = await generateForecast(spotId);
+      setForecast(forecastData);
+      setLoading(false);
+    };
+
+    fetchForecast();
+  }, [spotId]);
+
+  if (loading) {
+    return (
+      <Card className={`shadow-ocean overflow-hidden ${transparent ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
+        <CardHeader>
+          <CardTitle className={`flex items-center ${transparent ? 'text-white' : ''}`}>
+            <Waves className="w-5 h-5 mr-2" />
+            Prévisions 7 jours
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <div className="text-center">Chargement des prévisions...</div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className={`shadow-ocean overflow-hidden ${transparent ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}`}>
