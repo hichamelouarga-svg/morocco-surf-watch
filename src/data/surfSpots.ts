@@ -90,7 +90,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'plage-des-nations',
     name: 'Plage des Nations',
     nameKey: 'plage_des_nations',
-    coordinates: [33.9500, -6.8667],
+    coordinates: [34.150943, -6.738099],
     hasLiveStream: false,
     city: 'Salé',
     region: 'Rabat-Salé-Kénitra',
