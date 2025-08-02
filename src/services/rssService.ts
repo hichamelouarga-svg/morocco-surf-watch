@@ -15,10 +15,18 @@ export class RSSService {
       const response = await fetch(proxyUrl);
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.warn(`Failed to fetch RSS feed from ${url}: ${response.status}`);
+        return [];
       }
       
       const xmlText = await response.text();
+      
+      // Check if it's actually XML/RSS content
+      if (!xmlText.includes('<rss') && !xmlText.includes('<feed')) {
+        console.warn(`No RSS/XML content found at ${url}`);
+        return [];
+      }
+      
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
       

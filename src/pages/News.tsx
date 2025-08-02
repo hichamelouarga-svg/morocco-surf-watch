@@ -11,20 +11,17 @@ import surfWaves from '@/assets/surf-waves.jpg';
 const News = () => {
   const { t } = useTranslation();
   const [rssArticles, setRssArticles] = useState<RSSItem[]>([]);
-  const [originalSurfArticles, setOriginalSurfArticles] = useState<RSSItem[]>([]);
   const [wslArticles, setWslArticles] = useState<RSSItem[]>([]);
   const [isLoadingRss, setIsLoadingRss] = useState(true);
 
   useEffect(() => {
     const fetchRSSFeeds = async () => {
       try {
-        const [federationArticles, originalSurfArticles, wslArticles] = await Promise.all([
+        const [federationArticles, wslArticles] = await Promise.all([
           RSSService.fetchRSSFeed('https://www.fedesurfmaroc.com/feed/'),
-          RSSService.fetchRSSFeed('https://www.originalsurfmorocco.com/feed/'),
-          RSSService.fetchRSSFeed('https://www.worldsurfleague.com/news')
+          RSSService.fetchRSSFeed('https://www.worldsurfleague.com/news/rss')
         ]);
         setRssArticles(federationArticles);
-        setOriginalSurfArticles(originalSurfArticles);
         setWslArticles(wslArticles);
       } catch (error) {
         console.error('Failed to fetch RSS feeds:', error);
@@ -87,7 +84,7 @@ const News = () => {
               <h2 className="font-display text-2xl font-bold text-foreground mb-6">
                 Dernières nouvelles de la Fédération
               </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 {rssArticles.map((article, index) => (
                   <Card key={index} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden">
                     <div className="aspect-video overflow-hidden bg-gradient-sunset">
@@ -99,65 +96,6 @@ const News = () => {
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
                         <Badge variant="outline">Fédération</Badge>
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <Calendar className="w-4 h-4 mr-1" />
-                          {RSSService.formatDate(article.pubDate)}
-                        </div>
-                      </div>
-                      
-                      <CardTitle className="font-display text-xl leading-tight line-clamp-2">
-                        {article.title}
-                      </CardTitle>
-                    </CardHeader>
-                    
-                    <CardContent>
-                      <p className="text-muted-foreground mb-4 line-clamp-3">
-                        {article.description}
-                      </p>
-                      
-                      <div className="flex items-center justify-between">
-                        {article.author && (
-                          <div className="flex items-center text-sm text-muted-foreground">
-                            <User className="w-4 h-4 mr-1" />
-                            {article.author}
-                          </div>
-                        )}
-                        
-                        <a 
-                          href={article.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-primary hover:text-primary-dark transition-colors"
-                        >
-                          Lire l'article
-                          <ExternalLink className="w-4 h-4 ml-1" />
-                        </a>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Original Surf Morocco */}
-          {originalSurfArticles.length > 0 && (
-            <div className="mb-12">
-              <h2 className="font-display text-2xl font-bold text-foreground mb-6">
-                Original Surf Morocco
-              </h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                {originalSurfArticles.map((article, index) => (
-                  <Card key={index} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden">
-                    <div className="aspect-video overflow-hidden bg-gradient-ocean">
-                      <div className="w-full h-full flex items-center justify-center text-white font-semibold">
-                        Original Surf Morocco
-                      </div>
-                    </div>
-                    
-                    <CardHeader>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="outline">Original Surf</Badge>
                         <div className="flex items-center text-sm text-muted-foreground">
                           <Calendar className="w-4 h-4 mr-1" />
                           {RSSService.formatDate(article.pubDate)}
@@ -259,55 +197,55 @@ const News = () => {
           )}
 
           {/* Local News */}
-          <div>
+          <div className="mb-12">
             <h2 className="font-display text-2xl font-bold text-foreground mb-6">
               Actualités locales
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {newsArticles.map((article) => (
-              <Card key={article.id} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden">
-                <div className="aspect-video overflow-hidden">
-                  <img 
-                    src={article.image} 
-                    alt={article.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="outline">{article.category}</Badge>
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(article.date).toLocaleDateString()}
-                    </div>
+                <Card key={article.id} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src={article.image} 
+                      alt={article.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
                   
-                  <CardTitle className="font-display text-xl leading-tight">
-                    {article.title}
-                  </CardTitle>
-                </CardHeader>
-                
-                <CardContent>
-                  <p className="text-muted-foreground mb-4 line-clamp-3">
-                    {article.excerpt}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <User className="w-4 h-4 mr-1" />
-                      {article.author}
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge variant="outline">{article.category}</Badge>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {new Date(article.date).toLocaleDateString()}
+                      </div>
                     </div>
                     
-                    <Link 
-                      to={`/news/${article.id}`}
-                      className="flex items-center text-primary hover:text-primary-dark transition-colors"
-                    >
-                      {t('read_more')}
-                      <ArrowRight className="w-4 h-4 ml-1" />
-                    </Link>
-                  </div>
-                </CardContent>
+                    <CardTitle className="font-display text-xl leading-tight">
+                      {article.title}
+                    </CardTitle>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <User className="w-4 h-4 mr-1" />
+                        {article.author}
+                      </div>
+                      
+                      <Link 
+                        to={`/news/${article.id}`}
+                        className="flex items-center text-primary hover:text-primary-dark transition-colors"
+                      >
+                        {t('read_more')}
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </Link>
+                    </div>
+                  </CardContent>
                 </Card>
               ))}
             </div>
