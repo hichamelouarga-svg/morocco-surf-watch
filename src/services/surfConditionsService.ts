@@ -41,23 +41,30 @@ export class SurfConditionsService {
   private static BASE_URL = 'https://your-project-ref.supabase.co/functions/v1';
   
   static async fetchRealTimeConditions(spotId: string): Promise<RealSurfCondition | null> {
+    console.log(`Fetching real-time conditions for spot: ${spotId}`);
     try {
       // Use OpenWeatherMap API directly with your key
       const spot = this.getSpotCoordinates(spotId);
-      if (!spot) return null;
+      if (!spot) {
+        console.error(`No coordinates found for spot: ${spotId}`);
+        return null;
+      }
       
       const [lat, lon] = spot.coordinates;
       
       // Use OpenWeatherMap API with your key
-      const weatherResponse = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`
-      );
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`;
+      console.log(`Fetching weather data from: ${apiUrl}`);
+      
+      const weatherResponse = await fetch(apiUrl);
       
       if (!weatherResponse.ok) {
+        console.error(`Weather API error: ${weatherResponse.status} ${weatherResponse.statusText}`);
         throw new Error('Failed to fetch weather data');
       }
       
       const weatherData = await weatherResponse.json();
+      console.log('Weather data received:', weatherData);
       
       // Process OpenWeatherMap data
       const current = weatherData;
@@ -251,12 +258,24 @@ export class SurfConditionsService {
   
   private static getSpotCoordinates(spotId: string): { coordinates: [number, number] } | null {
     const spots: Record<string, { coordinates: [number, number] }> = {
-      'taghazout': { coordinates: [30.5436, -9.7076] },
+      'mehdia-beach': { coordinates: [34.2570, -6.6810] },
+      'rabat-beach': { coordinates: [34.034961, -6.837362] },
+      'mohammedia': { coordinates: [33.722732, -7.348247] },
+      'dar-bouazza': { coordinates: [33.530570, -7.832972] },
+      'bouznika': { coordinates: [33.825611, -7.150553] },
+      'plage-des-nations': { coordinates: [34.150943, -6.738099] },
+      'larache': { coordinates: [35.205304, -6.152181] },
+      'assilah': { coordinates: [35.475152, -6.031830] },
+      'moulay-bouselham': { coordinates: [34.888412, -6.295382] },
+      'safi': { coordinates: [32.320099, -9.259436] },
+      'imsouane': { coordinates: [30.839529, -9.819274] },
+      'taghazout': { coordinates: [30.544901, -9.727011] },
       'anchor-point': { coordinates: [30.5325, -9.7189] },
-      'imsouane': { coordinates: [30.8419, -9.8239] },
-      'mehdia-beach': { coordinates: [34.2542, -6.6693] },
-      'safi': { coordinates: [32.2994, -9.2372] }
+      'sidi-ifni': { coordinates: [29.387104, -10.174070] },
+      'tarfaya': { coordinates: [27.947872, -12.928467] },
+      'dakhla': { coordinates: [23.767069, -15.925064] }
     };
+    console.log(`Looking up coordinates for spotId: ${spotId}`, spots[spotId]);
     return spots[spotId] || null;
   }
   
