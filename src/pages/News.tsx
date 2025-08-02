@@ -2,12 +2,31 @@ import { useTranslation } from 'react-i18next';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, User, ArrowRight } from 'lucide-react';
+import { Calendar, User, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { RSSService, RSSItem } from '@/services/rssService';
 import surfWaves from '@/assets/surf-waves.jpg';
 
 const News = () => {
   const { t } = useTranslation();
+  const [rssArticles, setRssArticles] = useState<RSSItem[]>([]);
+  const [isLoadingRss, setIsLoadingRss] = useState(true);
+
+  useEffect(() => {
+    const fetchRSSFeed = async () => {
+      try {
+        const articles = await RSSService.fetchRSSFeed('https://www.fedesurfmaroc.com/feed/');
+        setRssArticles(articles);
+      } catch (error) {
+        console.error('Failed to fetch RSS feed:', error);
+      } finally {
+        setIsLoadingRss(false);
+      }
+    };
+
+    fetchRSSFeed();
+  }, []);
 
   const newsArticles = [
     {
@@ -54,8 +73,72 @@ const News = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {newsArticles.map((article) => (
+          {/* Latest from Federation */}
+          {rssArticles.length > 0 && (
+            <div className="mb-12">
+              <h2 className="font-display text-2xl font-bold text-foreground mb-6">
+                Dernières nouvelles de la Fédération
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {rssArticles.map((article, index) => (
+                  <Card key={index} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden">
+                    <div className="aspect-video overflow-hidden bg-gradient-sunset">
+                      <div className="w-full h-full flex items-center justify-center text-white font-semibold">
+                        Fédération Surf Maroc
+                      </div>
+                    </div>
+                    
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="outline">Fédération</Badge>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {RSSService.formatDate(article.pubDate)}
+                        </div>
+                      </div>
+                      
+                      <CardTitle className="font-display text-xl leading-tight line-clamp-2">
+                        {article.title}
+                      </CardTitle>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      <p className="text-muted-foreground mb-4 line-clamp-3">
+                        {article.description}
+                      </p>
+                      
+                      <div className="flex items-center justify-between">
+                        {article.author && (
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            <User className="w-4 h-4 mr-1" />
+                            {article.author}
+                          </div>
+                        )}
+                        
+                        <a 
+                          href={article.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-primary hover:text-primary-dark transition-colors"
+                        >
+                          Lire l'article
+                          <ExternalLink className="w-4 h-4 ml-1" />
+                        </a>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Local News */}
+          <div>
+            <h2 className="font-display text-2xl font-bold text-foreground mb-6">
+              Actualités locales
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {newsArticles.map((article) => (
               <Card key={article.id} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden">
                 <div className="aspect-video overflow-hidden">
                   <img 
@@ -99,8 +182,9 @@ const News = () => {
                     </Link>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
           </div>
 
           {/* Featured Banner */}
