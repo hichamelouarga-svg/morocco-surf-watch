@@ -187,7 +187,7 @@ export const surfSpots: SurfSpot[] = [
   {
     id: 'sidi-ifni',
     name: 'Sidi Ifni',
-    nameKey: 'sidi_ifni',
+    nameKey: 'Sidi Ifni',
     coordinates: [29.387104, -10.174070],
     hasLiveStream: false,
     city: 'Sidi Ifni',
