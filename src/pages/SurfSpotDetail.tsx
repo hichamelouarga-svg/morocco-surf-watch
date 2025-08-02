@@ -139,7 +139,8 @@ const SurfSpotDetail = () => {
           <div className="mb-8">
             <SurfConditions 
               spotName={spot.name} 
-              conditions={surfConditions || surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']} 
+              conditions={surfConditions || surfConditionsData[spot.id as keyof typeof surfConditionsData] || surfConditionsData['taghazout']}
+              transparent={isSpecialSpot}
             />
           </div>
 

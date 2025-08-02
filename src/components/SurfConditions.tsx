@@ -42,6 +42,7 @@ interface SurfCondition {
 interface SurfConditionsProps {
   spotName: string;
   conditions: SurfCondition;
+  transparent?: boolean;
 }
 
 const WindCompass: React.FC<{ direction: string; angle: number }> = ({ direction, angle }) => {
@@ -83,7 +84,7 @@ const WindCompass: React.FC<{ direction: string; angle: number }> = ({ direction
   );
 };
 
-const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions }) => {
+const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions, transparent = false }) => {
   const getRatingColor = (rating: string) => {
     switch (rating) {
       case 'EXCELLENT': return 'text-green-600';
@@ -95,7 +96,7 @@ const SurfConditions: React.FC<SurfConditionsProps> = ({ spotName, conditions })
   };
 
   return (
-    <Card className="w-full shadow-wave">
+    <Card className={`w-full shadow-wave ${transparent ? 'bg-white/50 backdrop-blur-sm border-white/20' : ''}`}>
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="font-display text-xl">
