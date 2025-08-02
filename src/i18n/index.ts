@@ -107,6 +107,7 @@ const resources = {
       "start_watching": "Commencer à Regarder",
       "support_us": "Nous Soutenir",
       "watch_live_cameras": "Regarder les Caméras en Direct",
+      "home_hero_subtitle": "Découvrez les conditions de surf en temps réel aux meilleurs spots du Maroc",
       
       // About Page
       "our_story": "Notre Histoire",

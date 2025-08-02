@@ -22,13 +22,25 @@ const Index = () => {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover z-0"
+          onError={(e) => {
+            console.log('Video failed to load, using fallback background');
+            e.currentTarget.style.display = 'none';
+          }}
         >
           <source
-            src="https://player.vimeo.com/external/370467425.sd.mp4?s=e90dcaba73c19b7eb0a9b8b8e1bd007d2c3cb4fb&profile_id=139&oauth2_token_id=57447761"
+            src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
             type="video/mp4"
           />
           {/* Fallback for browsers that don't support video */}
         </video>
+        
+        {/* Fallback Background Image */}
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1502933691298-84fc14542831?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')"
+          }}
+        ></div>
         
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40 z-10"></div>
