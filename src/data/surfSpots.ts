@@ -48,7 +48,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'mohammedia',
     name: 'Mohammedia',
     nameKey: 'mohammedia',
-    coordinates: [33.6862, -7.3927],
+    coordinates: [33.722732, -7.348247],
     hasLiveStream: false,
     city: 'Mohammedia',
     region: 'Casablanca-Settat',
