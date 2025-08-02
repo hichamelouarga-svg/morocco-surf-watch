@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Waves, Wind } from 'lucide-react';
 import { format, addDays } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 interface ForecastDay {
   date: Date;
@@ -9,7 +10,7 @@ interface ForecastDay {
   windDirection: string;
   windSpeed: number;
   rating: number;
-  conditions: 'poor' | 'fair' | 'good' | 'excellent';
+  conditions: 'faible' | 'moyen' | 'bon' | 'excellent';
 }
 
 interface WavesForecastProps {
@@ -20,16 +21,16 @@ interface WavesForecastProps {
 // Mock forecast data - in a real app this would come from an API
 const generateForecast = (spotId: string): ForecastDay[] => {
   const baseData = [
-    { waveHeight: '2-3ft', windSpeed: 8, rating: 3, conditions: 'fair' as const },
-    { waveHeight: '3-4ft', windSpeed: 6, rating: 4, conditions: 'good' as const },
-    { waveHeight: '2-3ft', windSpeed: 12, rating: 2, conditions: 'poor' as const },
-    { waveHeight: '3-4ft', windSpeed: 5, rating: 4, conditions: 'good' as const },
-    { waveHeight: '4-5ft', windSpeed: 7, rating: 5, conditions: 'excellent' as const },
-    { waveHeight: '4-5ft', windSpeed: 9, rating: 4, conditions: 'good' as const },
-    { waveHeight: '3-4ft', windSpeed: 11, rating: 3, conditions: 'fair' as const }
+    { waveHeight: '0.6-0.9m', windSpeed: 8, rating: 3, conditions: 'moyen' as const },
+    { waveHeight: '0.9-1.2m', windSpeed: 6, rating: 4, conditions: 'bon' as const },
+    { waveHeight: '0.6-0.9m', windSpeed: 12, rating: 2, conditions: 'faible' as const },
+    { waveHeight: '0.9-1.2m', windSpeed: 5, rating: 4, conditions: 'bon' as const },
+    { waveHeight: '1.2-1.5m', windSpeed: 7, rating: 5, conditions: 'excellent' as const },
+    { waveHeight: '1.2-1.5m', windSpeed: 9, rating: 4, conditions: 'bon' as const },
+    { waveHeight: '0.9-1.2m', windSpeed: 11, rating: 3, conditions: 'moyen' as const }
   ];
 
-  const windDirections = ['NW', 'W', 'SW', 'E', 'NE', 'N', 'SE'];
+  const windDirections = ['NO', 'O', 'SO', 'E', 'NE', 'N', 'SE'];
 
   return Array.from({ length: 7 }, (_, i) => ({
     date: addDays(new Date(), i),
@@ -44,9 +45,9 @@ const generateForecast = (spotId: string): ForecastDay[] => {
 const getConditionColor = (conditions: string) => {
   switch (conditions) {
     case 'excellent': return 'bg-green-500';
-    case 'good': return 'bg-blue-500';
-    case 'fair': return 'bg-yellow-500';
-    case 'poor': return 'bg-red-500';
+    case 'bon': return 'bg-blue-500';
+    case 'moyen': return 'bg-yellow-500';
+    case 'faible': return 'bg-red-500';
     default: return 'bg-gray-500';
   }
 };
@@ -78,7 +79,7 @@ export const WavesForecast = ({ spotId, transparent = false }: WavesForecastProp
               {forecast.map((day, index) => (
                 <div key={index} className="text-center">
                   <div className={`text-sm font-medium ${transparent ? 'text-white' : 'text-foreground'}`}>
-                    {index === 0 ? 'Aujourd\'hui' : format(day.date, 'EEE d/M')}
+                    {index === 0 ? 'Aujourd\'hui' : format(day.date, 'EEE d/M', { locale: fr })}
                   </div>
                 </div>
               ))}
