@@ -52,9 +52,8 @@ export class SurfConditionsService {
       
       const [lat, lon] = spot.coordinates;
       
-      // Use OpenWeatherMap API with your key and cache-busting
-      const timestamp = Date.now();
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric&_=${timestamp}`;
+      // Use open-meteo.com free API (no API key required)
+      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=auto`;
       console.log(`Fetching weather data from: ${apiUrl}`);
       
       const weatherResponse = await fetch(apiUrl, {
@@ -72,13 +71,13 @@ export class SurfConditionsService {
       const weatherData = await weatherResponse.json();
       console.log('✅ Weather data received:', weatherData);
       
-      // Process OpenWeatherMap data
-      const current = weatherData;
+      // Process Open-Meteo data
+      const current = weatherData.current;
       
-      // Get real wind data from OpenWeatherMap
-      const windSpeed = current.wind?.speed || 5; // m/s from API
+      // Get real wind data from Open-Meteo
+      const windSpeed = current.wind_speed_10m || 5; // m/s from API
       const windSpeedKmh = windSpeed * 3.6; // Convert to km/h
-      const windDirection = current.wind?.deg || 180;
+      const windDirection = current.wind_direction_10m || 180;
       
       // Use realistic wave simulation based on wind conditions
       // Strong winds generally create bigger waves
@@ -104,8 +103,8 @@ export class SurfConditionsService {
         ratingValue = 25;
       }
       
-      console.log('Real weather data used:', {
-        temperature: current.main?.temp,
+        console.log('Real weather data used:', {
+        temperature: current.temperature_2m,
         windSpeed: windSpeed,
         windDirection: windDirection,
         calculatedWaveHeight: waveHeight,
@@ -137,8 +136,8 @@ export class SurfConditionsService {
         wind: {
           speed: Math.round(windSpeedKmh * 0.54), // Convert km/h to knots
           gusts: Math.round(windSpeedKmh * 0.54 * 1.3),
-          direction: this.getWindDirection(current.wind?.deg || 180),
-          type: this.getWindType(current.wind?.deg || 180, swellDirection)
+          direction: this.getWindDirection(current.wind_direction_10m || 180),
+          type: this.getWindType(current.wind_direction_10m || 180, swellDirection)
         },
         tide: {
           current: tideData.current,
@@ -147,11 +146,11 @@ export class SurfConditionsService {
           data: tideData.data
         },
         temperature: {
-          air: Math.round(current.main?.temp || 20), // Celsius from OpenWeatherMap
-          water: Math.round((current.main?.temp || 20) - 3), // Estimate water temp
-          wetsuit: (current.main?.temp || 20) < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
+          air: Math.round(current.temperature_2m || 20), // Celsius from Open-Meteo
+          water: Math.round((current.temperature_2m || 20) - 3), // Estimate water temp
+          wetsuit: (current.temperature_2m || 20) < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
         },
-        forecast: 'OPENWEATHERMAP',
+        forecast: 'OPEN-METEO',
         lastUpdated: new Date().toLocaleString('en-US', {
           hour: '2-digit',
           minute: '2-digit',

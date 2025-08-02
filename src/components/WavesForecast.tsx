@@ -32,9 +32,9 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
 
     const [lat, lon] = spotCoords.coordinates;
     
-    // Fetch 5-day forecast from OpenWeatherMap
+    // Fetch 7-day forecast from open-meteo.com (free API)
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=f1c61a0000b2fcc9e815d27a9d3a6f8a&units=metric`
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum&timezone=auto&forecast_days=7`
     );
 
     if (!response.ok) {
@@ -45,11 +45,11 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
     const data = await response.json();
     console.log('Forecast data received:', data);
 
-    // Process forecast data (take every 8th item for daily forecast)
-    const dailyForecasts = data.list.filter((_: any, index: number) => index % 8 === 0).slice(0, 7);
+    // Process forecast data from open-meteo
+    const dailyData = data.daily;
     
-    return dailyForecasts.map((day: any, index: number) => {
-      const windSpeedKmh = (day.wind.speed || 5) * 3.6;
+    return Array.from({ length: 7 }, (_, index) => {
+      const windSpeedKmh = (dailyData.wind_speed_10m_max[index] || 5) * 3.6;
       const windFactor = Math.min(windSpeedKmh / 30, 1);
       const waveHeight = 0.5 + (windFactor * 2) + (Math.random() * 0.5);
       
@@ -68,9 +68,9 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
       }
 
       return {
-        date: new Date(day.dt * 1000),
+        date: new Date(dailyData.time[index]),
         waveHeight: `${(waveHeight * 0.8).toFixed(1)}-${(waveHeight * 1.2).toFixed(1)}m`,
-        windDirection: getWindDirection(day.wind.deg || 180),
+        windDirection: getWindDirection(dailyData.wind_direction_10m_dominant[index] || 180),
         windSpeed: Math.round(windSpeedKmh),
         rating: rating,
         conditions: conditions
