@@ -91,7 +91,7 @@ const SurfSpotDetail = () => {
   }
 
   // Special background video for specific spots
-  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach' || spot?.id === 'mohammedia' || spot?.id === 'mehdia' || spot?.id === 'dar-bouazza' || spot?.id === 'bouznika' || spot?.id === 'plage-des-nations';
+  const isSpecialSpot = spot?.id === 'safi' || spot?.id === 'imesouane' || spot?.id === 'rabat-beach' || spot?.id === 'mohammedia' || spot?.id === 'mehdia' || spot?.id === 'dar-bouazza' || spot?.id === 'bouznika' || spot?.id === 'plage-des-nations' || spot?.id === 'larache';
   
   // YouTube video IDs for each spot
   const getVideoId = (spotId: string) => {
@@ -112,6 +112,8 @@ const SurfSpotDetail = () => {
         return 'qKHAi2RlH1Y';
       case 'plage-des-nations':
         return 'u-DSbfhfyFI';
+      case 'larache':
+        return 'l8cgNygUDsQ';
       default:
         return null;
     }
@@ -200,13 +202,15 @@ const SurfSpotDetail = () => {
                               ? 'Caméra live bientôt disponible pour Bouznika - Restez connectés!'
                               : isSpecialSpot && spot.id === 'plage-des-nations'
                               ? 'Caméra live bientôt disponible pour Plage des Nations - Restez connectés!'
+                              : isSpecialSpot && spot.id === 'larache'
+                              ? 'Caméra live bientôt disponible pour Larache - Restez connectés!'
                               : t('camera_installation_planned')
                             }
                           </p>
                           {isSpecialSpot && (
                             <div className="mt-4">
                               <Badge className="bg-coral text-white px-4 py-2">
-                                🎥 Coming Soon to {spot.id === 'safi' ? 'Safi' : spot.id === 'imesouane' ? 'Imesouane' : spot.id === 'rabat-beach' ? 'Rabat Beach' : spot.id === 'mohammedia' ? 'Mohammedia' : spot.id === 'mehdia' ? 'Mehdia' : spot.id === 'dar-bouazza' ? 'Dar Bouazza' : spot.id === 'bouznika' ? 'Bouznika' : 'Plage des Nations'}
+                                🎥 Coming Soon to {spot.id === 'safi' ? 'Safi' : spot.id === 'imesouane' ? 'Imesouane' : spot.id === 'rabat-beach' ? 'Rabat Beach' : spot.id === 'mohammedia' ? 'Mohammedia' : spot.id === 'mehdia' ? 'Mehdia' : spot.id === 'dar-bouazza' ? 'Dar Bouazza' : spot.id === 'bouznika' ? 'Bouznika' : spot.id === 'plage-des-nations' ? 'Plage des Nations' : 'Larache'}
                               </Badge>
                             </div>
                           )}
