@@ -72,7 +72,25 @@ const resources = {
       "quick_stats": "Statistiques Rapides",
       "total_spots": "Total des Spots :",
       "live_cameras": "Caméras Live :",
-      "coming_soon_count": "Bientôt Disponible :"
+      "coming_soon_count": "Bientôt Disponible :",
+      
+      // News Page
+      "news_subtitle": "Restez informé des dernières conditions de surf, prévisions et actualités du Maroc",
+      "read_more": "Lire la Suite",
+      "conditions": "Conditions",
+      "technology": "Technologie",
+      "forecast": "Prévisions",
+      "perfect_waves_title": "Vagues Parfaites à Taghazout Cette Semaine",
+      "perfect_waves_excerpt": "Les surfeurs affluent vers la capitale du surf du Maroc alors que les houles atlantiques offrent des conditions parfaites",
+      "new_camera_title": "Nouvelle Installation de Caméra Live à Imsouane", 
+      "new_camera_excerpt": "Découvrez le célèbre break de droite en temps réel avec notre nouvelle caméra HD",
+      "winter_forecast_title": "Prévisions Houle d'Hiver : À Quoi S'Attendre",
+      "winter_forecast_excerpt": "Nos météorologues analysent les modèles de houle hivernale à venir pour le Maroc",
+      
+      // Featured Banner
+      "good_conditions_alert": "Alerte Bonnes Conditions !",
+      "perfect_surf_conditions": "Conditions de surf parfaites détectées à Plage de Mehdia - vagues de 2.1m avec vent offshore",
+      "excellent_surf_badge": "🏄‍♂️ Excellentes Conditions de Surf"
     }
   },
   en: {

@@ -12,30 +12,30 @@ const News = () => {
   const newsArticles = [
     {
       id: '1',
-      title: 'Perfect Waves Hit Taghazout This Week',
-      excerpt: 'Surfers flock to Morocco\'s surf capital as Atlantic swells deliver perfect conditions.',
+      title: t('perfect_waves_title'),
+      excerpt: t('perfect_waves_excerpt'),
       image: surfWaves,
       date: '2024-01-15',
       author: 'Surf Team',
-      category: 'Conditions'
+      category: t('conditions')
     },
     {
       id: '2',
-      title: 'New Live Camera Installation at Imsouane',
-      excerpt: 'Experience the famous right-hand point break in real-time with our new HD camera.',
+      title: t('new_camera_title'),
+      excerpt: t('new_camera_excerpt'),
       image: surfWaves,
       date: '2024-01-12',
       author: 'Tech Team',
-      category: 'Technology'
+      category: t('technology')
     },
     {
       id: '3',
-      title: 'Winter Swell Forecast: What to Expect',
-      excerpt: 'Our meteorologists break down the upcoming winter swell patterns for Morocco.',
+      title: t('winter_forecast_title'),
+      excerpt: t('winter_forecast_excerpt'),
       image: surfWaves,
       date: '2024-01-10',
       author: 'Weather Team',
-      category: 'Forecast'
+      category: t('forecast')
     }
   ];
 
@@ -50,7 +50,7 @@ const News = () => {
               {t('news')}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Stay updated with the latest surf conditions, forecasts, and news from Morocco
+              {t('news_subtitle')}
             </p>
           </div>
 
@@ -94,7 +94,7 @@ const News = () => {
                       to={`/news/${article.id}`}
                       className="flex items-center text-primary hover:text-primary-dark transition-colors"
                     >
-                      Read More
+                      {t('read_more')}
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </Link>
                   </div>
@@ -108,13 +108,13 @@ const News = () => {
             <Card className="bg-gradient-sunset text-white shadow-ocean">
               <CardContent className="p-8 text-center">
                 <h2 className="font-display text-3xl font-bold mb-4">
-                  Good Conditions Alert!
+                  {t('good_conditions_alert')}
                 </h2>
                 <p className="text-xl mb-6 text-white/90">
-                  Perfect surf conditions detected at Mehdia Beach - 2.1m waves with offshore winds
+                  {t('perfect_surf_conditions')}
                 </p>
                 <Badge className="bg-white text-sunset text-lg px-4 py-2">
-                  🏄‍♂️ Excellent Surf Conditions
+                  {t('excellent_surf_badge')}
                 </Badge>
               </CardContent>
             </Card>
