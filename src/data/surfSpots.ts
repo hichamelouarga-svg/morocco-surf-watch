@@ -62,7 +62,7 @@ export const surfSpots: SurfSpot[] = [
     id: 'dar-bouazza',
     name: 'Dar Bouazza',
     nameKey: 'dar_bouazza',
-    coordinates: [33.5136, -7.7315],
+    coordinates: [33.530570, -7.832972],
     hasLiveStream: false,
     city: 'Casablanca',
     region: 'Casablanca-Settat',
