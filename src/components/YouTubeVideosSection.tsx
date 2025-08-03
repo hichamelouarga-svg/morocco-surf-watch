@@ -27,7 +27,7 @@ export const YouTubeVideosSection = () => {
   const fetchYouTubeVideos = async () => {
     try {
       setLoading(true);
-      console.log('🔄 Fetching DYNAMIC YouTube videos (last 2 added)...');
+      console.log('🔄 Fetching DYNAMIC YouTube videos (last 3 added)...');
       
       // Try to get real dynamic videos from API
       const { data, error } = await supabase.functions.invoke('fetch-youtube-videos', {
@@ -38,14 +38,14 @@ export const YouTubeVideosSection = () => {
       
       if (!error && data && Array.isArray(data) && data.length > 0) {
         console.log(`✅ Got ${data.length} DYNAMIC videos from API`);
-        // Take only the 2 most recent videos
-        const recentVideos = data.slice(0, 2);
+        // Take only the 3 most recent videos
+        const recentVideos = data.slice(0, 3);
         setVideos(recentVideos);
         return;
       }
       
       console.log('🔄 API failed, using verified Morocco surf videos...');
-      // Fallback to verified Morocco surf videos (only 2 most recent)
+      // Fallback to verified Morocco surf videos (3 most recent)
       const fallbackVideos = [
         {
           videoId: "3JY3trh26Uk",
@@ -64,11 +64,20 @@ export const YouTubeVideosSection = () => {
           channelTitle: "Morocco Surf Guide",
           publishedAt: new Date(Date.now() - 86400000).toISOString(),
           url: "https://www.youtube.com/watch?v=hRDXFzf1nXk"
+        },
+        {
+          videoId: "hLVXiPmDmPg",
+          title: "Living in Morocco's Surf Town Tamraght as a Digital Nomad",
+          description: "A month in a surf town called Tamraght and it's been one of the most memorable trips. The laid-back vibe, friendly locals, and stunning coastline.",
+          thumbnail: "https://img.youtube.com/vi/hLVXiPmDmPg/mqdefault.jpg",
+          channelTitle: "Digital Nomad Morocco",
+          publishedAt: new Date(Date.now() - 172800000).toISOString(),
+          url: "https://www.youtube.com/watch?v=hLVXiPmDmPg"
         }
       ];
       
       setVideos(fallbackVideos);
-      console.log('✅ Using 2 most recent fallback videos');
+      console.log('✅ Using 3 most recent fallback videos');
       
     } catch (error) {
       console.error('❌ Error fetching YouTube videos:', error);
@@ -106,7 +115,7 @@ export const YouTubeVideosSection = () => {
   if (loading) {
     return (
       <div className="space-y-6">
-        {[...Array(2)].map((_, i) => (
+        {[...Array(3)].map((_, i) => (
           <Card key={i} className="animate-pulse">
             <CardHeader>
               <div className="h-4 bg-muted rounded w-3/4"></div>
@@ -130,11 +139,11 @@ export const YouTubeVideosSection = () => {
       <div className="flex items-center gap-2 mb-6">
         <Youtube className="w-6 h-6 text-red-600" />
         <h2 className="font-display text-2xl font-bold text-foreground">
-          Vidéos Surf Maroc - YouTube (2 dernières)
+          Vidéos Surf Maroc - YouTube (3 dernières)
         </h2>
       </div>
       
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-3 gap-6">
         {videos.map((video) => (
           <Card key={video.videoId} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden group">
             <div className="relative aspect-video overflow-hidden bg-black">
@@ -208,7 +217,7 @@ export const YouTubeVideosSection = () => {
       )}
       
       <div className="text-center text-sm text-muted-foreground">
-        <p>Vidéos mises à jour automatiquement depuis YouTube (2 dernières ajoutées)</p>
+        <p>Vidéos mises à jour automatiquement depuis YouTube (3 dernières ajoutées)</p>
       </div>
     </div>
   );
