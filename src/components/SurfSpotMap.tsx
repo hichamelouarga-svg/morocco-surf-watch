@@ -134,10 +134,26 @@ export const SurfSpotMap = () => {
                   
                   <div className="space-y-3 mb-6">
                     <p className="text-muted-foreground">{selectedSpot.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="outline">{selectedSpot.waveType}</Badge>
-                      <Badge variant="outline">{selectedSpot.skillLevel}</Badge>
-                      <Badge variant="outline">{selectedSpot.city}</Badge>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">{t('skill_level')}:</span>
+                        <span className="font-medium">{t(selectedSpot.skillLevel)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">{t('wave_type')}:</span>
+                        <span className="font-medium">{t(selectedSpot.waveType.replace(' ', '_'))}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">{t('crowd_level')}:</span>
+                        <span className="font-medium">{t(selectedSpot.crowdLevel)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">{t('best_seasons')}:</span>
+                        <span className="font-medium">
+                          {selectedSpot.bestSeasons.map(season => t(season.toLowerCase())).join(', ')}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
