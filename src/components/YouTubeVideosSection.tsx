@@ -28,35 +28,42 @@ export const YouTubeVideosSection = () => {
     try {
       setLoading(true);
       
-      // Try to call Supabase Edge Function first
-      try {
-        const { data, error } = await supabase.functions.invoke('fetch-youtube-videos', {
-          method: 'GET'
-        });
-        
-        if (!error && data) {
-          setVideos(data);
-          return;
-        }
-      } catch (functionError) {
-        console.log('Edge function not available, using mock data');
+      console.log('Fetching YouTube videos...');
+      
+      // Call Supabase Edge Function to fetch YouTube videos
+      const { data, error } = await supabase.functions.invoke('fetch-youtube-videos', {
+        method: 'GET'
+      });
+      
+      console.log('Edge function response:', { data, error });
+      
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
       }
       
-      // Fallback to mock data with real surf videos from Morocco
+      if (data && Array.isArray(data) && data.length > 0) {
+        console.log('Using API data:', data);
+        setVideos(data);
+        return;
+      }
+      
+      // If no data from API, use curated surf videos from Morocco
+      console.log('Using fallback surf videos');
       const mockVideos = [
         {
           videoId: "8CrOL-ydFMI",
-          title: "Surf parfait à Taghazout - Conditions exceptionnelles",
-          description: "Des conditions de surf parfaites à Taghazout avec des vagues de 2-3 mètres et un vent offshore. Session épique avec les locaux!",
+          title: "Surfing Morocco - Taghazout Perfect Waves",
+          description: "Amazing surf session in Taghazout, Morocco with perfect 2-3 meter waves and offshore winds.",
           thumbnail: "https://img.youtube.com/vi/8CrOL-ydFMI/mqdefault.jpg",
-          channelTitle: "Surf Morocco TV",
+          channelTitle: "Surf Morocco",
           publishedAt: new Date().toISOString(),
           url: "https://www.youtube.com/watch?v=8CrOL-ydFMI"
         },
         {
-          videoId: "Jy7ljnZCrOo",
-          title: "Guide complet des spots de surf au Maroc",
-          description: "Découvrez les meilleurs spots de surf du Maroc, d'Imsouane à Essaouira en passant par Taghazout. Conseils et astuces pour surfeurs.",
+          videoId: "Jy7ljnZCrOo", 
+          title: "Morocco Surf Guide - Best Spots",
+          description: "Complete guide to the best surf spots in Morocco from Imsouane to Essaouira.",
           thumbnail: "https://img.youtube.com/vi/Jy7ljnZCrOo/mqdefault.jpg",
           channelTitle: "Morocco Surf Guide",
           publishedAt: new Date(Date.now() - 86400000).toISOString(),
@@ -64,10 +71,10 @@ export const YouTubeVideosSection = () => {
         },
         {
           videoId: "zYx0vLfpRYY",
-          title: "Surf à Imsouane - La vague la plus longue du Maroc",
-          description: "Session de surf à Imsouane, célèbre pour sa vague droite qui peut durer plus d'une minute. Conditions parfaites pour le longboard.",
+          title: "Imsouane - Morocco's Longest Wave", 
+          description: "Surfing the famous right-hand point break at Imsouane, Morocco's longest rideable wave.",
           thumbnail: "https://img.youtube.com/vi/zYx0vLfpRYY/mqdefault.jpg",
-          channelTitle: "Imsouane Surf",
+          channelTitle: "Atlantic Surf Morocco",
           publishedAt: new Date(Date.now() - 172800000).toISOString(),
           url: "https://www.youtube.com/watch?v=zYx0vLfpRYY"
         }
