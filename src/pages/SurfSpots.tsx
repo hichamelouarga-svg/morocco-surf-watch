@@ -21,7 +21,7 @@ const SurfSpots = () => {
               {t('surf_spots')}
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Discover the best surf spots across Morocco with real-time conditions and forecasts
+              {t('surf_spots_description')}
             </p>
           </div>
 
@@ -53,20 +53,20 @@ const SurfSpots = () => {
                   
                   <div className="flex flex-wrap gap-2 mb-4">
                     <Badge variant="outline" className="capitalize">
-                      {spot.skillLevel}
+                      {t(spot.skillLevel)}
                     </Badge>
                     <Badge variant="outline">
-                      {spot.waveType}
+                      {t(spot.waveType.replace(' ', '_'))}
                     </Badge>
                     <Badge variant="outline">
-                      Crowd: {spot.crowdLevel}
+                      {t('crowd')}: {t(spot.crowdLevel)}
                     </Badge>
                   </div>
 
                   <Button asChild className="w-full bg-primary hover:bg-primary-dark">
                     <Link to={`/surf-spot/${spot.id}`}>
                       <Waves className="w-4 h-4 mr-2" />
-                      View Details
+                      {t('view_details')}
                     </Link>
                   </Button>
                 </CardContent>
