@@ -32,51 +32,57 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
 
     const [lat, lon] = spotCoords.coordinates;
     
-    // Fetch 7-day forecast from open-meteo.com (free API)
-    const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum&timezone=auto&forecast_days=7`
+    // Fetch 7-day forecast from open-meteo marine API for real wave data
+    const marineResponse = await fetch(
+      `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=wave_height_max,wave_direction_dominant,wave_period_max,swell_wave_height_max,swell_wave_direction_dominant,swell_wave_period_max&timezone=auto&forecast_days=7`
+    );
+    
+    // Also get wind data from regular weather API
+    const weatherResponse = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=wind_speed_10m_max,wind_direction_10m_dominant&timezone=auto&forecast_days=7`
     );
 
-    if (!response.ok) {
+    if (!marineResponse.ok || !weatherResponse.ok) {
       console.error('Failed to fetch forecast data');
       return getMockForecast();
     }
 
-    const data = await response.json();
-    console.log('Forecast data received:', data);
+    const marineData = await marineResponse.json();
+    const weatherData = await weatherResponse.json();
+    console.log('Marine forecast data received:', marineData);
+    console.log('Weather forecast data received:', weatherData);
 
-    // Process forecast data from open-meteo
-    const dailyData = data.daily;
+    // Process forecast data using REAL marine data
+    const marineDays = marineData.daily;
+    const weatherDays = weatherData.daily;
     
     return Array.from({ length: 7 }, (_, index) => {
-      const windSpeedKmh = dailyData.wind_speed_10m_max[index] || 10; // Already in km/h, no conversion needed
+      const windSpeedKmh = weatherDays.wind_speed_10m_max[index] || 10; // Already in km/h
       
-      // More realistic wave calculation for Morocco Atlantic coast
-      // Morocco gets consistent Atlantic swells, less dependent on local wind
-      const baseSwellHeight = 1.2; // Atlantic swells are typically 1-2m
-      const windEffect = Math.min(windSpeedKmh / 40, 0.5); // Wind has less effect on existing swell
-      const waveHeight = baseSwellHeight + windEffect + (Math.random() * 0.6 - 0.3); // ±0.3m variation
+      // Use REAL wave data from marine API
+      const waveHeight = marineDays.wave_height_max[index] || marineDays.swell_wave_height_max[index] || 1.2;
+      const swellHeight = marineDays.swell_wave_height_max[index] || waveHeight;
       
       let conditions: 'faible' | 'moyen' | 'bon' | 'excellent' = 'moyen';
       let rating = 3;
       
-      // More realistic rating for Morocco coast conditions
-      if (waveHeight > 1.5 && windSpeedKmh < 25) {
+      // Rate based on REAL wave conditions
+      if (swellHeight > 1.5 && windSpeedKmh < 25) {
         conditions = 'excellent';
         rating = 5;
-      } else if (waveHeight > 1.0 && windSpeedKmh < 35) {
+      } else if (swellHeight > 1.0 && windSpeedKmh < 35) {
         conditions = 'bon';
         rating = 4;
-      } else if (waveHeight < 0.8 || windSpeedKmh > 45) {
+      } else if (swellHeight < 0.8 || windSpeedKmh > 45) {
         conditions = 'faible';
         rating = 2;
       }
 
       return {
-        date: new Date(dailyData.time[index]),
-        waveHeight: `${Math.max(0.5, waveHeight * 0.8).toFixed(1)}-${(waveHeight * 1.2).toFixed(1)}m`,
-        windDirection: getWindDirection(dailyData.wind_direction_10m_dominant[index] || 180),
-        windSpeed: Math.round(windSpeedKmh), // Already in km/h
+        date: new Date(marineDays.time[index]),
+        waveHeight: `${Math.max(0.5, swellHeight * 0.9).toFixed(1)}-${(swellHeight * 1.1).toFixed(1)}m`,
+        windDirection: getWindDirection(weatherDays.wind_direction_10m_dominant[index] || 180),
+        windSpeed: Math.round(windSpeedKmh),
         rating: rating,
         conditions: conditions
       };

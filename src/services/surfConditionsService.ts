@@ -52,9 +52,9 @@ export class SurfConditionsService {
       
       const [lat, lon] = spot.coordinates;
       
-      // Use open-meteo.com free API (simpler current weather endpoint)
-      const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,wind_direction_10m&timezone=auto&forecast_days=1`;
-      console.log(`Fetching weather data from: ${apiUrl}`);
+      // Use open-meteo.com marine API for real wave data
+      const apiUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height,wave_direction,wave_period,swell_wave_height,swell_wave_direction,swell_wave_period,wind_wave_height&daily=wave_height_max,wave_direction_dominant,wave_period_max&timezone=auto&forecast_days=1`;
+      console.log(`Fetching marine data from: ${apiUrl}`);
       
       const weatherResponse = await fetch(apiUrl, {
         cache: 'no-cache',
@@ -68,25 +68,35 @@ export class SurfConditionsService {
         throw new Error('Failed to fetch weather data');
       }
       
-      const weatherData = await weatherResponse.json();
-      console.log('✅ Weather data received:', weatherData);
+      const marineData = await weatherResponse.json();
+      console.log('✅ Marine data received:', marineData);
       
-      // Process Open-Meteo data
-      const current = weatherData.current;
+      // Also get weather data for temperature and wind
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,wind_direction_10m&timezone=auto&forecast_days=1`;
+      const weatherResp = await fetch(weatherUrl);
+      const weatherData = await weatherResp.json();
       
-      // Get real wind data from Open-Meteo (already in correct units)
-      const windSpeed = current.wind_speed_10m || 10; // km/h from API
-      const windSpeedKmh = windSpeed; // No conversion needed
-      const windDirection = current.wind_direction_10m || 180;
+      // Process Marine API data for waves
+      const current = marineData.current;
+      const weatherCurrent = weatherData.current;
       
-      // More realistic wave simulation for Morocco Atlantic coast
-      // Morocco consistently gets Atlantic swells regardless of local wind
-      const baseSwellHeight = 1.3; // Typical Atlantic swell base
-      const windEffect = Math.min(windSpeedKmh / 50, 0.4); // Reduced wind influence
-      const waveHeight = baseSwellHeight + windEffect + (Math.random() * 0.5 - 0.25); // Less random variation
+      // Get real wind and wave data
+      const windSpeedKmh = weatherCurrent.wind_speed_10m || 10; // km/h from weather API
+      const windDirection = weatherCurrent.wind_direction_10m || 180;
       
-      const swellPeriod = 8 + (waveHeight * 1.5) + (Math.random() * 2); // More realistic periods
-      const swellDirection = windDirection + (Math.random() * 40 - 20); // Less deviation
+      // Use REAL wave data from marine API
+      const waveHeight = current.wave_height || current.swell_wave_height || 1.2; // Real wave height in meters
+      const swellHeight = current.swell_wave_height || waveHeight; // Swell component
+      const swellPeriod = current.swell_wave_period || current.wave_period || 10; // Real swell period
+      const swellDirection = current.swell_wave_direction || current.wave_direction || windDirection;
+      
+      console.log('Real wave data:', {
+        waveHeight,
+        swellHeight, 
+        swellPeriod,
+        swellDirection,
+        windSpeedKmh
+      });
       
       // Calculate surf rating based on real Morocco coast conditions
       let rating: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' = 'FAIR';
@@ -103,11 +113,11 @@ export class SurfConditionsService {
         ratingValue = 25;
       }
       
-        console.log('Real weather data used:', {
-        temperature: current.temperature_2m,
-        windSpeed: windSpeed,
-        windDirection: windDirection,
-        calculatedWaveHeight: waveHeight,
+      console.log('Real marine data used:', {
+        temperature: weatherCurrent.temperature_2m,
+        windSpeedKmh: windSpeedKmh,
+        realWaveHeight: waveHeight,
+        swellHeight: swellHeight,
         rating: rating
       });
       
@@ -127,7 +137,7 @@ export class SurfConditionsService {
         },
         swell: [
           {
-            height: Number(waveHeight.toFixed(1)),
+            height: Number(swellHeight.toFixed(1)),
             period: Math.round(swellPeriod),
             direction: this.getWindDirection(swellDirection),
             angle: Math.round(swellDirection)
@@ -136,8 +146,8 @@ export class SurfConditionsService {
         wind: {
           speed: Math.round(windSpeedKmh * 0.54), // Convert km/h to knots for display
           gusts: Math.round(windSpeedKmh * 0.54 * 1.2), // More realistic gust factor
-          direction: this.getWindDirection(current.wind_direction_10m || 180),
-          type: this.getWindType(current.wind_direction_10m || 180, swellDirection)
+          direction: this.getWindDirection(weatherCurrent.wind_direction_10m || 180),
+          type: this.getWindType(weatherCurrent.wind_direction_10m || 180, swellDirection)
         },
         tide: {
           current: tideData.current,
@@ -146,11 +156,11 @@ export class SurfConditionsService {
           data: tideData.data
         },
         temperature: {
-          air: Math.round(current.temperature_2m || 20), // Celsius from Open-Meteo
-          water: Math.round((current.temperature_2m || 20) - 3), // Estimate water temp
-          wetsuit: (current.temperature_2m || 20) < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
+          air: Math.round(weatherCurrent.temperature_2m || 20), // Celsius from weather API
+          water: Math.round((weatherCurrent.temperature_2m || 20) - 3), // Estimate water temp
+          wetsuit: (weatherCurrent.temperature_2m || 20) < 18 ? 'Combinaison 3mm' : 'Combinaison 2mm'
         },
-        forecast: 'OPEN-METEO',
+        forecast: 'MARINE-API',
         lastUpdated: new Date().toLocaleString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
