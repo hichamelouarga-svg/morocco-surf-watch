@@ -17,8 +17,12 @@ interface ContactEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log(`📧 Function called with method: ${req.method}`);
+  console.log(`🔑 RESEND_API_KEY exists: ${!!Deno.env.get("RESEND_API_KEY")}`);
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
+    console.log("✅ Handling OPTIONS request");
     return new Response(null, { headers: corsHeaders });
   }
 
