@@ -259,7 +259,10 @@ const resources = {
       "sunrise": "Lever du Soleil",
       "sunset": "Coucher du Soleil",
       "unable_to_load_weather": "Impossible de charger les données météo",
-      "camera_installation_planned": "Installation de caméra prévue"
+      "camera_installation_planned": "Installation de caméra prévue",
+      "surf_spots_description": "Découvrez les meilleurs spots de surf du Maroc avec des conditions en temps réel et des prévisions",
+      "view_details": "Voir les Détails",
+      "crowd": "Affluence"
     }
   },
   en: {
@@ -378,7 +381,10 @@ const resources = {
       "sunrise": "Sunrise",
       "sunset": "Sunset",
       "unable_to_load_weather": "Unable to load weather data",
-      "camera_installation_planned": "Camera installation planned"
+      "camera_installation_planned": "Camera installation planned",
+      "surf_spots_description": "Discover the best surf spots across Morocco with real-time conditions and forecasts",
+      "view_details": "View Details",
+      "crowd": "Crowd"
     }
   },
   ar: {
