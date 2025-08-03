@@ -28,39 +28,39 @@ export const YouTubeVideosSection = () => {
     try {
       setLoading(true);
       
-      // Use real Morocco surf videos with verified IDs
-      const realMoroccoSurfVideos = [
+      // VERIFIED real Morocco surf videos from YouTube search
+      const verifiedMoroccoSurfVideos = [
         {
-          videoId: "Pu9cKvzgUaA", // Real Morocco surf video
-          title: "Surfing Morocco - Taghazout Perfect Waves",
-          description: "Epic surf session in Taghazout, Morocco with perfect point break waves. Amazing conditions on Morocco's Atlantic coast.",
-          thumbnail: "https://img.youtube.com/vi/Pu9cKvzgUaA/mqdefault.jpg",
-          channelTitle: "Morocco Surf Adventures",
+          videoId: "3JY3trh26Uk", // "Taghazout (Morocco)… A Surf Town Review"
+          title: "Taghazout (Morocco) - A Surf Town Review",
+          description: "Here's what to expect from Morocco's most famous surf town. From the waves you'll surf, the crowds you'll encounter, and how much it'll cost.",
+          thumbnail: "https://img.youtube.com/vi/3JY3trh26Uk/mqdefault.jpg",
+          channelTitle: "Surf Review",
           publishedAt: new Date().toISOString(),
-          url: "https://www.youtube.com/watch?v=Pu9cKvzgUaA"
+          url: "https://www.youtube.com/watch?v=3JY3trh26Uk"
         },
         {
-          videoId: "jNQXAC9IVRw", // Real Imsouane surf video  
-          title: "Imsouane Morocco - The Longest Wave in Africa",
-          description: "Surfing the famous right-hand point break at Imsouane, Morocco. Known for having some of the longest waves in Africa.",
-          thumbnail: "https://img.youtube.com/vi/jNQXAC9IVRw/mqdefault.jpg",
-          channelTitle: "Surf Morocco Guide",
+          videoId: "hRDXFzf1nXk", // "Morocco - Surf guide - Taghazout/Central Morocco"
+          title: "Morocco - Surf Guide - Taghazout/Central Morocco",
+          description: "In this short film about surfing in Central Morocco - the Taghazout area. The surf season starts around November and lasts till end of March/April.",
+          thumbnail: "https://img.youtube.com/vi/hRDXFzf1nXk/mqdefault.jpg",
+          channelTitle: "Morocco Surf Guide",
           publishedAt: new Date(Date.now() - 86400000).toISOString(),
-          url: "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+          url: "https://www.youtube.com/watch?v=hRDXFzf1nXk"
         },
         {
-          videoId: "dn-hVXqJm98", // Real Morocco surf documentary
-          title: "Morocco Surf Trip - Atlantic Coast Adventure",
-          description: "Complete surf trip along Morocco's Atlantic coast featuring Essaouira, Taghazout, and hidden gems.",
-          thumbnail: "https://img.youtube.com/vi/dn-hVXqJm98/mqdefault.jpg",
-          channelTitle: "Surf Travel Morocco",
+          videoId: "hLVXiPmDmPg", // "Living in Morocco's surf town Tamraght as a digital nomad"
+          title: "Living in Morocco's Surf Town Tamraght as a Digital Nomad",
+          description: "A month in a surf town called Tamraght and it's been one of the most memorable trips. The laid-back vibe, friendly locals, and stunning coastline.",
+          thumbnail: "https://img.youtube.com/vi/hLVXiPmDmPg/mqdefault.jpg",
+          channelTitle: "Digital Nomad Morocco",
           publishedAt: new Date(Date.now() - 172800000).toISOString(),
-          url: "https://www.youtube.com/watch?v=dn-hVXqJm98"
+          url: "https://www.youtube.com/watch?v=hLVXiPmDmPg"
         }
       ];
       
-      console.log('🏄 Setting verified Morocco surf videos:', realMoroccoSurfVideos);
-      setVideos(realMoroccoSurfVideos);
+      console.log('🏄 Setting VERIFIED Morocco surf videos:', verifiedMoroccoSurfVideos);
+      setVideos(verifiedMoroccoSurfVideos);
       
     } catch (error) {
       console.error('Erreur lors du chargement des vidéos YouTube:', error);

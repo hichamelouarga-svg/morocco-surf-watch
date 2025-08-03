@@ -83,12 +83,19 @@ serve(async (req) => {
       }
     }
 
-    // If we got real RSS content, use it
+    // If we got real RSS content, remove duplicates and use it
     if (newsItems.length > 0) {
-      console.log(`Using ${newsItems.length} real RSS items`);
+      console.log(`Processing ${newsItems.length} RSS items`);
+      
+      // Remove duplicates based on title
+      const uniqueNews = newsItems.filter((item, index, self) =>
+        index === self.findIndex(t => t.title.toLowerCase() === item.title.toLowerCase())
+      );
+      
+      console.log(`Using ${uniqueNews.length} unique RSS items`);
       // Sort by date and return
-      newsItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-      return new Response(JSON.stringify(newsItems.slice(0, 8)), {
+      uniqueNews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      return new Response(JSON.stringify(uniqueNews.slice(0, 6)), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
