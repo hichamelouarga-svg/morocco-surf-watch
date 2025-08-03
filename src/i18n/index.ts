@@ -176,7 +176,7 @@ const resources = {
       
       // About Page
       "our_story": "Notre Histoire",
-      "about_story_p1": "Surf au Maroc est né d'une idée simple : rendre la culture surf incroyable du Maroc plus accessible aux surfeurs du monde entier. Avec ses 3 500 kilomètres de côte atlantique, le Maroc offre certaines des conditions de surf les plus constantes et diversifiées au monde.",
+      "about_story_p1": "Surf au Maroc est né d'une idée simple en 2001 : rendre la culture surf incroyable du Maroc plus accessible aux surfeurs marocains et du monde entier. Avec ses 2 500 kilomètres de côte atlantique, le Maroc offre certaines des conditions de surf les plus constantes et diversifiées au monde. L'idée est d'avoir un œil sur ses meilleurs spots en direct.",
       "about_story_p2": "Notre plateforme combine une technologie de pointe avec une expertise locale pour fournir des conditions de surf en temps réel, des prévisions météo et des flux de caméras live depuis les destinations surf les plus prisées du Maroc. Des vagues puissantes de Taghazout aux breaks doux de la plage de Mehdia, nous sommes là pour vous aider à trouver la vague parfaite.",
       "about_story_p3": "Plus qu'un simple service de prévisions, Surf au Maroc est une célébration du riche patrimoine côtier du Maroc et de la communauté surf internationale grandissante qui considère ces eaux comme leur maison.",
       "our_mission": "Notre Mission",
