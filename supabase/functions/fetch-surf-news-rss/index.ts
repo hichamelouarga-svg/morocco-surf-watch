@@ -83,19 +83,31 @@ serve(async (req) => {
       }
     }
 
-    // If we got real RSS content, remove duplicates and use it
+    // Remove duplicates more aggressively 
     if (newsItems.length > 0) {
-      console.log(`Processing ${newsItems.length} RSS items`);
+      console.log(`Processing ${newsItems.length} RSS items for duplicates`);
       
-      // Remove duplicates based on title
-      const uniqueNews = newsItems.filter((item, index, self) =>
-        index === self.findIndex(t => t.title.toLowerCase() === item.title.toLowerCase())
-      );
+      // Remove duplicates based on title similarity (more strict)
+      const uniqueNews = [];
+      const seenTitles = new Set();
       
-      console.log(`Using ${uniqueNews.length} unique RSS items`);
-      // Sort by date and return
+      for (const item of newsItems) {
+        const normalizedTitle = item.title.toLowerCase()
+          .replace(/[^\w\s]/g, '') // Remove punctuation
+          .replace(/\s+/g, ' ')     // Normalize whitespace
+          .trim();
+        
+        if (!seenTitles.has(normalizedTitle)) {
+          seenTitles.add(normalizedTitle);
+          uniqueNews.push(item);
+        }
+      }
+      
+      console.log(`Removed duplicates: ${newsItems.length} -> ${uniqueNews.length} unique items`);
+      
+      // Sort by date and return only 4 items
       uniqueNews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-      return new Response(JSON.stringify(uniqueNews.slice(0, 6)), {
+      return new Response(JSON.stringify(uniqueNews.slice(0, 4)), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }

@@ -27,11 +27,28 @@ export const YouTubeVideosSection = () => {
   const fetchYouTubeVideos = async () => {
     try {
       setLoading(true);
+      console.log('🔄 Fetching DYNAMIC YouTube videos (last 2 added)...');
       
-      // VERIFIED real Morocco surf videos from YouTube search
-      const verifiedMoroccoSurfVideos = [
+      // Try to get real dynamic videos from API
+      const { data, error } = await supabase.functions.invoke('fetch-youtube-videos', {
+        method: 'GET'
+      });
+      
+      console.log('📡 YouTube API response:', { data, error });
+      
+      if (!error && data && Array.isArray(data) && data.length > 0) {
+        console.log(`✅ Got ${data.length} DYNAMIC videos from API`);
+        // Take only the 2 most recent videos
+        const recentVideos = data.slice(0, 2);
+        setVideos(recentVideos);
+        return;
+      }
+      
+      console.log('🔄 API failed, using verified Morocco surf videos...');
+      // Fallback to verified Morocco surf videos (only 2 most recent)
+      const fallbackVideos = [
         {
-          videoId: "3JY3trh26Uk", // "Taghazout (Morocco)… A Surf Town Review"
+          videoId: "3JY3trh26Uk",
           title: "Taghazout (Morocco) - A Surf Town Review",
           description: "Here's what to expect from Morocco's most famous surf town. From the waves you'll surf, the crowds you'll encounter, and how much it'll cost.",
           thumbnail: "https://img.youtube.com/vi/3JY3trh26Uk/mqdefault.jpg",
@@ -40,43 +57,34 @@ export const YouTubeVideosSection = () => {
           url: "https://www.youtube.com/watch?v=3JY3trh26Uk"
         },
         {
-          videoId: "hRDXFzf1nXk", // "Morocco - Surf guide - Taghazout/Central Morocco"
-          title: "Morocco - Surf Guide - Taghazout/Central Morocco",
+          videoId: "hRDXFzf1nXk",
+          title: "Morocco - Surf Guide - Taghazout/Central Morocco", 
           description: "In this short film about surfing in Central Morocco - the Taghazout area. The surf season starts around November and lasts till end of March/April.",
           thumbnail: "https://img.youtube.com/vi/hRDXFzf1nXk/mqdefault.jpg",
           channelTitle: "Morocco Surf Guide",
           publishedAt: new Date(Date.now() - 86400000).toISOString(),
           url: "https://www.youtube.com/watch?v=hRDXFzf1nXk"
-        },
-        {
-          videoId: "hLVXiPmDmPg", // "Living in Morocco's surf town Tamraght as a digital nomad"
-          title: "Living in Morocco's Surf Town Tamraght as a Digital Nomad",
-          description: "A month in a surf town called Tamraght and it's been one of the most memorable trips. The laid-back vibe, friendly locals, and stunning coastline.",
-          thumbnail: "https://img.youtube.com/vi/hLVXiPmDmPg/mqdefault.jpg",
-          channelTitle: "Digital Nomad Morocco",
-          publishedAt: new Date(Date.now() - 172800000).toISOString(),
-          url: "https://www.youtube.com/watch?v=hLVXiPmDmPg"
         }
       ];
       
-      console.log('🏄 Setting VERIFIED Morocco surf videos:', verifiedMoroccoSurfVideos);
-      setVideos(verifiedMoroccoSurfVideos);
+      setVideos(fallbackVideos);
+      console.log('✅ Using 2 most recent fallback videos');
       
     } catch (error) {
-      console.error('Erreur lors du chargement des vidéos YouTube:', error);
-      // Backup surf videos with real surf content
-      const backupVideos = [
+      console.error('❌ Error fetching YouTube videos:', error);
+      // Emergency fallback - just 1 video
+      const emergencyVideo = [
         {
-          videoId: "Pu9cKvzgUaA",
-          title: "Morocco Surf - Taghazout Sessions",
-          description: "Beautiful surf sessions in Taghazout, Morocco",
-          thumbnail: "https://img.youtube.com/vi/Pu9cKvzgUaA/mqdefault.jpg",
-          channelTitle: "Surf Morocco",
+          videoId: "3JY3trh26Uk",
+          title: "Taghazout Morocco - Surf Town",
+          description: "Surf town review of Taghazout, Morocco",
+          thumbnail: "https://img.youtube.com/vi/3JY3trh26Uk/mqdefault.jpg",
+          channelTitle: "Morocco Surf",
           publishedAt: new Date().toISOString(),
-          url: "https://www.youtube.com/watch?v=Pu9cKvzgUaA"
+          url: "https://www.youtube.com/watch?v=3JY3trh26Uk"
         }
       ];
-      setVideos(backupVideos);
+      setVideos(emergencyVideo);
     } finally {
       setLoading(false);
     }
@@ -98,7 +106,7 @@ export const YouTubeVideosSection = () => {
   if (loading) {
     return (
       <div className="space-y-6">
-        {[...Array(3)].map((_, i) => (
+        {[...Array(2)].map((_, i) => (
           <Card key={i} className="animate-pulse">
             <CardHeader>
               <div className="h-4 bg-muted rounded w-3/4"></div>
@@ -122,11 +130,11 @@ export const YouTubeVideosSection = () => {
       <div className="flex items-center gap-2 mb-6">
         <Youtube className="w-6 h-6 text-red-600" />
         <h2 className="font-display text-2xl font-bold text-foreground">
-          Vidéos Surf Maroc - YouTube
+          Vidéos Surf Maroc - YouTube (2 dernières)
         </h2>
       </div>
       
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 gap-6">
         {videos.map((video) => (
           <Card key={video.videoId} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden group">
             <div className="relative aspect-video overflow-hidden bg-black">
@@ -200,7 +208,7 @@ export const YouTubeVideosSection = () => {
       )}
       
       <div className="text-center text-sm text-muted-foreground">
-        <p>Vidéos mises à jour automatiquement depuis YouTube</p>
+        <p>Vidéos mises à jour automatiquement depuis YouTube (2 dernières ajoutées)</p>
       </div>
     </div>
   );

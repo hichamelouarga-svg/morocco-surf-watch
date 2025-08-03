@@ -99,9 +99,9 @@ serve(async (req) => {
       searchUrl.searchParams.append('q', query);
       searchUrl.searchParams.append('part', 'snippet');
       searchUrl.searchParams.append('type', 'video');
-      searchUrl.searchParams.append('maxResults', '5');
+      searchUrl.searchParams.append('maxResults', '2'); // Only get 2 recent videos per query
       searchUrl.searchParams.append('order', 'date');
-      searchUrl.searchParams.append('publishedAfter', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()); // Last 30 days
+      searchUrl.searchParams.append('publishedAfter', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()); // Last 7 days
 
       console.log(`Fetching YouTube videos for query: ${query}`);
 
@@ -132,7 +132,7 @@ serve(async (req) => {
     const uniqueVideos = allVideos.filter((video, index, self) =>
       index === self.findIndex(v => v.videoId === video.videoId)
     ).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 12); // Limit to 12 most recent videos
+    .slice(0, 2); // Limit to 2 most recent videos
 
     return new Response(JSON.stringify(uniqueVideos), {
       headers: {
