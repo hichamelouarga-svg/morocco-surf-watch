@@ -31,10 +31,10 @@ export const SurfSpotMap = () => {
         // Set Mapbox access token
         mapboxgl.accessToken = mapboxToken;
 
-        // Initialize map with ocean-themed styling
+        // Initialize map with dark ocean-themed styling
         const map = new mapboxgl.Map({
           container: mapRef.current,
-          style: 'mapbox://styles/mapbox/light-v11',
+          style: 'mapbox://styles/mapbox/dark-v11',
           center: [-7.0, 33.0], // Center on Morocco [lng, lat]
           zoom: 6,
         });
