@@ -26,8 +26,10 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    console.log('🚀 Contact form submitted with data:', formData);
 
     try {
+      console.log('💾 Attempting to save to database...');
       // Save to database
       const { error: dbError } = await supabase
         .from('contact_submissions')
@@ -40,9 +42,12 @@ const Contact = () => {
         });
 
       if (dbError) {
+        console.error('❌ Database error:', dbError);
         throw dbError;
       }
+      console.log('✅ Database save successful');
 
+      console.log('📧 Attempting to send email...');
       // Send email notification
       const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
         body: {
@@ -55,8 +60,10 @@ const Contact = () => {
       });
 
       if (emailError) {
-        console.error('Email sending error:', emailError);
+        console.error('❌ Email sending error:', emailError);
         // Don't throw here - we still want to show success if DB save worked
+      } else {
+        console.log('✅ Email sent successfully');
       }
 
       // Show success message
