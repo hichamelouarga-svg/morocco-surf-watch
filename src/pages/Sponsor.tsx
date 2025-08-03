@@ -49,10 +49,10 @@ const Sponsor = () => {
       icon: <Star className="w-8 h-8" />,
       color: 'bg-secondary',
       features: [
-        'Logo placement on one page',
-        'Monthly analytics report',
-        'Social media mentions',
-        'Direct contact information'
+        t('sponsor_page_feature_1'),
+        t('sponsor_page_feature_2'),
+        t('sponsor_page_feature_3'),
+        t('sponsor_page_feature_4')
       ]
     },
     {
@@ -63,12 +63,12 @@ const Sponsor = () => {
       color: 'bg-primary',
       popular: true,
       features: [
-        'Logo on surf spot page',
-        'Live camera overlay branding',
-        'Premium placement in listings',
-        'Weekly performance reports',
-        'Social media promotion',
-        'Newsletter mentions'
+        t('sponsor_spot_feature_1'),
+        t('sponsor_spot_feature_2'),
+        t('sponsor_spot_feature_3'),
+        t('sponsor_spot_feature_4'),
+        t('sponsor_spot_feature_5'),
+        t('sponsor_spot_feature_6')
       ]
     },
     {
@@ -79,14 +79,14 @@ const Sponsor = () => {
       color: 'bg-gradient-sunset',
       premium: true,
       features: [
-        'Site-wide logo placement',
-        'Homepage banner space',
-        'All camera overlay branding',
-        'Priority in all listings',
-        'Daily analytics reports',
-        'Dedicated social promotion',
-        'Press release distribution',
-        'Custom content creation'
+        t('sponsor_website_feature_1'),
+        t('sponsor_website_feature_2'),
+        t('sponsor_website_feature_3'),
+        t('sponsor_website_feature_4'),
+        t('sponsor_website_feature_5'),
+        t('sponsor_website_feature_6'),
+        t('sponsor_website_feature_7'),
+        t('sponsor_website_feature_8')
       ]
     }
   ];
@@ -103,7 +103,7 @@ const Sponsor = () => {
               {t('sponsor')}
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8">
-              Partner with Surf au Maroc to reach thousands of surf enthusiasts and support Morocco's surf community
+              {t('sponsor_subtitle')}
             </p>
             
             {/* Currency Selector */}
@@ -137,7 +137,7 @@ const Sponsor = () => {
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <Badge className="bg-coral text-white px-4 py-1">
-                      Most Popular
+                      {t('most_popular')}
                     </Badge>
                   </div>
                 )}
@@ -145,7 +145,7 @@ const Sponsor = () => {
                 {plan.premium && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <Badge className="bg-sunset text-white px-4 py-1">
-                      Premium
+                      {t('premium')}
                     </Badge>
                   </div>
                 )}
@@ -183,7 +183,7 @@ const Sponsor = () => {
                     }`}
                   >
                     <Link to="/contact">
-                      Choose Plan
+                      {t('choose_plan')}
                     </Link>
                   </Button>
                 </CardContent>
@@ -203,24 +203,24 @@ const Sponsor = () => {
                     </h2>
                   </div>
                   <p className="text-xl text-white/90 mb-6">
-                    Have a great surf spot location? Partner with us to install a live camera and become part of our network.
+                    {t('host_cam_desc')}
                   </p>
                   <ul className="space-y-2 mb-6">
                     <li className="flex items-center">
                       <Check className="w-5 h-5 mr-2" />
-                      Free camera installation
+                      {t('host_cam_feature_1')}
                     </li>
                     <li className="flex items-center">
                       <Check className="w-5 h-5 mr-2" />
-                      Revenue sharing program
+                      {t('host_cam_feature_2')}
                     </li>
                     <li className="flex items-center">
                       <Check className="w-5 h-5 mr-2" />
-                      Technical support included
+                      {t('host_cam_feature_3')}
                     </li>
                     <li className="flex items-center">
                       <Check className="w-5 h-5 mr-2" />
-                      Promote your location
+                      {t('host_cam_feature_4')}
                     </li>
                   </ul>
                 </div>
@@ -229,7 +229,7 @@ const Sponsor = () => {
                   <div className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
                     <Camera className="w-16 h-16 mx-auto mb-4 text-accent" />
                     <h3 className="font-display text-2xl font-bold mb-4">
-                      Become a Camera Host
+                      {t('become_camera_host')}
                     </h3>
                     <Button 
                       asChild 
@@ -250,7 +250,7 @@ const Sponsor = () => {
           {/* Benefits Section */}
           <div className="mt-16 text-center">
             <h2 className="font-display text-3xl font-bold text-foreground mb-8">
-              Why Sponsor Surf au Maroc?
+              {t('why_sponsor')}
             </h2>
             
             <div className="grid md:grid-cols-3 gap-8">
@@ -258,9 +258,9 @@ const Sponsor = () => {
                 <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-white">10k+</span>
                 </div>
-                <h3 className="font-display text-xl font-bold mb-2">Monthly Visitors</h3>
+                <h3 className="font-display text-xl font-bold mb-2">{t('monthly_visitors')}</h3>
                 <p className="text-muted-foreground">
-                  Reach thousands of surf enthusiasts from around the world
+                  {t('monthly_visitors_desc')}
                 </p>
               </div>
               
@@ -268,9 +268,9 @@ const Sponsor = () => {
                 <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-white">24/7</span>
                 </div>
-                <h3 className="font-display text-xl font-bold mb-2">Live Coverage</h3>
+                <h3 className="font-display text-xl font-bold mb-2">{t('live_coverage')}</h3>
                 <p className="text-muted-foreground">
-                  Your brand visible around the clock on live streams
+                  {t('live_coverage_desc')}
                 </p>
               </div>
               
@@ -278,9 +278,9 @@ const Sponsor = () => {
                 <div className="w-16 h-16 bg-coral rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-white">100%</span>
                 </div>
-                <h3 className="font-display text-xl font-bold mb-2">Surf Focused</h3>
+                <h3 className="font-display text-xl font-bold mb-2">{t('surf_focused')}</h3>
                 <p className="text-muted-foreground">
-                  Targeted audience of passionate surfers and water sports enthusiasts
+                  {t('surf_focused_desc')}
                 </p>
               </div>
             </div>
