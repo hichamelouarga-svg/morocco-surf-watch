@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,12 +9,38 @@ import { Link } from 'react-router-dom';
 
 const Sponsor = () => {
   const { t } = useTranslation();
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+
+  // Currency conversion rates (base: EUR)
+  const exchangeRates = {
+    EUR: 1,
+    USD: 1.09,
+    MAD: 10.8
+  };
+
+  // Base prices in EUR
+  const basePrices = {
+    page: 1000,
+    spot: 4000,
+    website: 10000
+  };
+
+  // Function to convert price based on selected currency
+  const convertPrice = (basePrice: number) => {
+    const convertedPrice = basePrice * exchangeRates[selectedCurrency as keyof typeof exchangeRates];
+    const currency = currencies.find(c => c.code === selectedCurrency);
+    
+    if (selectedCurrency === 'MAD') {
+      return `${Math.round(convertedPrice).toLocaleString()} ${currency?.symbol}`;
+    }
+    return `${Math.round(convertedPrice).toLocaleString()} ${currency?.symbol}`;
+  };
 
   const sponsorshipPlans = [
     {
       id: 'page',
       title: t('sponsor_page'),
-      price: t('sponsor_page_price'),
+      price: convertPrice(basePrices.page) + ' / an',
       icon: <Star className="w-8 h-8" />,
       color: 'bg-secondary',
       features: [
@@ -26,7 +53,7 @@ const Sponsor = () => {
     {
       id: 'spot',
       title: t('sponsor_spot'),
-      price: t('sponsor_spot_price'),
+      price: convertPrice(basePrices.spot) + ' / an',
       icon: <Crown className="w-8 h-8" />,
       color: 'bg-primary',
       popular: true,
@@ -42,7 +69,7 @@ const Sponsor = () => {
     {
       id: 'website',
       title: t('sponsor_website'),
-      price: t('sponsor_website_price'),
+      price: convertPrice(basePrices.website) + ' / an',
       icon: <Crown className="w-8 h-8" />,
       color: 'bg-gradient-sunset',
       premium: true,
@@ -82,7 +109,16 @@ const Sponsor = () => {
             {/* Currency Selector */}
             <div className="flex justify-center gap-2 mb-8">
               {currencies.map((currency) => (
-                <Badge key={currency.code} variant="outline" className="cursor-pointer hover:bg-primary hover:text-white">
+                <Badge 
+                  key={currency.code} 
+                  variant={selectedCurrency === currency.code ? "default" : "outline"}
+                  className={`cursor-pointer transition-all duration-200 ${
+                    selectedCurrency === currency.code 
+                      ? 'bg-primary text-white hover:bg-primary/90' 
+                      : 'hover:bg-primary hover:text-white'
+                  }`}
+                  onClick={() => setSelectedCurrency(currency.code)}
+                >
                   {currency.symbol} {currency.name}
                 </Badge>
               ))}
