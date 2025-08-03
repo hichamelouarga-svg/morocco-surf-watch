@@ -68,8 +68,8 @@ const Contact = () => {
 
       // Show success message
       toast({
-        title: "Message sent successfully!",
-        description: "Thank you for contacting us. We'll get back to you soon.",
+        title: "Message envoyé avec succès !",
+        description: "Merci de nous avoir contactés. Nous vous répondrons bientôt.",
         duration: 5000,
       });
 
