@@ -79,7 +79,7 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
           break;
         case 'safi':
         case 'dar-bouazza':
-          spotFactor = 0.45; // Beach breaks lose more size
+          spotFactor = 0.54; // Beach breaks lose more size (20% higher than before)
           break;
         case 'mehdia-beach':
         case 'rabat-beach':
