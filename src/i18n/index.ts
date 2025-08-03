@@ -55,6 +55,51 @@ const resources = {
       "sponsor_website_price": "10 000 € / an",
       "contact_us": "Nous Contacter",
       
+      // Sponsor page content
+      "sponsor_subtitle": "Partenariez avec Surf au Maroc pour atteindre des milliers d'amateurs de surf et soutenir la communauté surf du Maroc",
+      "most_popular": "Plus Populaire",
+      "premium": "Premium",
+      "choose_plan": "Choisir le Forfait",
+      
+      // Sponsor page features
+      "sponsor_page_feature_1": "Placement de logo sur une page",
+      "sponsor_page_feature_2": "Rapport d'analyse mensuel",
+      "sponsor_page_feature_3": "Mentions sur les réseaux sociaux",
+      "sponsor_page_feature_4": "Informations de contact direct",
+      
+      "sponsor_spot_feature_1": "Logo sur la page du spot de surf",
+      "sponsor_spot_feature_2": "Branding superposé sur caméra live",
+      "sponsor_spot_feature_3": "Placement premium dans les listes",
+      "sponsor_spot_feature_4": "Rapports de performance hebdomadaires",
+      "sponsor_spot_feature_5": "Promotion sur les réseaux sociaux",
+      "sponsor_spot_feature_6": "Mentions dans la newsletter",
+      
+      "sponsor_website_feature_1": "Placement de logo sur tout le site",
+      "sponsor_website_feature_2": "Espace bannière sur la page d'accueil",
+      "sponsor_website_feature_3": "Branding superposé sur toutes les caméras",
+      "sponsor_website_feature_4": "Priorité dans toutes les listes",
+      "sponsor_website_feature_5": "Rapports d'analyse quotidiens",
+      "sponsor_website_feature_6": "Promotion sociale dédiée",
+      "sponsor_website_feature_7": "Distribution de communiqués de presse",
+      "sponsor_website_feature_8": "Création de contenu personnalisé",
+      
+      // Host camera section
+      "host_cam_desc": "Vous avez un excellent emplacement de spot de surf ? Partenariez avec nous pour installer une caméra live et rejoindre notre réseau.",
+      "host_cam_feature_1": "Installation gratuite de caméra",
+      "host_cam_feature_2": "Programme de partage des revenus",
+      "host_cam_feature_3": "Support technique inclus",
+      "host_cam_feature_4": "Promouvoir votre emplacement",
+      "become_camera_host": "Devenir Hôte de Caméra",
+      
+      // Benefits section
+      "why_sponsor": "Pourquoi Sponsoriser Surf au Maroc ?",
+      "monthly_visitors": "Visiteurs Mensuels",
+      "monthly_visitors_desc": "Atteignez des milliers d'amateurs de surf du monde entier",
+      "live_coverage": "Couverture Live",
+      "live_coverage_desc": "Votre marque visible 24h/24 sur les flux en direct",
+      "surf_focused": "Axé sur le Surf",
+      "surf_focused_desc": "Audience ciblée de surfeurs passionnés et d'amateurs de sports nautiques",
+      
       // Live Streams
       "live_now": "En Direct",
       "coming_soon": "Bientôt Disponible",
