@@ -15,6 +15,7 @@ const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [webhookUrl, setWebhookUrl] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,16 +25,11 @@ const Contact = () => {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('🚀 handleSubmit called');
     e.preventDefault();
-    console.log('🚀 Default prevented, setting isSubmitting to true');
     setIsSubmitting(true);
-    console.log('🚀 Contact form submitted with data:', formData);
-    console.log('🚀 Form validation - name:', formData.name, 'email:', formData.email, 'subject:', formData.subject, 'message:', formData.message);
 
     try {
-      console.log('💾 Attempting to save to database...');
-      // Save to database
+      // Save to database first
       const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert({
@@ -48,28 +44,32 @@ const Contact = () => {
         console.error('❌ Database error:', dbError);
         throw dbError;
       }
-      console.log('✅ Database save successful');
 
-      console.log('📧 Attempting to send email...');
-      // Send email notification
-      const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
-        body: {
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          inquiryType: formData.inquiryType,
-        },
-      });
-
-      if (emailError) {
-        console.error('❌ Email sending error:', emailError);
-        // Don't throw here - we still want to show success if DB save worked
-      } else {
-        console.log('✅ Email sent successfully');
+      // Send via Zapier webhook if URL is provided
+      if (webhookUrl) {
+        try {
+          await fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            mode: "no-cors",
+            body: JSON.stringify({
+              name: formData.name,
+              email: formData.email,
+              subject: formData.subject,
+              message: formData.message,
+              inquiryType: formData.inquiryType,
+              timestamp: new Date().toISOString(),
+              source: "Surf au Maroc Contact Form"
+            }),
+          });
+          console.log('✅ Zapier webhook triggered');
+        } catch (webhookError) {
+          console.error('❌ Webhook error:', webhookError);
+        }
       }
 
-      // Show success message
       toast({
         title: "Message envoyé avec succès !",
         description: "Merci de nous avoir contactés. Nous vous répondrons bientôt.",
@@ -195,6 +195,22 @@ const Contact = () => {
                         className="mt-2 min-h-[120px]"
                         required
                       />
+                    </div>
+
+                    {/* Zapier Webhook URL */}
+                    <div>
+                      <Label htmlFor="webhook-url">Zapier Webhook URL (Optional)</Label>
+                      <Input
+                        id="webhook-url"
+                        type="url"
+                        value={webhookUrl}
+                        onChange={(e) => setWebhookUrl(e.target.value)}
+                        className="mt-2"
+                        placeholder="https://hooks.zapier.com/hooks/catch/..."
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Enter your Zapier webhook URL to automatically send notifications to your preferred apps
+                      </p>
                     </div>
 
                     <Button 
