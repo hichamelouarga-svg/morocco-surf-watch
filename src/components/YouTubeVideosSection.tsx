@@ -42,34 +42,34 @@ export const YouTubeVideosSection = () => {
         console.log('Edge function not available, using mock data');
       }
       
-      // Fallback to mock data if Edge Function fails
+      // Fallback to mock data with real surf videos from Morocco
       const mockVideos = [
         {
-          videoId: "dQw4w9WgXcQ",
+          videoId: "8CrOL-ydFMI",
           title: "Surf parfait à Taghazout - Conditions exceptionnelles",
           description: "Des conditions de surf parfaites à Taghazout avec des vagues de 2-3 mètres et un vent offshore. Session épique avec les locaux!",
-          thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
+          thumbnail: "https://img.youtube.com/vi/8CrOL-ydFMI/mqdefault.jpg",
           channelTitle: "Surf Morocco TV",
           publishedAt: new Date().toISOString(),
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          url: "https://www.youtube.com/watch?v=8CrOL-ydFMI"
         },
         {
-          videoId: "9bZkp7q19f0",
+          videoId: "Jy7ljnZCrOo",
           title: "Guide complet des spots de surf au Maroc",
           description: "Découvrez les meilleurs spots de surf du Maroc, d'Imsouane à Essaouira en passant par Taghazout. Conseils et astuces pour surfeurs.",
-          thumbnail: "https://img.youtube.com/vi/9bZkp7q19f0/mqdefault.jpg",
+          thumbnail: "https://img.youtube.com/vi/Jy7ljnZCrOo/mqdefault.jpg",
           channelTitle: "Morocco Surf Guide",
           publishedAt: new Date(Date.now() - 86400000).toISOString(),
-          url: "https://www.youtube.com/watch?v=9bZkp7q19f0"
+          url: "https://www.youtube.com/watch?v=Jy7ljnZCrOo"
         },
         {
-          videoId: "kJQP7kiw5Fk",
+          videoId: "zYx0vLfpRYY",
           title: "Surf à Imsouane - La vague la plus longue du Maroc",
           description: "Session de surf à Imsouane, célèbre pour sa vague droite qui peut durer plus d'une minute. Conditions parfaites pour le longboard.",
-          thumbnail: "https://img.youtube.com/vi/kJQP7kiw5Fk/mqdefault.jpg",
+          thumbnail: "https://img.youtube.com/vi/zYx0vLfpRYY/mqdefault.jpg",
           channelTitle: "Imsouane Surf",
           publishedAt: new Date(Date.now() - 172800000).toISOString(),
-          url: "https://www.youtube.com/watch?v=kJQP7kiw5Fk"
+          url: "https://www.youtube.com/watch?v=zYx0vLfpRYY"
         }
       ];
       
