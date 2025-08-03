@@ -313,6 +313,25 @@ const SurfSpotDetail = () => {
           </div>
         </div>
       </div>
+      
+      {/* Sponsor Banner - Only show for Mehdia */}
+      {spot.id === 'mehdia' && (
+        <div className="bg-red-600 text-white py-4 px-4 relative z-10">
+          <div className="container mx-auto text-center">
+            <p className="text-sm">
+              This camera is hosted and sponsored by{' '}
+              <a 
+                href="https://merzougarestaurant.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="font-bold underline hover:text-red-200 transition-colors"
+              >
+                Merzouga Restaurant
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
