@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Mail, Phone, MapPin, Send, Camera, Globe, Heart, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Camera, Globe, Heart, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -231,11 +231,6 @@ const Contact = () => {
                       type="submit" 
                       className="w-full bg-primary hover:bg-primary-dark" 
                       disabled={isSubmitting}
-                      onClick={(e) => {
-                        console.log('🔥 Submit button clicked!');
-                        console.log('🔥 Form data at click:', formData);
-                        console.log('🔥 Required fields - name:', formData.name, 'email:', formData.email, 'subject:', formData.subject, 'message:', formData.message);
-                      }}
                     >
                       {isSubmitting ? (
                         <>
