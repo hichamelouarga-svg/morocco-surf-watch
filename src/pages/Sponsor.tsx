@@ -11,6 +11,13 @@ const Sponsor = () => {
   const { t } = useTranslation();
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
 
+  // Currency configuration
+  const currencies = [
+    { code: 'EUR', symbol: '€', name: 'Euro' },
+    { code: 'USD', symbol: '$', name: 'Dollar' },
+    { code: 'MAD', symbol: 'DH', name: 'Dirham' }
+  ];
+
   // Currency conversion rates (base: EUR)
   const exchangeRates = {
     EUR: 1,
@@ -30,12 +37,10 @@ const Sponsor = () => {
     const convertedPrice = basePrice * exchangeRates[selectedCurrency as keyof typeof exchangeRates];
     const currency = currencies.find(c => c.code === selectedCurrency);
     
-    if (selectedCurrency === 'MAD') {
-      return `${Math.round(convertedPrice).toLocaleString()} ${currency?.symbol}`;
-    }
     return `${Math.round(convertedPrice).toLocaleString()} ${currency?.symbol}`;
   };
 
+  // Generate sponsorship plans dynamically based on selected currency
   const sponsorshipPlans = [
     {
       id: 'page',
@@ -86,11 +91,6 @@ const Sponsor = () => {
     }
   ];
 
-  const currencies = [
-    { code: 'EUR', symbol: '€', name: 'Euro' },
-    { code: 'USD', symbol: '$', name: 'Dollar' },
-    { code: 'MAD', symbol: 'DH', name: 'Dirham' }
-  ];
 
   return (
     <div className="min-h-screen bg-background">
