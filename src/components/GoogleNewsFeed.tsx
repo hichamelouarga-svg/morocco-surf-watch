@@ -107,7 +107,7 @@ export const GoogleNewsFeed = () => {
       <div className="flex items-center gap-2 mb-6">
         <Newspaper className="w-6 h-6 text-primary" />
         <h2 className="font-display text-2xl font-bold text-foreground">
-          Actualités Surf Maroc - Google News
+          Actualités Surf - RSS News
         </h2>
       </div>
       
@@ -148,7 +148,7 @@ export const GoogleNewsFeed = () => {
       ))}
       
       <div className="text-center text-sm text-muted-foreground">
-        <p>Actualités mises à jour automatiquement depuis Google News</p>
+        <p>Actualités mises à jour automatiquement depuis les flux RSS surf</p>
       </div>
     </div>
   );
