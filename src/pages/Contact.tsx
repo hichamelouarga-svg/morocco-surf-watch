@@ -24,9 +24,12 @@ const Contact = () => {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('🚀 handleSubmit called');
     e.preventDefault();
+    console.log('🚀 Default prevented, setting isSubmitting to true');
     setIsSubmitting(true);
     console.log('🚀 Contact form submitted with data:', formData);
+    console.log('🚀 Form validation - name:', formData.name, 'email:', formData.email, 'subject:', formData.subject, 'message:', formData.message);
 
     try {
       console.log('💾 Attempting to save to database...');
