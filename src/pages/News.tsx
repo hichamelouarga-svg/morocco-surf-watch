@@ -1,6 +1,7 @@
 import { Navigation } from '@/components/Navigation';
 import { GoogleNewsFeed } from '@/components/GoogleNewsFeed';
 import { ManualNewsSection } from '@/components/ManualNewsSection';
+import { YouTubeVideosSection } from '@/components/YouTubeVideosSection';
 
 const News = () => {
   return (
@@ -21,6 +22,11 @@ const News = () => {
           {/* Google News Feed */}
           <div className="mb-16">
             <GoogleNewsFeed />
+          </div>
+
+          {/* YouTube Videos Section */}
+          <div className="mb-16">
+            <YouTubeVideosSection />
           </div>
 
           {/* Manual News Section */}
