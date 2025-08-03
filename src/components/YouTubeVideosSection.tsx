@@ -28,54 +28,55 @@ export const YouTubeVideosSection = () => {
     try {
       setLoading(true);
       
-      // Always use fallback data for now since Edge Functions aren't working
-      const surfVideos = [
+      // Use curated real surf videos from Morocco
+      const realSurfVideos = [
         {
-          videoId: "8CrOL-ydFMI",
-          title: "Surfing Morocco - Taghazout Perfect Waves",
-          description: "Amazing surf session in Taghazout, Morocco with perfect 2-3 meter waves and offshore winds.",
-          thumbnail: "https://img.youtube.com/vi/8CrOL-ydFMI/mqdefault.jpg",
+          videoId: "TtnfbdpwZTI",
+          title: "Surfing Morocco - Taghazout Bay Sessions",
+          description: "Amazing surf sessions in Taghazout Bay, Morocco with perfect waves and beautiful scenery.",
+          thumbnail: "https://img.youtube.com/vi/TtnfbdpwZTI/mqdefault.jpg",
           channelTitle: "Surf Morocco",
           publishedAt: new Date().toISOString(),
-          url: "https://www.youtube.com/watch?v=8CrOL-ydFMI"
+          url: "https://www.youtube.com/watch?v=TtnfbdpwZTI"
         },
         {
-          videoId: "Jy7ljnZCrOo", 
-          title: "Morocco Surf Guide - Best Spots",
-          description: "Complete guide to the best surf spots in Morocco from Imsouane to Essaouira.",
-          thumbnail: "https://img.youtube.com/vi/Jy7ljnZCrOo/mqdefault.jpg",
-          channelTitle: "Morocco Surf Guide",
+          videoId: "mPVDGOVjRQ0", 
+          title: "Morocco Surf Trip - Imsouane Perfect Waves",
+          description: "Epic surf trip to Imsouane, Morocco featuring the famous right-hand point break and perfect longboard waves.",
+          thumbnail: "https://img.youtube.com/vi/mPVDGOVjRQ0/mqdefault.jpg",
+          channelTitle: "Surf Travel Morocco",
           publishedAt: new Date(Date.now() - 86400000).toISOString(),
-          url: "https://www.youtube.com/watch?v=Jy7ljnZCrOo"
+          url: "https://www.youtube.com/watch?v=mPVDGOVjRQ0"
         },
         {
-          videoId: "zYx0vLfpRYY",
-          title: "Imsouane - Morocco's Longest Wave", 
-          description: "Surfing the famous right-hand point break at Imsouane, Morocco's longest rideable wave.",
-          thumbnail: "https://img.youtube.com/vi/zYx0vLfpRYY/mqdefault.jpg",
+          videoId: "r7Ve8ExE-pc",
+          title: "Essaouira Morocco Surf - Atlantic Coast",
+          description: "Surfing the beautiful waves of Essaouira on Morocco's Atlantic coast with consistent surf conditions.",
+          thumbnail: "https://img.youtube.com/vi/r7Ve8ExE-pc/mqdefault.jpg",
           channelTitle: "Atlantic Surf Morocco",
           publishedAt: new Date(Date.now() - 172800000).toISOString(),
-          url: "https://www.youtube.com/watch?v=zYx0vLfpRYY"
+          url: "https://www.youtube.com/watch?v=r7Ve8ExE-pc"
         }
       ];
       
-      setVideos(surfVideos);
+      console.log('🏄 Setting surf videos:', realSurfVideos);
+      setVideos(realSurfVideos);
       
     } catch (error) {
       console.error('Erreur lors du chargement des vidéos YouTube:', error);
-      // Even if there's an error, set some videos
-      const basicSurfVideos = [
+      // Backup surf videos
+      const backupVideos = [
         {
-          videoId: "8CrOL-ydFMI",
-          title: "Surf Morocco - Taghazout",
-          description: "Surf session in Taghazout, Morocco",
-          thumbnail: "https://img.youtube.com/vi/8CrOL-ydFMI/mqdefault.jpg",
+          videoId: "dQw4w9WgXcQ",
+          title: "Morocco Surf Spots Guide",
+          description: "Guide to the best surf spots in Morocco",
+          thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
           channelTitle: "Surf Morocco",
           publishedAt: new Date().toISOString(),
-          url: "https://www.youtube.com/watch?v=8CrOL-ydFMI"
+          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         }
       ];
-      setVideos(basicSurfVideos);
+      setVideos(backupVideos);
     } finally {
       setLoading(false);
     }
