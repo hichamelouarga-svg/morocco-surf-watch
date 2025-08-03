@@ -65,17 +65,17 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
       const swellPeriod = marineDays.swell_wave_period_max[index] || marineDays.wave_period_max[index] || 8;
       
       // Surf-specific calculations based on spot characteristics
-      let spotFactor = 0.5; // Default reduction for average beach break
+      let spotFactor = 0.6; // Default reduction for average beach break (20% higher)
       let qualityFactor = 1.0;
       
       // Spot-specific adjustments based on actual surf characteristics
       switch (spotId) {
         case 'taghazout':
         case 'anchor-point':
-          spotFactor = 0.7; // Good point breaks hold size better
+          spotFactor = 0.84; // Good point breaks hold size better (20% higher)
           break;
         case 'imsouane':
-          spotFactor = 0.75; // Famous point break
+          spotFactor = 0.9; // Famous point break (20% higher)
           break;
         case 'safi':
         case 'dar-bouazza':
@@ -83,10 +83,10 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
           break;
         case 'mehdia-beach':
         case 'rabat-beach':
-          spotFactor = 0.4; // Sheltered beaches
+          spotFactor = 0.48; // Sheltered beaches (20% higher)
           break;
         default:
-          spotFactor = 0.5;
+          spotFactor = 0.6;
       }
       
       // Period-based quality adjustment (longer period = better waves)
