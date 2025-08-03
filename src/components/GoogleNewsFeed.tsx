@@ -26,7 +26,7 @@ export const GoogleNewsFeed = () => {
       setLoading(true);
       
       // Call Supabase Edge Function to fetch Google News
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fetch-google-news`, {
+      const response = await fetch(`https://mlbouluqtdhoatmkrfsr.supabase.co/functions/v1/fetch-google-news`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

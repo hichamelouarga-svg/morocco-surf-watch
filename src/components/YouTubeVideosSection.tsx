@@ -28,7 +28,7 @@ export const YouTubeVideosSection = () => {
       setLoading(true);
       
       // Call Supabase Edge Function to fetch YouTube videos
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fetch-youtube-videos`, {
+      const response = await fetch(`https://mlbouluqtdhoatmkrfsr.supabase.co/functions/v1/fetch-youtube-videos`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
