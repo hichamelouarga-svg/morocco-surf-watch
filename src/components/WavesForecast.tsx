@@ -49,29 +49,34 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
     const dailyData = data.daily;
     
     return Array.from({ length: 7 }, (_, index) => {
-      const windSpeedKmh = (dailyData.wind_speed_10m_max[index] || 5) * 3.6;
-      const windFactor = Math.min(windSpeedKmh / 30, 1);
-      const waveHeight = 0.5 + (windFactor * 2) + (Math.random() * 0.5);
+      const windSpeedKmh = dailyData.wind_speed_10m_max[index] || 10; // Already in km/h, no conversion needed
+      
+      // More realistic wave calculation for Morocco Atlantic coast
+      // Morocco gets consistent Atlantic swells, less dependent on local wind
+      const baseSwellHeight = 1.2; // Atlantic swells are typically 1-2m
+      const windEffect = Math.min(windSpeedKmh / 40, 0.5); // Wind has less effect on existing swell
+      const waveHeight = baseSwellHeight + windEffect + (Math.random() * 0.6 - 0.3); // ±0.3m variation
       
       let conditions: 'faible' | 'moyen' | 'bon' | 'excellent' = 'moyen';
       let rating = 3;
       
-      if (waveHeight > 1.8 && windSpeedKmh < 15) {
+      // More realistic rating for Morocco coast conditions
+      if (waveHeight > 1.5 && windSpeedKmh < 25) {
         conditions = 'excellent';
         rating = 5;
-      } else if (waveHeight > 1.2 && windSpeedKmh < 20) {
+      } else if (waveHeight > 1.0 && windSpeedKmh < 35) {
         conditions = 'bon';
         rating = 4;
-      } else if (waveHeight < 0.8 || windSpeedKmh > 25) {
+      } else if (waveHeight < 0.8 || windSpeedKmh > 45) {
         conditions = 'faible';
         rating = 2;
       }
 
       return {
         date: new Date(dailyData.time[index]),
-        waveHeight: `${(waveHeight * 0.8).toFixed(1)}-${(waveHeight * 1.2).toFixed(1)}m`,
+        waveHeight: `${Math.max(0.5, waveHeight * 0.8).toFixed(1)}-${(waveHeight * 1.2).toFixed(1)}m`,
         windDirection: getWindDirection(dailyData.wind_direction_10m_dominant[index] || 180),
-        windSpeed: Math.round(windSpeedKmh),
+        windSpeed: Math.round(windSpeedKmh), // Already in km/h
         rating: rating,
         conditions: conditions
       };

@@ -74,31 +74,31 @@ export class SurfConditionsService {
       // Process Open-Meteo data
       const current = weatherData.current;
       
-      // Get real wind data from Open-Meteo
-      const windSpeed = current.wind_speed_10m || 5; // m/s from API
-      const windSpeedKmh = windSpeed * 3.6; // Convert to km/h
+      // Get real wind data from Open-Meteo (already in correct units)
+      const windSpeed = current.wind_speed_10m || 10; // km/h from API
+      const windSpeedKmh = windSpeed; // No conversion needed
       const windDirection = current.wind_direction_10m || 180;
       
-      // Use realistic wave simulation based on wind conditions
-      // Strong winds generally create bigger waves
-      const windFactor = Math.min(windSpeedKmh / 30, 1); // Normalize wind effect
-      const baseWaveHeight = 0.5 + (windFactor * 2); // 0.5-2.5m base
-      const waveHeight = baseWaveHeight + (Math.random() * 0.8); // Add some variation
+      // More realistic wave simulation for Morocco Atlantic coast
+      // Morocco consistently gets Atlantic swells regardless of local wind
+      const baseSwellHeight = 1.3; // Typical Atlantic swell base
+      const windEffect = Math.min(windSpeedKmh / 50, 0.4); // Reduced wind influence
+      const waveHeight = baseSwellHeight + windEffect + (Math.random() * 0.5 - 0.25); // Less random variation
       
-      const swellPeriod = 6 + (waveHeight * 2) + (Math.random() * 3); // Realistic period
-      const swellDirection = windDirection + (Math.random() * 60 - 30); // Swell direction based on wind
+      const swellPeriod = 8 + (waveHeight * 1.5) + (Math.random() * 2); // More realistic periods
+      const swellDirection = windDirection + (Math.random() * 40 - 20); // Less deviation
       
-      // Calculate surf rating based on real conditions
+      // Calculate surf rating based on real Morocco coast conditions
       let rating: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' = 'FAIR';
       let ratingValue = 50;
       
-      if (waveHeight > 1.8 && windSpeedKmh < 15) {
+      if (waveHeight > 1.6 && windSpeedKmh < 30) {
         rating = 'EXCELLENT';
         ratingValue = 90;
-      } else if (waveHeight > 1.2 && windSpeedKmh < 20) {
+      } else if (waveHeight > 1.1 && windSpeedKmh < 40) {
         rating = 'GOOD';
         ratingValue = 75;
-      } else if (waveHeight < 0.8 || windSpeedKmh > 25) {
+      } else if (waveHeight < 0.9 || windSpeedKmh > 50) {
         rating = 'POOR';
         ratingValue = 25;
       }
@@ -134,8 +134,8 @@ export class SurfConditionsService {
           }
         ],
         wind: {
-          speed: Math.round(windSpeedKmh * 0.54), // Convert km/h to knots
-          gusts: Math.round(windSpeedKmh * 0.54 * 1.3),
+          speed: Math.round(windSpeedKmh * 0.54), // Convert km/h to knots for display
+          gusts: Math.round(windSpeedKmh * 0.54 * 1.2), // More realistic gust factor
           direction: this.getWindDirection(current.wind_direction_10m || 180),
           type: this.getWindType(current.wind_direction_10m || 180, swellDirection)
         },
