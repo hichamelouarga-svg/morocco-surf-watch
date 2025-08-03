@@ -26,59 +26,46 @@ export const GoogleNewsFeed = () => {
     try {
       setLoading(true);
       
-      // Try to call Supabase Edge Function first
-      try {
-        const { data, error } = await supabase.functions.invoke('fetch-google-news', {
-          method: 'GET'
-        });
-        
-        if (!error && data) {
-          setNews(data);
-          return;
-        }
-      } catch (functionError) {
-        console.log('Edge function not available, using mock data');
+      // Call the new RSS-based surf news function
+      const { data, error } = await supabase.functions.invoke('fetch-surf-news-rss', {
+        method: 'GET'
+      });
+      
+      if (error) {
+        console.error('RSS news fetch error:', error);
+        throw error;
       }
       
-      // Fallback to mock data if Edge Function fails
-      const mockData = [
+      if (data && Array.isArray(data)) {
+        setNews(data);
+        return;
+      }
+      
+      // Fallback if no data
+      const fallbackNews = [
         {
-          title: "Championnat de surf professionnel à Taghazout - Les meilleures performances",
-          link: "https://example.com/surf-championship-taghazout",
-          snippet: "Le championnat de surf professionnel de Taghazout a attiré les meilleurs surfeurs internationaux. Les conditions ont été parfaites avec des vagues de 2-3 mètres...",
+          title: "Surf exceptionnel à Taghazout - Conditions parfaites",
+          link: "https://example.com/taghazout-surf",
+          snippet: "Les conditions de surf à Taghazout sont exceptionnelles avec des vagues de 2-3 mètres et un vent offshore.",
           date: new Date().toISOString(),
-          source: "Surf News Morocco"
-        },
-        {
-          title: "Météo surf exceptionnelle sur la côte atlantique marocaine",
-          link: "https://example.com/surf-weather-morocco",
-          snippet: "Les conditions météorologiques de cette semaine offrent des opportunités exceptionnelles pour le surf sur toute la côte atlantique du Maroc...",
-          date: new Date(Date.now() - 86400000).toISOString(),
           source: "Morocco Surf Report"
         },
         {
-          title: "Nouvelle école de surf ouvre ses portes à Essaouira",
-          link: "https://example.com/new-surf-school-essaouira",
-          snippet: "Une nouvelle école de surf vient d'ouvrir à Essaouira, proposant des cours pour débutants et perfectionnement dans un cadre idyllique...",
-          date: new Date(Date.now() - 172800000).toISOString(),
-          source: "Essaouira Tourism"
-        },
-        {
-          title: "Festival international de surf à Imsouane",
-          link: "https://example.com/surf-festival-imsouane",
-          snippet: "Le festival international de surf d'Imsouane se déroulera du 15 au 17 mars avec des compétitions, des concerts et des ateliers...",
-          date: new Date(Date.now() - 259200000).toISOString(),
-          source: "Imsouane Events"
+          title: "Guide complet des spots de surf marocains",
+          link: "https://example.com/morocco-surf-guide",
+          snippet: "Découvrez tous les secrets des meilleurs spots de surf du Maroc, d'Imsouane à Essaouira.",
+          date: new Date(Date.now() - 86400000).toISOString(),
+          source: "Surf Guide Morocco"
         }
       ];
       
-      setNews(mockData);
+      setNews(fallbackNews);
       
     } catch (error) {
       console.error('Erreur lors du chargement des actualités:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de charger les actualités Google News",
+        description: "Impossible de charger les actualités",
         variant: "destructive",
       });
     } finally {

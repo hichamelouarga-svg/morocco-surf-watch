@@ -6,6 +6,9 @@ verify_jwt = false
 [functions.fetch-google-news]
 verify_jwt = false
 
+[functions.fetch-surf-news-rss]
+verify_jwt = false
+
 [functions.fetch-surf-conditions]
 verify_jwt = false
 
