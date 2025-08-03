@@ -201,6 +201,11 @@ const Contact = () => {
                       type="submit" 
                       className="w-full bg-primary hover:bg-primary-dark" 
                       disabled={isSubmitting}
+                      onClick={(e) => {
+                        console.log('🔥 Submit button clicked!');
+                        console.log('🔥 Form data at click:', formData);
+                        console.log('🔥 Required fields - name:', formData.name, 'email:', formData.email, 'subject:', formData.subject, 'message:', formData.message);
+                      }}
                     >
                       {isSubmitting ? (
                         <>
