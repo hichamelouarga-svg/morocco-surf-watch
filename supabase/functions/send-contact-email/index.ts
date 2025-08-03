@@ -1,12 +1,26 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
-
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+console.log("🚀 Function starting up...");
+
+let resend: any = null;
+try {
+  const { Resend } = await import("npm:resend@2.0.0");
+  const apiKey = Deno.env.get("RESEND_API_KEY");
+  console.log(`🔑 RESEND_API_KEY exists: ${!!apiKey}`);
+  if (apiKey) {
+    resend = new Resend(apiKey);
+    console.log("✅ Resend initialized successfully");
+  } else {
+    console.error("❌ RESEND_API_KEY not found");
+  }
+} catch (error) {
+  console.error("❌ Failed to import or initialize Resend:", error);
+}
 
 interface ContactEmailRequest {
   name: string;
@@ -27,9 +41,14 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    if (!resend) {
+      console.error("❌ Resend not initialized");
+      throw new Error("Email service not available");
+    }
+
     const { name, email, subject, message, inquiryType }: ContactEmailRequest = await req.json();
 
-    console.log("Sending contact email:", { name, email, subject, inquiryType });
+    console.log("📤 Sending contact email:", { name, email, subject, inquiryType });
 
     const emailResponse = await resend.emails.send({
       from: "Contact Form <onboarding@resend.dev>",
