@@ -34,7 +34,7 @@ const Index = () => {
           {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              <div className="text-3xl font-bold text-primary mb-1">12</div>
+              <div className="text-3xl font-bold text-primary mb-1">15</div>
               <div className="text-sm text-white/80">{t('surf_spots')}</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
