@@ -59,32 +59,65 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
     return Array.from({ length: 7 }, (_, index) => {
       const windSpeedKmh = weatherDays.wind_speed_10m_max[index] || 10; // Already in km/h
       
-      // Convert marine wave data to realistic surf heights
+      // Get raw marine data
       const deepWaterSwell = marineDays.swell_wave_height_max[index] || 0.8;
       const totalWaveHeight = marineDays.wave_height_max[index] || deepWaterSwell;
+      const swellPeriod = marineDays.swell_wave_period_max[index] || marineDays.wave_period_max[index] || 8;
       
-      // Apply surf-specific scaling: deep water waves lose ~40-60% height when breaking at beach
-      const surfBreakFactor = 0.65; // Keep 65% of deep water wave height
-      const surfHeight = Math.max(deepWaterSwell, totalWaveHeight) * surfBreakFactor;
+      // Surf-specific calculations based on spot characteristics
+      let spotFactor = 0.5; // Default reduction for average beach break
+      let qualityFactor = 1.0;
+      
+      // Spot-specific adjustments based on actual surf characteristics
+      switch (spotId) {
+        case 'taghazout':
+        case 'anchor-point':
+          spotFactor = 0.7; // Good point breaks hold size better
+          break;
+        case 'imsouane':
+          spotFactor = 0.75; // Famous point break
+          break;
+        case 'safi':
+        case 'dar-bouazza':
+          spotFactor = 0.45; // Beach breaks lose more size
+          break;
+        case 'mehdia-beach':
+        case 'rabat-beach':
+          spotFactor = 0.4; // Sheltered beaches
+          break;
+        default:
+          spotFactor = 0.5;
+      }
+      
+      // Period-based quality adjustment (longer period = better waves)
+      if (swellPeriod > 10) {
+        qualityFactor = 1.2;
+      } else if (swellPeriod < 6) {
+        qualityFactor = 0.8;
+      }
+      
+      // Calculate final surf height with all factors
+      const baseSurfHeight = Math.max(deepWaterSwell, totalWaveHeight * 0.8);
+      const surfHeight = baseSurfHeight * spotFactor * qualityFactor;
       
       let conditions: 'faible' | 'moyen' | 'bon' | 'excellent' = 'moyen';
       let rating = 3;
       
-      // Surf rating based on actual breakable wave heights
-      if (surfHeight >= 0.8 && windSpeedKmh < 20) {
+      // More conservative surf rating
+      if (surfHeight >= 0.9 && windSpeedKmh < 15 && swellPeriod > 8) {
         conditions = 'excellent';
         rating = 5;
-      } else if (surfHeight >= 0.6 && windSpeedKmh < 25) {
+      } else if (surfHeight >= 0.6 && windSpeedKmh < 25 && swellPeriod > 6) {
         conditions = 'bon';
         rating = 4;
-      } else if (surfHeight < 0.4 || windSpeedKmh > 35) {
+      } else if (surfHeight < 0.3 || windSpeedKmh > 40) {
         conditions = 'faible';
         rating = 2;
       }
 
-      // Create realistic surf height ranges (similar to what surfers actually see)
-      const minHeight = Math.max(0.2, surfHeight * 0.85);
-      const maxHeight = surfHeight * 1.15;
+      // More conservative wave height ranges
+      const minHeight = Math.max(0.1, surfHeight * 0.8);
+      const maxHeight = surfHeight * 1.3;
 
       return {
         date: new Date(marineDays.time[index]),
