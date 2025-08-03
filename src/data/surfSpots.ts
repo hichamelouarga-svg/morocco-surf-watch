@@ -176,7 +176,7 @@ export const surfSpots: SurfSpot[] = [
     nameKey: 'taghazout',
     coordinates: [30.544901, -9.727011],
     hasLiveStream: true,
-    streamUrl: 'https://embed.cdn-surfline.com/cams/6273f227b73fea6700983ac2/e8321ab7d141c3b3dca3748d86fc0c9e8d3f5440',
+    streamUrl: 'https://embed.cdn-surfline.com/cams/5dc4241ea952d5500a3ca895',
     city: 'Taghazout',
     region: 'Souss-Massa',
     description: 'World-famous surf village with multiple breaks.',
