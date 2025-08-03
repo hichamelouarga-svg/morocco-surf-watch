@@ -59,31 +59,32 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
     return Array.from({ length: 7 }, (_, index) => {
       const windSpeedKmh = weatherDays.wind_speed_10m_max[index] || 10; // Already in km/h
       
-      // Use REAL wave data from marine API - prioritize swell over wind waves
-      const swellHeight = marineDays.swell_wave_height_max[index] || 0.8;
-      const totalWaveHeight = marineDays.wave_height_max[index] || swellHeight;
+      // Convert marine wave data to realistic surf heights
+      const deepWaterSwell = marineDays.swell_wave_height_max[index] || 0.8;
+      const totalWaveHeight = marineDays.wave_height_max[index] || deepWaterSwell;
       
-      // More realistic surf height calculation - swell is typically what surfers care about
-      const surfHeight = Math.max(swellHeight, totalWaveHeight * 0.7);
+      // Apply surf-specific scaling: deep water waves lose ~40-60% height when breaking at beach
+      const surfBreakFactor = 0.45; // More realistic surf break scaling
+      const surfHeight = Math.max(deepWaterSwell, totalWaveHeight) * surfBreakFactor;
       
       let conditions: 'faible' | 'moyen' | 'bon' | 'excellent' = 'moyen';
       let rating = 3;
       
-      // More realistic surf rating based on swell and wind
-      if (surfHeight >= 1.2 && windSpeedKmh < 20) {
+      // Surf rating based on actual breakable wave heights
+      if (surfHeight >= 0.8 && windSpeedKmh < 20) {
         conditions = 'excellent';
         rating = 5;
-      } else if (surfHeight >= 0.8 && windSpeedKmh < 30) {
+      } else if (surfHeight >= 0.6 && windSpeedKmh < 25) {
         conditions = 'bon';
         rating = 4;
-      } else if (surfHeight < 0.6 || windSpeedKmh > 40) {
+      } else if (surfHeight < 0.4 || windSpeedKmh > 35) {
         conditions = 'faible';
         rating = 2;
       }
 
-      // Create more realistic wave height ranges
-      const minHeight = Math.max(0.3, surfHeight * 0.8);
-      const maxHeight = surfHeight * 1.2;
+      // Create realistic surf height ranges (similar to what surfers actually see)
+      const minHeight = Math.max(0.2, surfHeight * 0.85);
+      const maxHeight = surfHeight * 1.15;
 
       return {
         date: new Date(marineDays.time[index]),
