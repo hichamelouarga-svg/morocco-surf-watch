@@ -48,7 +48,7 @@ const SurfSpots = () => {
                 
                 <CardContent>
                   <p className="text-muted-foreground mb-4 line-clamp-2">
-                    {spot.description}
+                    {t(`${spot.nameKey}_description`)}
                   </p>
                   
                   <div className="flex flex-wrap gap-2 mb-4">

@@ -262,7 +262,24 @@ const resources = {
       "camera_installation_planned": "Installation de caméra prévue",
       "surf_spots_description": "Découvrez les meilleurs spots de surf du Maroc avec des conditions en temps réel et des prévisions",
       "view_details": "Voir les Détails",
-      "crowd": "Affluence"
+      "crowd": "Affluence",
+      
+      // Surf spot descriptions
+      "mehdia_beach_description": "Une magnifique plage break parfaite pour les débutants et surfeurs intermédiaires.",
+      "rabat_beach_description": "Plage de la capitale avec des vagues constantes et un accès facile.",
+      "mohammedia_description": "Spot de surf populaire près de Casablanca avec de bonnes vagues.",
+      "dar_bouazza_description": "Plage break de la région de Casablanca avec des vagues puissantes.",
+      "bouznika_description": "Ville côtière pittoresque avec des conditions de surf fiables.",
+      "plage_des_nations_description": "Plage populaire près de Rabat avec des vagues constantes.",
+      "larache_description": "Spot de surf du nord du Maroc avec des houles atlantiques.",
+      "assilah_description": "Ville côtière historique avec de magnifiques breaks de surf.",
+      "moulay_bouselham_description": "Zone lagunaire avec des conditions de surf uniques et de la faune.",
+      "safi_description": "Ville côtière du sud avec des vagues puissantes.",
+      "imsouane_description": "Célèbre point break de droite, paradis pour les longboarders.",
+      "taghazout_description": "Village de surf de renommée mondiale avec plusieurs breaks.",
+      "Sidi Ifni_description": "Ville côtière avec des vagues constantes et des falaises spectaculaires.",
+      "Tarfaya_description": "Spot de surf isolé dans le sud du Maroc avec des vagues vierges.",
+      "Dakhla_description": "Destination surf de premier plan du sud du Maroc avec des vagues de classe mondiale."
     }
   },
   en: {
@@ -384,7 +401,24 @@ const resources = {
       "camera_installation_planned": "Camera installation planned",
       "surf_spots_description": "Discover the best surf spots across Morocco with real-time conditions and forecasts",
       "view_details": "View Details",
-      "crowd": "Crowd"
+      "crowd": "Crowd",
+      
+      // Surf spot descriptions
+      "mehdia_beach_description": "A beautiful beach break perfect for beginners and intermediate surfers.",
+      "rabat_beach_description": "Capital city beach with consistent waves and easy access.",
+      "mohammedia_description": "Popular surf spot near Casablanca with good waves.",
+      "dar_bouazza_description": "Casablanca area beach break with powerful waves.",
+      "bouznika_description": "Scenic coastal town with reliable surf conditions.",
+      "plage_des_nations_description": "Popular beach near Rabat with consistent waves.",
+      "larache_description": "Northern Morocco surf spot with Atlantic swells.",
+      "assilah_description": "Historic coastal town with beautiful surf breaks.",
+      "moulay_bouselham_description": "Lagoon area with unique surf conditions and wildlife.",
+      "safi_description": "Southern coastal city with powerful waves.",
+      "imsouane_description": "Famous right-hand point break, paradise for longboarders.",
+      "taghazout_description": "World-famous surf village with multiple breaks.",
+      "Sidi Ifni_description": "Coastal town with consistent waves and dramatic cliffs.",
+      "Tarfaya_description": "Remote surf spot in southern Morocco with pristine waves.",
+      "Dakhla_description": "Southern Morocco's premier surf destination with world-class waves."
     }
   },
   ar: {
