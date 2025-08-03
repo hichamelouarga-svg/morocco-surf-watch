@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import emailjs from '@emailjs/browser';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,7 +16,11 @@ const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState('');
+  const [emailjsConfig, setEmailjsConfig] = useState({
+    serviceId: '',
+    templateId: '',
+    publicKey: ''
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,28 +50,25 @@ const Contact = () => {
         throw dbError;
       }
 
-      // Send via Zapier webhook if URL is provided
-      if (webhookUrl) {
+      // Send via EmailJS if configured
+      if (emailjsConfig.serviceId && emailjsConfig.templateId && emailjsConfig.publicKey) {
         try {
-          await fetch(webhookUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            mode: "no-cors",
-            body: JSON.stringify({
-              name: formData.name,
-              email: formData.email,
+          await emailjs.send(
+            emailjsConfig.serviceId,
+            emailjsConfig.templateId,
+            {
+              from_name: formData.name,
+              from_email: formData.email,
               subject: formData.subject,
               message: formData.message,
-              inquiryType: formData.inquiryType,
-              timestamp: new Date().toISOString(),
-              source: "Surf au Maroc Contact Form"
-            }),
-          });
-          console.log('✅ Zapier webhook triggered');
-        } catch (webhookError) {
-          console.error('❌ Webhook error:', webhookError);
+              inquiry_type: formData.inquiryType,
+              to_email: 'hicham@surfaumaroc.com'
+            },
+            emailjsConfig.publicKey
+          );
+          console.log('✅ EmailJS email sent successfully');
+        } catch (emailError) {
+          console.error('❌ EmailJS error:', emailError);
         }
       }
 
@@ -197,19 +199,31 @@ const Contact = () => {
                       />
                     </div>
 
-                    {/* Zapier Webhook URL */}
-                    <div>
-                      <Label htmlFor="webhook-url">Zapier Webhook URL (Optional)</Label>
-                      <Input
-                        id="webhook-url"
-                        type="url"
-                        value={webhookUrl}
-                        onChange={(e) => setWebhookUrl(e.target.value)}
-                        className="mt-2"
-                        placeholder="https://hooks.zapier.com/hooks/catch/..."
-                      />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Enter your Zapier webhook URL to automatically send notifications to your preferred apps
+                    {/* EmailJS Configuration */}
+                    <div className="border rounded-lg p-4 bg-muted/10">
+                      <Label className="text-sm font-medium mb-3 block">EmailJS Configuration (Optional)</Label>
+                      <div className="grid gap-3">
+                        <Input
+                          placeholder="Service ID"
+                          value={emailjsConfig.serviceId}
+                          onChange={(e) => setEmailjsConfig(prev => ({ ...prev, serviceId: e.target.value }))}
+                          className="text-sm"
+                        />
+                        <Input
+                          placeholder="Template ID"
+                          value={emailjsConfig.templateId}
+                          onChange={(e) => setEmailjsConfig(prev => ({ ...prev, templateId: e.target.value }))}
+                          className="text-sm"
+                        />
+                        <Input
+                          placeholder="Public Key"
+                          value={emailjsConfig.publicKey}
+                          onChange={(e) => setEmailjsConfig(prev => ({ ...prev, publicKey: e.target.value }))}
+                          className="text-sm"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Configure EmailJS to automatically send email notifications. Get these from your EmailJS dashboard.
                       </p>
                     </div>
 
