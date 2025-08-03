@@ -28,7 +28,8 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
+      // Save to database
+      const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert({
           name: formData.name,
@@ -38,8 +39,24 @@ const Contact = () => {
           inquiry_type: formData.inquiryType || null,
         });
 
-      if (error) {
-        throw error;
+      if (dbError) {
+        throw dbError;
+      }
+
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          inquiryType: formData.inquiryType,
+        },
+      });
+
+      if (emailError) {
+        console.error('Email sending error:', emailError);
+        // Don't throw here - we still want to show success if DB save worked
       }
 
       // Show success message
