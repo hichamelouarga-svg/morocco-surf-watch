@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          inquiry_type: string | null
+          message: string
+          name: string
+          notes: string | null
+          status: string | null
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          inquiry_type?: string | null
+          message: string
+          name: string
+          notes?: string | null
+          status?: string | null
+          subject: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          inquiry_type?: string | null
+          message?: string
+          name?: string
+          notes?: string | null
+          status?: string | null
+          subject?: string
+        }
+        Relationships: []
+      }
       manual_news: {
         Row: {
           author: string

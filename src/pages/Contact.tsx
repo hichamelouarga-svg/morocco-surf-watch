@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,11 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Mail, Phone, MapPin, Send, Camera, Globe, Heart } from 'lucide-react';
-import { useState } from 'react';
+import { Mail, Phone, MapPin, Send, Camera, Globe, Heart, CheckCircle, AlertCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
   const { t } = useTranslation();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,10 +23,52 @@ const Contact = () => {
     inquiryType: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          inquiry_type: formData.inquiryType || null,
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      // Show success message
+      toast({
+        title: "Message sent successfully!",
+        description: "Thank you for contacting us. We'll get back to you soon.",
+        duration: 5000,
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+        inquiryType: ''
+      });
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Error sending message",
+        description: "Something went wrong. Please try again or contact us directly.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -88,7 +134,7 @@ const Contact = () => {
 
                     <div>
                       <Label htmlFor="inquiry-type">{t('inquiry_type')}</Label>
-                      <Select onValueChange={(value) => handleInputChange('inquiryType', value)}>
+                      <Select value={formData.inquiryType} onValueChange={(value) => handleInputChange('inquiryType', value)}>
                         <SelectTrigger className="mt-2">
                           <SelectValue placeholder={t('select_inquiry_type')} />
                         </SelectTrigger>
@@ -124,9 +170,22 @@ const Contact = () => {
                       />
                     </div>
 
-                    <Button type="submit" className="w-full bg-primary hover:bg-primary-dark">
-                      <Send className="w-4 h-4 mr-2" />
-                      {t('send_message_btn')}
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-primary hover:bg-primary-dark" 
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <AlertCircle className="w-4 h-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 mr-2" />
+                          {t('send_message_btn')}
+                        </>
+                      )}
                     </Button>
                   </form>
                 </CardContent>
