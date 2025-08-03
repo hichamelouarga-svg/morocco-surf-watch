@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Camera, Waves, Users, Globe, Heart, Target, Eye, Award } from 'lucide-react';
+import { YouTubeBackground } from '@/components/YouTubeBackground';
 import heroImage from '@/assets/hero-morocco-coast.jpg';
 
 const About = () => {
@@ -67,30 +68,34 @@ const About = () => {
       
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4">
-          {/* Hero Section */}
-          <div className="relative rounded-2xl overflow-hidden mb-16">
-            <img 
-              src={heroImage} 
-              alt="Morocco Coast" 
-              className="w-full h-[400px] object-cover"
+          {/* Hero Section with YouTube Background */}
+          <div className="relative rounded-2xl overflow-hidden mb-16 h-[500px]">
+            {/* YouTube Background Video */}
+            <YouTubeBackground 
+              videoId="4cwq97PqTwg" 
+              className="absolute inset-0 z-0" 
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/60 flex items-center">
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div>
+            
+            {/* Hero Content */}
+            <div className="absolute inset-0 flex items-center z-20">
               <div className="container mx-auto px-4">
                 <div className="max-w-3xl">
-                  <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-6">
+                  <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">
                     {t('about')} Surf au Maroc
                   </h1>
-                  <p className="text-xl text-white/90 mb-8">
+                  <p className="text-xl text-white/90 mb-8 drop-shadow-md">
                     {t('about_story_p1')}
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <Badge className="bg-white text-primary text-lg px-4 py-2">
+                    <Badge className="bg-white/20 backdrop-blur-sm text-white text-lg px-4 py-2 border border-white/30">
                       15 {t('surf_spots')}
                     </Badge>
-                    <Badge className="bg-coral text-white text-lg px-4 py-2">
+                    <Badge className="bg-coral/80 backdrop-blur-sm text-white text-lg px-4 py-2">
                       {t('live_cameras')}
                     </Badge>
-                    <Badge className="bg-sunset text-white text-lg px-4 py-2">
+                    <Badge className="bg-sunset/80 backdrop-blur-sm text-white text-lg px-4 py-2">
                       3 {t('languages_count').replace(':', '')}
                     </Badge>
                   </div>
