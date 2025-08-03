@@ -85,7 +85,7 @@ const About = () => {
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <Badge className="bg-white text-primary text-lg px-4 py-2">
-                      13 {t('surf_spots')}
+                      15 {t('surf_spots')}
                     </Badge>
                     <Badge className="bg-coral text-white text-lg px-4 py-2">
                       {t('live_cameras')}
@@ -229,7 +229,7 @@ const About = () => {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t('surf_spots_count')}</span>
-                    <span className="font-bold">13</span>
+                    <span className="font-bold">15</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t('live_cameras_count')}</span>
