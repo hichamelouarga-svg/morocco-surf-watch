@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, ExternalLink, Newspaper } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface GoogleNewsItem {
   title: string;
@@ -26,19 +27,15 @@ export const GoogleNewsFeed = () => {
       setLoading(true);
       
       // Call Supabase Edge Function to fetch Google News
-      const response = await fetch(`https://mlbouluqtdhoatmkrfsr.supabase.co/functions/v1/fetch-google-news`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const { data, error } = await supabase.functions.invoke('fetch-google-news', {
+        method: 'GET'
       });
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (error) {
+        throw error;
       }
       
-      const newsData = await response.json();
-      setNews(newsData);
+      setNews(data || []);
       
     } catch (error) {
       console.error('Erreur lors du chargement des actualités:', error);

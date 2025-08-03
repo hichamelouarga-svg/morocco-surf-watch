@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Play, ExternalLink, Youtube } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface YouTubeVideoItem {
   videoId: string;
@@ -28,19 +29,15 @@ export const YouTubeVideosSection = () => {
       setLoading(true);
       
       // Call Supabase Edge Function to fetch YouTube videos
-      const response = await fetch(`https://mlbouluqtdhoatmkrfsr.supabase.co/functions/v1/fetch-youtube-videos`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const { data, error } = await supabase.functions.invoke('fetch-youtube-videos', {
+        method: 'GET'
       });
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (error) {
+        throw error;
       }
       
-      const videosData = await response.json();
-      setVideos(videosData);
+      setVideos(data || []);
       
     } catch (error) {
       console.error('Erreur lors du chargement des vidéos YouTube:', error);
