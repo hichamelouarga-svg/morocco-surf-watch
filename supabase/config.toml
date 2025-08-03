@@ -1,1 +1,13 @@
 project_id = "mlbouluqtdhoatmkrfsr"
+
+[functions.fetch-youtube-videos]
+verify_jwt = false
+
+[functions.fetch-google-news]
+verify_jwt = false
+
+[functions.fetch-surf-conditions]
+verify_jwt = false
+
+[functions.fetch-weather-data]
+verify_jwt = false
