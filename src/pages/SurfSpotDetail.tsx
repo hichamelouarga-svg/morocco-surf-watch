@@ -314,8 +314,8 @@ const SurfSpotDetail = () => {
         </div>
       </div>
       
-      {/* Sponsor Banner - Only show for Mehdia */}
-      {spot.id === 'mehdia' && (
+      {/* Sponsor Banner - Only show for Mehdia Beach */}
+      {spot.id === 'mehdia-beach' && (
         <div className="bg-red-600 text-white py-4 px-4 relative z-10">
           <div className="container mx-auto text-center">
             <p className="text-sm">
