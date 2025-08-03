@@ -59,28 +59,35 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
     return Array.from({ length: 7 }, (_, index) => {
       const windSpeedKmh = weatherDays.wind_speed_10m_max[index] || 10; // Already in km/h
       
-      // Use REAL wave data from marine API
-      const waveHeight = marineDays.wave_height_max[index] || marineDays.swell_wave_height_max[index] || 1.2;
-      const swellHeight = marineDays.swell_wave_height_max[index] || waveHeight;
+      // Use REAL wave data from marine API - prioritize swell over wind waves
+      const swellHeight = marineDays.swell_wave_height_max[index] || 0.8;
+      const totalWaveHeight = marineDays.wave_height_max[index] || swellHeight;
+      
+      // More realistic surf height calculation - swell is typically what surfers care about
+      const surfHeight = Math.max(swellHeight, totalWaveHeight * 0.7);
       
       let conditions: 'faible' | 'moyen' | 'bon' | 'excellent' = 'moyen';
       let rating = 3;
       
-      // Rate based on REAL wave conditions
-      if (swellHeight > 1.5 && windSpeedKmh < 25) {
+      // More realistic surf rating based on swell and wind
+      if (surfHeight >= 1.2 && windSpeedKmh < 20) {
         conditions = 'excellent';
         rating = 5;
-      } else if (swellHeight > 1.0 && windSpeedKmh < 35) {
+      } else if (surfHeight >= 0.8 && windSpeedKmh < 30) {
         conditions = 'bon';
         rating = 4;
-      } else if (swellHeight < 0.8 || windSpeedKmh > 45) {
+      } else if (surfHeight < 0.6 || windSpeedKmh > 40) {
         conditions = 'faible';
         rating = 2;
       }
 
+      // Create more realistic wave height ranges
+      const minHeight = Math.max(0.3, surfHeight * 0.8);
+      const maxHeight = surfHeight * 1.2;
+
       return {
         date: new Date(marineDays.time[index]),
-        waveHeight: `${Math.max(0.5, swellHeight * 0.9).toFixed(1)}-${(swellHeight * 1.1).toFixed(1)}m`,
+        waveHeight: `${minHeight.toFixed(1)}-${maxHeight.toFixed(1)}m`,
         windDirection: getWindDirection(weatherDays.wind_direction_10m_dominant[index] || 180),
         windSpeed: Math.round(windSpeedKmh),
         rating: rating,
