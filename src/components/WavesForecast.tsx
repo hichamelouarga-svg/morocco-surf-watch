@@ -64,7 +64,7 @@ const generateForecast = async (spotId: string): Promise<ForecastDay[]> => {
       const totalWaveHeight = marineDays.wave_height_max[index] || deepWaterSwell;
       
       // Apply surf-specific scaling: deep water waves lose ~40-60% height when breaking at beach
-      const surfBreakFactor = 0.30; // Keep only 30% of deep water wave height
+      const surfBreakFactor = 0.60; // Keep 60% of deep water wave height
       const surfHeight = Math.max(deepWaterSwell, totalWaveHeight) * surfBreakFactor;
       
       let conditions: 'faible' | 'moyen' | 'bon' | 'excellent' = 'moyen';
