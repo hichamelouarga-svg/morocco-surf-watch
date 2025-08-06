@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { surfSpots } from '@/data/surfSpots';
 import { Link } from 'react-router-dom';
 import { Camera, MapPin, Waves, Wind } from 'lucide-react';
+import surflineLogo from '@/assets/surfline-logo.png';
 
 const SurfSpots = () => {
   const { t } = useTranslation();
@@ -34,10 +35,23 @@ const SurfSpots = () => {
                       {t(spot.nameKey)}
                     </CardTitle>
                     {spot.hasLiveStream && (
-                      <Badge className="bg-coral text-white">
-                        <Camera className="w-3 h-3 mr-1" />
-                        {t('live_now')}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-coral text-white">
+                          <Camera className="w-3 h-3 mr-1" />
+                          {t('live_now')}
+                        </Badge>
+                        {/* Surfline attribution for spots with Surfline streams */}
+                        {spot.streamUrl && spot.streamUrl.includes('cdn-surfline.com') && (
+                          <div className="flex items-center gap-1 bg-muted px-2 py-1 rounded text-xs">
+                            <img 
+                              src={surflineLogo} 
+                              alt="Surfline" 
+                              className="h-3 w-auto"
+                            />
+                            <span className="text-muted-foreground">Surfline</span>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                   <div className="flex items-center text-muted-foreground">
