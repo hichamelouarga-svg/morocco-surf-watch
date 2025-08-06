@@ -13,6 +13,7 @@ import { YouTubeBackground } from '@/components/YouTubeBackground';
 import SurfSpotLocationMap from '@/components/SurfSpotLocationMap';
 import { WavesForecast } from '@/components/WavesForecast';
 import axios from 'axios';
+import surflineLogo from '@/assets/surfline-logo.png';
 
 interface WeatherData {
   temperature: number;
@@ -195,15 +196,28 @@ const SurfSpotDetail = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
-                  <div className="aspect-video bg-black">
+                  <div className="aspect-video bg-black relative">
                     {spot.hasLiveStream && spot.streamUrl ? (
-                      <iframe
-                        src={spot.streamUrl}
-                        className="w-full h-full"
-                        frameBorder="0"
-                        allowFullScreen
-                        title={`Live stream from ${spot.name}`}
-                      />
+                      <>
+                        <iframe
+                          src={spot.streamUrl}
+                          className="w-full h-full"
+                          frameBorder="0"
+                          allowFullScreen
+                          title={`Live stream from ${spot.name}`}
+                        />
+                        {/* Surfline Attribution */}
+                        {spot.streamUrl.includes('cdn-surfline.com') && (
+                          <div className="absolute bottom-2 right-2 flex items-center gap-2 bg-black/70 px-2 py-1 rounded">
+                            <img 
+                              src={surflineLogo} 
+                              alt="Surfline" 
+                              className="h-4 w-auto"
+                            />
+                            <span className="text-white text-xs">Direct from Surfline.com</span>
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-white">
                         <div className="text-center">
