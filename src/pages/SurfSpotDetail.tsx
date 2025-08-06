@@ -13,7 +13,7 @@ import { YouTubeBackground } from '@/components/YouTubeBackground';
 import SurfSpotLocationMap from '@/components/SurfSpotLocationMap';
 import { WavesForecast } from '@/components/WavesForecast';
 import axios from 'axios';
-import surflineLogo from '@/assets/surfline-logo.png';
+import surflineLogo from '/lovable-uploads/6e8062d1-1d41-485c-b71a-8055af2c8a23.png';
 
 interface WeatherData {
   temperature: number;

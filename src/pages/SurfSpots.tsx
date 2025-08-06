@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { surfSpots } from '@/data/surfSpots';
 import { Link } from 'react-router-dom';
 import { Camera, MapPin, Waves, Wind } from 'lucide-react';
-import surflineLogo from '@/assets/surfline-logo.png';
+import surflineLogo from '/lovable-uploads/6e8062d1-1d41-485c-b71a-8055af2c8a23.png';
 
 const SurfSpots = () => {
   const { t } = useTranslation();
