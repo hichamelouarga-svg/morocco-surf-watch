@@ -15,7 +15,7 @@ const News = () => {
               Actualités Surf Maroc
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Toutes les dernières nouvelles du surf au Maroc - actualités automatiques et articles éditoriaux
+              Dernières actualités de la Fédération Marocaine de Surf et Surfer.com, et 5 dernières vidéos YouTube sur "Surf Morocco".
             </p>
           </div>
 

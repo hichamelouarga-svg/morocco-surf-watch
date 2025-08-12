@@ -36,10 +36,10 @@ export const YouTubeVideosSection = () => {
       
       console.log('📡 YouTube API response:', { data, error });
       
-      if (!error && data && Array.isArray(data) && data.length > 0) {
+      if (!error && data && Array.isArray(data)) {
         console.log(`✅ Got ${data.length} DYNAMIC videos from API`);
-        // Take only the 3 most recent videos
-        const recentVideos = data.slice(0, 3);
+        // Take only the 5 most recent videos
+        const recentVideos = data.slice(0, 5);
         setVideos(recentVideos);
         return;
       }
@@ -139,11 +139,11 @@ export const YouTubeVideosSection = () => {
       <div className="flex items-center gap-2 mb-6">
         <Youtube className="w-6 h-6 text-red-600" />
         <h2 className="font-display text-2xl font-bold text-foreground">
-          Vidéos Surf Maroc - YouTube (3 dernières)
+          Vidéos Surf Maroc - YouTube (5 dernières)
         </h2>
       </div>
       
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
         {videos.map((video) => (
           <Card key={video.videoId} className="shadow-wave hover:shadow-ocean transition-shadow duration-300 overflow-hidden group">
             <div className="relative aspect-video overflow-hidden bg-black">
@@ -217,7 +217,7 @@ export const YouTubeVideosSection = () => {
       )}
       
       <div className="text-center text-sm text-muted-foreground">
-        <p>Vidéos mises à jour automatiquement depuis YouTube (3 dernières ajoutées)</p>
+        <p>Vidéos mises à jour automatiquement depuis YouTube (5 dernières ajoutées)</p>
       </div>
     </div>
   );

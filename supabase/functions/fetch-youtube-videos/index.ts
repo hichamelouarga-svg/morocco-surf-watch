@@ -81,60 +81,43 @@ serve(async (req) => {
       });
     }
 
-    // Build search queries for surf videos in Morocco
-    const searchQueries = [
-      'surf taghazout morocco',
-      'surf morocco imsouane',
-      'surf essaouira morocco',
-      'surfing morocco spots',
-      'surf anchor point morocco'
-    ];
+    // Build a single search query for newest uploads about Surf Morocco
+    const searchQuery = 'surf Morocco';
 
-    const allVideos = [];
+    const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search');
+    searchUrl.searchParams.append('key', YOUTUBE_API_KEY);
+    searchUrl.searchParams.append('q', searchQuery);
+    searchUrl.searchParams.append('part', 'snippet');
+    searchUrl.searchParams.append('type', 'video');
+    searchUrl.searchParams.append('maxResults', '5'); // Return 5 newest videos
+    searchUrl.searchParams.append('order', 'date');
 
-    for (const query of searchQueries) {
-      const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search');
-      
-      searchUrl.searchParams.append('key', YOUTUBE_API_KEY);
-      searchUrl.searchParams.append('q', query);
-      searchUrl.searchParams.append('part', 'snippet');
-      searchUrl.searchParams.append('type', 'video');
-      searchUrl.searchParams.append('maxResults', '3'); // Get 3 recent videos per query
-      searchUrl.searchParams.append('order', 'date');
-      searchUrl.searchParams.append('publishedAfter', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()); // Last 7 days
+    console.log(`Fetching YouTube videos for query: ${searchQuery}`);
 
-      console.log(`Fetching YouTube videos for query: ${query}`);
-
-      const response = await fetch(searchUrl.toString());
-      
-      if (!response.ok) {
-        console.error(`YouTube API error for query "${query}": ${response.status} ${response.statusText}`);
-        continue;
-      }
-
-      const data: YouTubeResponse = await response.json();
-      
-      // Transform YouTube results to our video format
-      const videos = data.items.map(item => ({
-        videoId: item.id.videoId,
-        title: item.snippet.title,
-        description: item.snippet.description,
-        thumbnail: item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.high?.url,
-        channelTitle: item.snippet.channelTitle,
-        publishedAt: item.snippet.publishedAt,
-        url: `https://www.youtube.com/watch?v=${item.id.videoId}`
-      }));
-
-      allVideos.push(...videos);
+    const response = await fetch(searchUrl.toString());
+    if (!response.ok) {
+      console.error(`YouTube API error: ${response.status} ${response.statusText}`);
+      return new Response(JSON.stringify([]), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
-    // Remove duplicates and sort by publish date
-    const uniqueVideos = allVideos.filter((video, index, self) =>
-      index === self.findIndex(v => v.videoId === video.videoId)
-    ).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 3); // Limit to 3 most recent videos
+    const data: YouTubeResponse = await response.json();
 
-    return new Response(JSON.stringify(uniqueVideos), {
+    const videos = data.items.map(item => ({
+      videoId: item.id.videoId,
+      title: item.snippet.title,
+      description: item.snippet.description,
+      thumbnail: item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.high?.url,
+      channelTitle: item.snippet.channelTitle,
+      publishedAt: item.snippet.publishedAt,
+      url: `https://www.youtube.com/watch?v=${item.id.videoId}`
+    }));
+
+    return new Response(JSON.stringify(videos.slice(0, 5)), {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',

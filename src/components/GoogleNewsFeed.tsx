@@ -28,7 +28,7 @@ export const GoogleNewsFeed = () => {
       console.log('🔄 Starting news fetch...');
       
       // Call the new RSS-based surf news function
-      const { data, error } = await supabase.functions.invoke('fetch-surf-news-rss', {
+      const { data, error } = await supabase.functions.invoke('fetch-curated-news', {
         method: 'GET'
       });
       
@@ -39,9 +39,11 @@ export const GoogleNewsFeed = () => {
         throw error;
       }
       
-      if (data && Array.isArray(data) && data.length > 0) {
-        console.log(`✅ Got ${data.length} news items:`, data);
-        setNews(data);
+      if (data && typeof data === 'object' && (data as any).fedesurf && (data as any).surfer) {
+        const payload = data as { fedesurf: GoogleNewsItem[]; surfer: GoogleNewsItem[] };
+        console.log(`✅ Got curated news: Fede=${payload.fedesurf.length}, Surfer=${payload.surfer.length}`);
+        // Flatten to keep backward compatibility but preserve order (fede then surfer)
+        setNews([...(payload.fedesurf || []), ...(payload.surfer || [])]);
         return;
       }
       
@@ -134,45 +136,78 @@ export const GoogleNewsFeed = () => {
       <div className="flex items-center gap-2 mb-6">
         <Newspaper className="w-6 h-6 text-primary" />
         <h2 className="font-display text-2xl font-bold text-foreground">
-          Actualités Surf - RSS News
+          Actualités Surf - FedeSurf Maroc (5) et Surfer.com (5)
         </h2>
       </div>
       
-      {news.map((article, index) => (
-        <Card key={index} className="shadow-wave hover:shadow-ocean transition-shadow duration-300">
-          <CardHeader>
-            <div className="flex items-center justify-between mb-2">
-              <Badge variant="outline">{article.source}</Badge>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Calendar className="w-4 h-4 mr-1" />
-                {formatDate(article.date)}
-              </div>
+      {/* Grouped rendering: first 5 FedeSurf, then 5 Surfer */}
+      {(() => {
+        const fede = news.filter(n => n.source.includes('Fédération') || n.source.includes('fede') || n.source.toLowerCase().includes('maroc'))
+                         .slice(0,5);
+        const surfer = news.filter(n => n.source.toLowerCase().includes('surfer'))
+                           .slice(0,5);
+        return (
+          <div className="space-y-10">
+            <div>
+              <h3 className="font-display text-xl mb-4">Fédération Marocaine de Surf</h3>
+              {fede.map((article, index) => (
+                <Card key={`fede-${index}`} className="shadow-wave hover:shadow-ocean transition-shadow duration-300">
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge variant="outline">{article.source}</Badge>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {formatDate(article.date)}
+                      </div>
+                    </div>
+                    <CardTitle className="font-display text-xl leading-tight line-clamp-2">
+                      {article.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4 line-clamp-3">{article.snippet}</p>
+                    <div className="flex justify-end">
+                      <a href={article.link} target="_blank" rel="noopener noreferrer" className="flex items-center text-primary hover:text-primary-dark transition-colors">
+                        Lire l'article complet
+                        <ExternalLink className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-            
-            <CardTitle className="font-display text-xl leading-tight line-clamp-2">
-              {article.title}
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent>
-            <p className="text-muted-foreground mb-4 line-clamp-3">
-              {article.snippet}
-            </p>
-            
-            <div className="flex justify-end">
-              <a 
-                href={article.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-primary hover:text-primary-dark transition-colors"
-              >
-                Lire l'article complet
-                <ExternalLink className="w-4 h-4 ml-1" />
-              </a>
+
+            <div>
+              <h3 className="font-display text-xl mb-4">Surfer.com</h3>
+              {surfer.map((article, index) => (
+                <Card key={`surfer-${index}`} className="shadow-wave hover:shadow-ocean transition-shadow duration-300">
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge variant="outline">{article.source}</Badge>
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {formatDate(article.date)}
+                      </div>
+                    </div>
+                    <CardTitle className="font-display text-xl leading-tight line-clamp-2">
+                      {article.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4 line-clamp-3">{article.snippet}</p>
+                    <div className="flex justify-end">
+                      <a href={article.link} target="_blank" rel="noopener noreferrer" className="flex items-center text-primary hover:text-primary-dark transition-colors">
+                        Lire l'article complet
+                        <ExternalLink className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          </CardContent>
-        </Card>
-      ))}
+          </div>
+        );
+      })()}
       
       <div className="text-center text-sm text-muted-foreground">
         <p>Actualités mises à jour automatiquement depuis les flux RSS surf</p>
