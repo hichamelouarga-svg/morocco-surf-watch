@@ -4,12 +4,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { LanguageSelector } from './LanguageSelector';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Menu, X, Waves, Sun, Moon } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Menu, X, Waves, Sun, Moon, LogOut, User } from 'lucide-react';
 
 export const Navigation = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -57,6 +59,33 @@ export const Navigation = () => {
             </Button>
             
             <LanguageSelector />
+            
+            {/* Auth Section */}
+            {user ? (
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/20"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  {user.email}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={signOut}
+                  className="text-white hover:bg-white/20"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Button asChild variant="secondary" size="sm">
+                <Link to="/auth">Sign In</Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -98,7 +127,32 @@ export const Navigation = () => {
                 >
                   {t(item.key)}
                 </Link>
-              ))}
+               ))}
+               
+               {/* Mobile Auth Section */}
+               <div className="border-t border-white/20 pt-2 mt-2">
+                 {user ? (
+                   <div className="space-y-2">
+                     <div className="py-2 text-white text-sm">
+                       <User className="w-4 h-4 inline mr-2" />
+                       {user.email}
+                     </div>
+                     <Button
+                       variant="ghost"
+                       size="sm"
+                       onClick={signOut}
+                       className="w-full justify-start text-white hover:bg-white/20"
+                     >
+                       <LogOut className="w-4 h-4 mr-2" />
+                       Sign Out
+                     </Button>
+                   </div>
+                 ) : (
+                   <Button asChild variant="secondary" size="sm" className="w-full">
+                     <Link to="/auth" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+                   </Button>
+                 )}
+               </div>
             </div>
           </div>
         )}
