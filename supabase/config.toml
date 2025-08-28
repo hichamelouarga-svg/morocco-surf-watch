@@ -1,1 +1,22 @@
 project_id = "ztiiximrawuqoeaxohfi"
+
+[functions.fetch-youtube-videos]
+verify_jwt = false
+
+[functions.fetch-curated-news]
+verify_jwt = false
+
+[functions.fetch-google-news]
+verify_jwt = false
+
+[functions.fetch-surf-news-rss]
+verify_jwt = false
+
+[functions.fetch-surf-conditions]
+verify_jwt = false
+
+[functions.fetch-weather-data]
+verify_jwt = false
+
+[functions.send-contact-email]
+verify_jwt = false
