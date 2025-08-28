@@ -37,7 +37,7 @@ export const ManualNewsSection = () => {
 
   const fetchManualNews = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('manual_news')
         .select('*')
         .order('created_at', { ascending: false });
@@ -78,7 +78,7 @@ export const ManualNewsSection = () => {
       };
 
       if (editingId) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('manual_news')
           .update(newsItem)
           .eq('id', editingId);
@@ -90,7 +90,7 @@ export const ManualNewsSection = () => {
           description: "Article modifié avec succès",
         });
       } else {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('manual_news')
           .insert([newsItem]);
 
@@ -131,7 +131,7 @@ export const ManualNewsSection = () => {
     if (!confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) return;
 
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('manual_news')
         .delete()
         .eq('id', id);
