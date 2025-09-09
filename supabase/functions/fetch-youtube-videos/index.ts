@@ -26,18 +26,18 @@ interface YouTubeResponse {
   items: YouTubeVideo[];
 }
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 serve(async (req) => {
   console.log(`🎬 YouTube function called with method: ${req.method}`);
   
-  // Handle CORS
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
-    });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
@@ -96,7 +96,7 @@ serve(async (req) => {
       return new Response(JSON.stringify(mockVideos), {
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
         },
       });
     }
@@ -120,7 +120,7 @@ serve(async (req) => {
       return new Response(JSON.stringify([]), {
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
         },
       });
     }
@@ -140,7 +140,7 @@ serve(async (req) => {
     return new Response(JSON.stringify(videos.slice(0, 5)), {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        ...corsHeaders,
       },
     });
 
@@ -156,7 +156,7 @@ serve(async (req) => {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
         },
       }
     );
