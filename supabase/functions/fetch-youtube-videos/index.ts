@@ -27,6 +27,8 @@ interface YouTubeResponse {
 }
 
 serve(async (req) => {
+  console.log(`🎬 YouTube function called with method: ${req.method}`);
+  
   // Handle CORS
   if (req.method === 'OPTIONS') {
     return new Response(null, {
@@ -42,25 +44,34 @@ serve(async (req) => {
     if (!YOUTUBE_API_KEY) {
       console.log('YouTube API key not found, returning mock data');
       
-      // Return mock data when API key is not configured
+      // Return mock data when API key is not configured - 5 Morocco surf videos
       const mockVideos = [
         {
-          videoId: "dQw4w9WgXcQ",
-          title: "Surf parfait à Taghazout - Conditions exceptionnelles",
-          description: "Des conditions de surf parfaites à Taghazout avec des vagues de 2-3 mètres et un vent offshore. Session épique avec les locaux!",
-          thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
-          channelTitle: "Surf Morocco TV",
+          videoId: "3JY3trh26Uk",
+          title: "Taghazout (Morocco) - A Surf Town Review",
+          description: "Here's what to expect from Morocco's most famous surf town. From the waves you'll surf, the crowds you'll encounter, and how much it'll cost.",
+          thumbnail: "https://img.youtube.com/vi/3JY3trh26Uk/mqdefault.jpg",
+          channelTitle: "Surf Review",
           publishedAt: new Date().toISOString(),
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          url: "https://www.youtube.com/watch?v=3JY3trh26Uk"
         },
         {
-          videoId: "9bZkp7q19f0",
-          title: "Guide complet des spots de surf au Maroc",
-          description: "Découvrez les meilleurs spots de surf du Maroc, d'Imsouane à Essaouira en passant par Taghazout. Conseils et astuces pour surfeurs.",
-          thumbnail: "https://img.youtube.com/vi/9bZkp7q19f0/mqdefault.jpg",
+          videoId: "hRDXFzf1nXk",
+          title: "Morocco - Surf Guide - Taghazout/Central Morocco",
+          description: "In this short film about surfing in Central Morocco - the Taghazout area. The surf season starts around November and lasts till end of March/April.",
+          thumbnail: "https://img.youtube.com/vi/hRDXFzf1nXk/mqdefault.jpg",
           channelTitle: "Morocco Surf Guide",
           publishedAt: new Date(Date.now() - 86400000).toISOString(),
-          url: "https://www.youtube.com/watch?v=9bZkp7q19f0"
+          url: "https://www.youtube.com/watch?v=hRDXFzf1nXk"
+        },
+        {
+          videoId: "hLVXiPmDmPg",
+          title: "Living in Morocco's Surf Town Tamraght as a Digital Nomad",
+          description: "A month in a surf town called Tamraght and it's been one of the most memorable trips. The laid-back vibe, friendly locals, and stunning coastline.",
+          thumbnail: "https://img.youtube.com/vi/hLVXiPmDmPg/mqdefault.jpg",
+          channelTitle: "Digital Nomad Morocco",
+          publishedAt: new Date(Date.now() - 172800000).toISOString(),
+          url: "https://www.youtube.com/watch?v=hLVXiPmDmPg"
         },
         {
           videoId: "kJQP7kiw5Fk",
@@ -68,8 +79,17 @@ serve(async (req) => {
           description: "Session de surf à Imsouane, célèbre pour sa vague droite qui peut durer plus d'une minute. Conditions parfaites pour le longboard.",
           thumbnail: "https://img.youtube.com/vi/kJQP7kiw5Fk/mqdefault.jpg",
           channelTitle: "Imsouane Surf",
-          publishedAt: new Date(Date.now() - 172800000).toISOString(),
+          publishedAt: new Date(Date.now() - 259200000).toISOString(),
           url: "https://www.youtube.com/watch?v=kJQP7kiw5Fk"
+        },
+        {
+          videoId: "9bZkp7q19f0",
+          title: "Guide complet des spots de surf au Maroc",
+          description: "Découvrez les meilleurs spots de surf du Maroc, d'Imsouane à Essaouira en passant par Taghazout. Conseils et astuces pour surfeurs.",
+          thumbnail: "https://img.youtube.com/vi/9bZkp7q19f0/mqdefault.jpg",
+          channelTitle: "Morocco Surf Guide",
+          publishedAt: new Date(Date.now() - 345600000).toISOString(),
+          url: "https://www.youtube.com/watch?v=9bZkp7q19f0"
         }
       ];
 

@@ -27,21 +27,21 @@ export const YouTubeVideosSection = () => {
   const fetchYouTubeVideos = async () => {
     try {
       setLoading(true);
-      console.log('🔄 Fetching DYNAMIC YouTube videos (last 3 added)...');
+      console.log('🔄 Fetching YouTube videos for "Surf Morocco Maroc"...');
       
-      // Try to get real dynamic videos from API
-      const { data, error } = await supabase.functions.invoke('fetch-youtube-videos', {
-        method: 'GET'
-      });
+      // Try to get videos from edge function
+      const { data, error } = await supabase.functions.invoke('fetch-youtube-videos');
       
       console.log('📡 YouTube API response:', { data, error });
       
       if (!error && data && Array.isArray(data)) {
-        console.log(`✅ Got ${data.length} DYNAMIC videos from API`);
-        // Take only the 5 most recent videos
-        const recentVideos = data.slice(0, 5);
-        setVideos(recentVideos);
+        console.log(`✅ Got ${data.length} videos from API`);
+        setVideos(data);
         return;
+      }
+      
+      if (error) {
+        console.error('🚨 Edge function error:', error);
       }
       
       console.log('🔄 API failed, using verified Morocco surf videos...');
