@@ -81,8 +81,8 @@ serve(async (req) => {
       });
     }
 
-    // Build a single search query for newest uploads about Surf Morocco
-    const searchQuery = 'surf Morocco';
+    // Build a single search query for newest uploads about Surf Morocco Maroc
+    const searchQuery = 'Surf Morocco Maroc';
 
     const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search');
     searchUrl.searchParams.append('key', YOUTUBE_API_KEY);
