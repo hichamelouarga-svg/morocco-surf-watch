@@ -19,6 +19,7 @@ interface YouTubeVideo {
     };
     channelTitle: string;
     publishedAt: string;
+    liveBroadcastContent?: string; // 'live' | 'upcoming' | 'none'
   };
 }
 
@@ -101,16 +102,20 @@ serve(async (req) => {
       });
     }
 
-    // Build a single search query for newest uploads about Surf Morocco Maroc
-    const searchQuery = 'Surf Morocco Maroc';
+    // Build a search query for newest uploads about Surf Morocco/Maroc and exclude common live-cam terms
+    const searchQuery = 'Surf Morocco Maroc surf -live -cam -camera -caméra -24/7 -stream';
+    const publishedAfter = new Date(Date.now() - 1000 * 60 * 60 * 24 * 90).toISOString(); // last 90 days
 
     const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search');
     searchUrl.searchParams.append('key', YOUTUBE_API_KEY);
     searchUrl.searchParams.append('q', searchQuery);
     searchUrl.searchParams.append('part', 'snippet');
     searchUrl.searchParams.append('type', 'video');
-    searchUrl.searchParams.append('maxResults', '5'); // Return 5 newest videos
+    searchUrl.searchParams.append('maxResults', '25'); // get more, then filter down to 5
     searchUrl.searchParams.append('order', 'date');
+    searchUrl.searchParams.append('videoEmbeddable', 'true');
+    searchUrl.searchParams.append('regionCode', 'MA');
+    searchUrl.searchParams.append('publishedAfter', publishedAfter);
 
     console.log(`Fetching YouTube videos for query: ${searchQuery}`);
 
@@ -127,7 +132,52 @@ serve(async (req) => {
 
     const data: YouTubeResponse = await response.json();
 
-    const videos = data.items.map(item => ({
+    const unwanted = /\b(live|24\/7|stream|cam|camera|cam[ée]ra|en direct)\b/i;
+
+    // Filter out live/upcoming streams and obvious webcam content
+    const filtered = (data.items || []).filter((item) => {
+      const title = item.snippet.title || '';
+      const desc = item.snippet.description || '';
+      const channel = item.snippet.channelTitle || '';
+      const notLiveFlag = (item.snippet?.liveBroadcastContent ?? 'none') === 'none';
+      const notLiveWords = !unwanted.test(title) && !unwanted.test(desc) && !/live cam/i.test(channel);
+      return notLiveFlag && notLiveWords;
+    });
+
+    console.log(`YouTube returned ${data.items?.length ?? 0} items. After filtering: ${filtered.length}`);
+
+    // Deduplicate by normalized title and limit per channel to avoid 5 from the same channel
+    const seenTitles = new Set<string>();
+    const channelCount = new Map<string, number>();
+    const perChannelLimit = 1;
+
+    const pass1: YouTubeVideo[] = [];
+    for (const item of filtered) {
+      const titleKey = item.snippet.title.trim().toLowerCase().replace(/\s+/g, ' ');
+      if (seenTitles.has(titleKey)) continue;
+      const ch = item.snippet.channelTitle;
+      const count = channelCount.get(ch) ?? 0;
+      if (count >= perChannelLimit) continue;
+      seenTitles.add(titleKey);
+      channelCount.set(ch, count + 1);
+      pass1.push(item);
+      if (pass1.length >= 5) break;
+    }
+
+    // If we don't have 5 yet, fill with remaining filtered items (still unique by title)
+    let finalItems = pass1;
+    if (finalItems.length < 5) {
+      for (const item of filtered) {
+        if (finalItems.includes(item)) continue;
+        const titleKey = item.snippet.title.trim().toLowerCase().replace(/\s+/g, ' ');
+        if (seenTitles.has(titleKey)) continue;
+        seenTitles.add(titleKey);
+        finalItems.push(item);
+        if (finalItems.length >= 5) break;
+      }
+    }
+
+    const videos = finalItems.map(item => ({
       videoId: item.id.videoId,
       title: item.snippet.title,
       description: item.snippet.description,
