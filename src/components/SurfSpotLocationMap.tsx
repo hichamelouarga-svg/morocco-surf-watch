@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import mapboxgl from 'mapbox-gl';
+import type mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface SurfSpotLocationMapProps {
@@ -21,83 +21,90 @@ const SurfSpotLocationMap: React.FC<SurfSpotLocationMapProps> = ({
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Use the provided Mapbox public token
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic3VyZmF1bWFyb2MiLCJhIjoiY21kcWlid2llMDZibjJtcHp6NWx1Ynd3ZCJ9.kCWTEjWjMTkRWNJAqhNlVg';
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/satellite-streets-v12',
-      center: [longitude, latitude],
-      zoom: 14,
-      pitch: 45,
-      bearing: 0
-    });
+    const init = async () => {
+      // Dynamically import Mapbox to split bundle
+      const mapboxgl = (await import('mapbox-gl')).default;
 
-    // Add navigation controls
-    map.current.addControl(
-      new mapboxgl.NavigationControl({
-        visualizePitch: true,
-      }),
-      'top-right'
-    );
-
-    // Add marker for surf spot
-    const marker = new mapboxgl.Marker({
-      color: '#FF6B35', // coral color
-      scale: 1.2
-    })
-      .setLngLat([longitude, latitude])
-      .setPopup(
-        new mapboxgl.Popup({ offset: 25 })
-          .setHTML(`
-            <div class="p-2">
-              <h3 class="font-bold text-lg">${spotName}</h3>
-              <p class="text-sm text-gray-600">Surf Spot Location</p>
-            </div>
-          `)
-      )
-      .addTo(map.current);
-
-    // Show popup by default
-    marker.togglePopup();
-
-    // Add some wave animation effects around the marker
-    map.current.on('load', () => {
-      if (!map.current) return;
-
-      // Add a circle layer for wave effect
-      map.current.addSource('surf-spot', {
-        'type': 'geojson',
-        'data': {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Point',
-            'coordinates': [longitude, latitude]
-          },
-          'properties': {}
-        }
+      // Use the provided Mapbox public token
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3VyZmF1bWFyb2MiLCJhIjoiY21kcWlid2llMDZibjJtcHp6NWx1Ynd3ZCJ9.kCWTEjWjMTkRWNJAqhNlVg';
+      
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/satellite-streets-v12',
+        center: [longitude, latitude],
+        zoom: 14,
+        pitch: 45,
+        bearing: 0
       });
 
-      map.current.addLayer({
-        'id': 'surf-spot-waves',
-        'type': 'circle',
-        'source': 'surf-spot',
-        'paint': {
-          'circle-radius': {
-            'base': 1.75,
-            'stops': [
-              [12, 20],
-              [22, 100]
-            ]
-          },
-          'circle-color': '#00A8E8',
-          'circle-opacity': 0.3,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#FF6B35',
-          'circle-stroke-opacity': 0.6
-        }
+      // Add navigation controls
+      map.current.addControl(
+        new mapboxgl.NavigationControl({
+          visualizePitch: true,
+        }),
+        'top-right'
+      );
+
+      // Add marker for surf spot
+      const marker = new mapboxgl.Marker({
+        color: '#FF6B35', // coral color
+        scale: 1.2
+      })
+        .setLngLat([longitude, latitude])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 })
+            .setHTML(`
+              <div class="p-2">
+                <h3 class="font-bold text-lg">${spotName}</h3>
+                <p class="text-sm text-gray-600">Surf Spot Location</p>
+              </div>
+            `)
+        )
+        .addTo(map.current);
+
+      // Show popup by default
+      marker.togglePopup();
+
+      // Add some wave animation effects around the marker
+      map.current.on('load', () => {
+        if (!map.current) return;
+
+        // Add a circle layer for wave effect
+        map.current.addSource('surf-spot', {
+          'type': 'geojson',
+          'data': {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [longitude, latitude]
+            },
+            'properties': {}
+          }
+        });
+
+        map.current.addLayer({
+          'id': 'surf-spot-waves',
+          'type': 'circle',
+          'source': 'surf-spot',
+          'paint': {
+            'circle-radius': {
+              'base': 1.75,
+              'stops': [
+                [12, 20],
+                [22, 100]
+              ]
+            },
+            'circle-color': '#00A8E8',
+            'circle-opacity': 0.3,
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#FF6B35',
+            'circle-stroke-opacity': 0.6
+          }
+        });
       });
-    });
+    };
+
+    init();
 
     // Cleanup
     return () => {

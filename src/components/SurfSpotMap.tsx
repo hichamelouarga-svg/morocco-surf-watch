@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
+import type mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { surfSpots } from '@/data/surfSpots';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,8 @@ export const SurfSpotMap = () => {
       if (!mapRef.current) return;
 
       try {
+        // Dynamically load Mapbox to enable code-splitting
+        const mapboxgl = (await import('mapbox-gl')).default;
         // Set Mapbox access token
         mapboxgl.accessToken = mapboxToken;
 

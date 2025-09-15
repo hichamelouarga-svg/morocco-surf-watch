@@ -8,9 +8,9 @@ import SurfConditions from '@/components/SurfConditions';
 import { SurfConditionsService, RealSurfCondition } from '@/services/surfConditionsService';
 import { surfConditionsData } from '@/data/surfConditionsData';
 import { Camera, Waves, Wind, Thermometer, Moon, Sun, Clock } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { YouTubeBackground } from '@/components/YouTubeBackground';
-import SurfSpotLocationMap from '@/components/SurfSpotLocationMap';
+const SurfSpotLocationMap = lazy(() => import('@/components/SurfSpotLocationMap'));
 import { WavesForecast } from '@/components/WavesForecast';
 import axios from 'axios';
 import surflineLogo from '/lovable-uploads/6e8062d1-1d41-485c-b71a-8055af2c8a23.png';
@@ -281,12 +281,14 @@ const SurfSpotDetail = () => {
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="h-48">
-                    <SurfSpotLocationMap
-                      latitude={spot.coordinates[0]}
-                      longitude={spot.coordinates[1]}
-                      spotName={spot.name}
-                      className="h-full"
-                    />
+                    <Suspense fallback={<div className="h-full bg-muted rounded-lg" /> }>
+                      <SurfSpotLocationMap
+                        latitude={spot.coordinates[0]}
+                        longitude={spot.coordinates[1]}
+                        spotName={spot.name}
+                        className="h-full"
+                      />
+                    </Suspense>
                   </div>
                 </CardContent>
               </Card>

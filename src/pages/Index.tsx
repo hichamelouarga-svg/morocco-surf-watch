@@ -1,13 +1,14 @@
 import { Navigation } from '@/components/Navigation';
-import { SurfSpotMap } from '@/components/SurfSpotMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Camera, Waves, Users, TrendingUp } from 'lucide-react';
 import { YouTubeBackground } from '@/components/YouTubeBackground';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 
-const Index = () => {
+const MapSection = lazy(() => import('@/components/SurfSpotMap').then(m => ({ default: m.SurfSpotMap })));
+
   const { t } = useTranslation();
 
   return (
