@@ -9,6 +9,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 
 const MapSection = lazy(() => import('@/components/SurfSpotMap').then(m => ({ default: m.SurfSpotMap })));
 
+const Index = () => {
   const { t } = useTranslation();
 
   return (
@@ -88,7 +89,11 @@ const MapSection = lazy(() => import('@/components/SurfSpotMap').then(m => ({ de
               {t('click_marker_explore')}
             </p>
           </div>
-          <SurfSpotMap />
+          <Suspense fallback={<div className="h-96 bg-muted/10 rounded-lg animate-pulse flex items-center justify-center">
+            <div className="text-muted-foreground">Loading map...</div>
+          </div>}>
+            <MapSection />
+          </Suspense>
         </div>
       </section>
 
